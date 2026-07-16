@@ -6,7 +6,9 @@ sections/header.liquid
 
 {%- liquid
   assign logo = section.settings.logo | default: settings.logo
-  assign logo_width = section.settings.logo_max_width
+  assign logo_mobile = settings.logo_mobile | default: logo
+  assign logo_width = section.settings.logo_max_width | default: settings.logo_width | default: 120
+  assign logo_width_mobile = settings.logo_width_mobile | default: 80
   assign main_menu = section.settings.main_menu | default: 'main-menu'
 -%}
 
@@ -29,14 +31,24 @@ sections/header.liquid
     <div class="header__logo">
       {%- if logo != blank -%}
         <a href="{{ routes.root_url }}" class="header__logo-link">
-          <img 
-            src="{{ logo | image_url: width: logo_width }}" 
-            alt="{{ logo.alt | default: shop.name }}" 
-            class="header__logo-img"
+          <img
+            src="{{ logo | image_url: width: logo_width }}"
+            alt="{{ logo.alt | default: shop.name }}"
+            class="header__logo-img header__logo-img--desktop"
             width="{{ logo_width }}"
             height="{{ logo_width | divided_by: logo.aspect_ratio | round }}"
             style="max-width: {{ logo_width }}px;"
           >
+          {%- if logo_mobile != blank -%}
+            <img
+              src="{{ logo_mobile | image_url: width: logo_width_mobile }}"
+              alt="{{ logo_mobile.alt | default: shop.name }}"
+              class="header__logo-img header__logo-img--mobile"
+              width="{{ logo_width_mobile }}"
+              height="{{ logo_width_mobile | divided_by: logo_mobile.aspect_ratio | round }}"
+              style="max-width: {{ logo_width_mobile }}px;"
+            >
+          {%- endif -%}
         </a>
       {%- else -%}
         <a href="{{ routes.root_url }}" class="header__logo-link">

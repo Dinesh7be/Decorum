@@ -32,6 +32,20 @@
   display: block;
 }
 
+.header__logo-img--mobile {
+  display: none;
+}
+
+@media (max-width: 740px) {
+  .header__logo-img--desktop {
+    display: none;
+  }
+
+  .header__logo-img--mobile {
+    display: block;
+  }
+}
+
 /* Navigation List */
 .header__nav {
   display: flex;

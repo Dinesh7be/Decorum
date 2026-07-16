@@ -34,7 +34,7 @@ body {
   font-size: var(--font-size);
   font-weight: var(--body-weight);
   font-style: var(--body-style);
-  line-height: 1.6;
+  line-height: var(--body-line-height, 1.6);
   background-color: var(--background);
   color: var(--text-color);
   letter-spacing: var(--body-letter-spacing, 0);
@@ -89,8 +89,8 @@ h1, h2, h3, h4, h5, h6 {
   font-style: var(--heading-style);
   text-transform: var(--heading-text-transform);
   color: var(--accent-color);
-  line-height: 1.25;
-  letter-spacing: var(--heading-letter-spacing, -0.02em);
+  line-height: var(--heading-line-height, 1.25);
+  letter-spacing: var(--heading-letter-spacing, 0);
   margin-bottom: 1.5rem;
 }
 
@@ -107,8 +107,8 @@ p { margin-bottom: 1.5rem; }
   max-width: var(--container-width);
   margin-left: auto;
   margin-right: auto;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding-left: var(--page-margin, 2rem);
+  padding-right: var(--page-margin, 2rem);
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   column-gap: var(--grid-gap);
@@ -225,12 +225,12 @@ input[type="submit"].btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem 3rem;
+  padding: var(--button-padding-y, 1.25rem) var(--button-padding-x, 3rem);
   font-family: var(--body-family);
   font-size: var(--button-font-size, var(--font-size-sm));
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  font-weight: var(--button-font-weight, 600);
+  text-transform: var(--button-text-transform, uppercase);
+  letter-spacing: var(--button-letter-spacing, 0.1em);
   border-radius: var(--button-border-radius);
   border: 1px solid var(--button-bg);
   background-color: var(--button-bg);
@@ -246,16 +246,44 @@ input[type="submit"].btn {
   border-color: var(--button-hover-bg);
 }
 
+.theme-btn-hover--lift .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.theme-btn-hover--underline .btn {
+  box-shadow: inset 0 -2px 0 transparent;
+}
+
+.theme-btn-hover--underline .btn:hover {
+  box-shadow: inset 0 -2px 0 currentColor;
+}
+
+.theme-btn-hover--none .btn:hover {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border-color: var(--button-bg);
+  transform: none;
+  box-shadow: none;
+}
+
 .btn--secondary {
   background-color: var(--secondary-button-bg);
   color: var(--secondary-button-text);
-  border-color: var(--accent-color);
+  border-color: var(--secondary-button-border, var(--accent-color));
 }
 
 .btn--secondary:hover {
-  background-color: var(--accent-color);
-  color: var(--background);
-  border-color: var(--accent-color);
+  background-color: var(--secondary-button-hover-bg, var(--accent-color));
+  color: var(--secondary-button-hover-text, var(--background));
+  border-color: var(--secondary-button-hover-bg, var(--accent-color));
+}
+
+.theme-animations-off *,
+.theme-animations-off *:before,
+.theme-animations-off *:after {
+  animation: none !important;
+  transition: none !important;
 }
 
 .btn--full {

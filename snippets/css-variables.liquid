@@ -8,6 +8,49 @@ Loaded in the <head> of layout/theme.liquid.
 {%- liquid
   assign heading_font = settings.heading_font
   assign body_font = settings.body_font
+  assign body_lh = settings.body_line_height | default: 160 | times: 0.01
+  assign heading_lh = settings.heading_line_height | default: 125 | times: 0.01
+  assign shadow_style = settings.shadow_style | default: 'soft'
+  assign anim_speed = settings.animation_speed | default: 'normal'
+
+  case shadow_style
+    when 'none'
+      assign shadow_value = 'none'
+    when 'medium'
+      assign shadow_value = '0 8px 28px rgba(43, 41, 39, 0.12)'
+    when 'strong'
+      assign shadow_value = '0 16px 40px rgba(43, 41, 39, 0.18)'
+    else
+      assign shadow_value = '0 4px 18px rgba(43, 41, 39, 0.08)'
+  endcase
+
+  case anim_speed
+    when 'fast'
+      assign transition_fast = '0.12s ease'
+      assign transition_normal = '0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+      assign transition_slow = '0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+    when 'slow'
+      assign transition_fast = '0.3s ease'
+      assign transition_normal = '0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+      assign transition_slow = '0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+    else
+      assign transition_fast = '0.2s ease'
+      assign transition_normal = '0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+      assign transition_slow = '0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+  endcase
+
+  if settings.enable_animations == false
+    assign transition_fast = '0s'
+    assign transition_normal = '0s'
+    assign transition_slow = '0s'
+  endif
+
+  assign secondary_btn_bg = settings.secondary_button_bg
+  if secondary_btn_bg == blank or secondary_btn_bg.alpha == 0.0
+    assign secondary_btn_bg_css = 'transparent'
+  else
+    assign secondary_btn_bg_css = secondary_btn_bg
+  endif
 -%}
 
 {% style %}
@@ -42,6 +85,8 @@ Loaded in the <head> of layout/theme.liquid.
       --heading-style: normal;
     {%- endif -%}
     --heading-text-transform: {{ settings.heading_text_transform | default: 'none' }};
+    --heading-line-height: {{ heading_lh }};
+    --heading-letter-spacing: {{ settings.heading_letter_spacing | default: 0 }}px;
 
     {%- if body_font.family != blank -%}
       --body-family: {{ body_font.family }}, {{ body_font.fallback_families }};
@@ -52,6 +97,8 @@ Loaded in the <head> of layout/theme.liquid.
       --body-weight: 400;
       --body-style: normal;
     {%- endif -%}
+    --body-line-height: {{ body_lh }};
+    --body-letter-spacing: {{ settings.body_letter_spacing | default: 0 }}px;
 
     --font-size: {{ settings.font_size | default: 16 }}px;
     --font-size-sm: calc({{ settings.font_size | default: 16 }}px - 2px);
@@ -59,14 +106,12 @@ Loaded in the <head> of layout/theme.liquid.
     --font-size-lg: calc({{ settings.font_size | default: 16 }}px + 4px);
     --font-size-xl: calc({{ settings.font_size | default: 16 }}px + 10px);
     --font-size-xxl: calc({{ settings.font_size | default: 16 }}px + 20px);
-    
+
     --font-size-h1: {{ settings.heading_size_h1 | default: 40 }}px;
     --font-size-h2: {{ settings.heading_size_h2 | default: 32 }}px;
     --font-size-h3: {{ settings.heading_size_h3 | default: 24 }}px;
-    --heading-letter-spacing: {{ settings.heading_letter_spacing | default: 0 }}px;
-    --body-letter-spacing: {{ settings.body_letter_spacing | default: 0 }}px;
 
-    /* Core Palette Colors */
+    /* Core palette */
     --background: {{ settings.background | default: '#FAF9F6' }};
     {%- if settings.background != blank -%}
       --background-darken: {{ settings.background | color_darken: 3 }};
@@ -75,7 +120,7 @@ Loaded in the <head> of layout/theme.liquid.
       --background-darken: #F2F0EB;
       --background-lighten: #FCFBF9;
     {%- endif -%}
-    
+
     --text-color: {{ settings.text_color | default: '#4A4540' }};
     {%- if settings.text_color != blank -%}
       --text-color-light: {{ settings.text_color | color_lighten: 20 }};
@@ -92,8 +137,13 @@ Loaded in the <head> of layout/theme.liquid.
     --secondary-accent: {{ settings.secondary_accent | default: '#8C7D70' }};
     --border-color: {{ settings.border_color | default: '#E6E1DA' }};
     --keyboard-focus-color: {{ settings.keyboard_focus_color | default: '#8C7D70' }};
+    --color-success: {{ settings.color_success | default: '#2F6B4F' }};
+    --color-error: {{ settings.color_error | default: '#B33A3A' }};
+    --color-warning: {{ settings.color_warning | default: '#C48A2A' }};
+    --sale-badge-bg: {{ settings.sale_badge_bg | default: '#2B2927' }};
+    --sale-badge-text: {{ settings.sale_badge_text | default: '#FAF9F6' }};
 
-    /* Header & Navigation Colors */
+    /* Header & navigation */
     --header-bg: {{ settings.header_bg | default: '#FAF9F6' }};
     --header-text: {{ settings.header_text | default: '#2B2927' }};
     --nav-link: {{ settings.nav_link | default: '#4A4540' }};
@@ -104,34 +154,45 @@ Loaded in the <head> of layout/theme.liquid.
     --button-text: {{ settings.button_text | default: '#FAF9F6' }};
     --button-hover-bg: {{ settings.button_hover_bg | default: '#8C7D70' }};
     --button-hover-text: {{ settings.button_hover_text | default: '#FAF9F6' }};
-    --secondary-button-bg: {{ settings.secondary_button_bg | default: 'transparent' }};
+    --secondary-button-bg: {{ secondary_btn_bg_css }};
     --secondary-button-text: {{ settings.secondary_button_text | default: '#2B2927' }};
-    --button-border-radius: {{ settings.button_border_radius | default: '0px' }};
+    --secondary-button-border: {{ settings.secondary_button_border | default: '#2B2927' }};
+    --secondary-button-hover-bg: {{ settings.secondary_button_hover_bg | default: '#2B2927' }};
+    --secondary-button-hover-text: {{ settings.secondary_button_hover_text | default: '#FAF9F6' }};
+    --button-border-radius: {{ settings.button_border_radius | default: 0 }}px;
     --button-font-size: {{ settings.button_font_size | default: 14 }}px;
+    --button-text-transform: {{ settings.button_text_transform | default: 'uppercase' }};
+    --button-letter-spacing: {{ settings.button_letter_spacing | default: 1 }}px;
+    --button-font-weight: {{ settings.button_font_weight | default: 600 }};
+    --button-padding-y: {{ settings.button_padding_y | default: 14 }}px;
+    --button-padding-x: {{ settings.button_padding_x | default: 28 }}px;
 
-    /* Footer Colors */
+    /* Footer */
     --footer-bg: {{ settings.footer_bg | default: '#2B2927' }};
     --footer-text: {{ settings.footer_text | default: '#E6E1DA' }};
     --footer-link: {{ settings.footer_link | default: '#FAF9F6' }};
     --footer-border: {{ settings.footer_border | default: '#4A4540' }};
     --overlay-color: #000000;
 
-    /* Form Fields Settings */
+    /* Forms */
     --form-border-radius: {{ settings.form_border_radius | default: 0 }}px;
     --form-bg-color: {{ settings.form_bg_color | default: '#FAF9F6' }};
     --form-text-color: {{ settings.form_text_color | default: '#2B2927' }};
 
-    /* Global Layout and Spacing Variables */
+    /* Layout */
     --container-width: {{ settings.container_width | default: 1400 }}px;
+    --page-margin: {{ settings.page_margin | default: 16 }}px;
     --grid-gap: {{ settings.grid_gap | default: 32 }}px;
     --grid-gap-mobile: calc({{ settings.grid_gap | default: 32 }}px / 2);
     --section-padding: {{ settings.section_spacing_desktop | default: 80 }}px;
     --section-padding-mobile: {{ settings.section_spacing_mobile | default: 48 }}px;
-    
-    /* Animation Transitions */
-    --transition-fast: 0.2s ease;
-    --transition-normal: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --transition-slow: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --global-border-radius: {{ settings.global_border_radius | default: 0 }}px;
+    --shadow: {{ shadow_value }};
+
+    /* Motion */
+    --transition-fast: {{ transition_fast }};
+    --transition-normal: {{ transition_normal }};
+    --transition-slow: {{ transition_slow }};
   }
 
   @media (max-width: 740px) {

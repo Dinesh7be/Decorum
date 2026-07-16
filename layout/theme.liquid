@@ -62,7 +62,7 @@
     </script>
   </head>
 
-  <body class="template-{{ template | replace: '.', '-' | handleize }} theme-buttons--{{ settings.button_border_radius | replace: 'px', '' | handleize }}">
+  <body class="template-{{ template | replace: '.', '-' | handleize }} theme-btn-hover--{{ settings.button_hover_effect | default: 'color' }}{% unless settings.enable_animations %} theme-animations-off{% endunless %}">
     <!-- Skip to main content link (A11Y-001) -->
     <a class="skip-link visually-hidden" href="#main-content">
       {{ 'accessibility.skip_to_text' | t }}
