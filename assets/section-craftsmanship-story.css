@@ -1,0 +1,59 @@
+/*
+ * theme/assets/section-craftsmanship-story.css
+ * Alternating image/text process narrative (sourcing -> construction -> finishing).
+ */
+
+.craft-story__step {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  margin-bottom: 6rem;
+}
+
+.craft-story__step:last-child {
+  margin-bottom: 0;
+}
+
+.craft-story__step--reverse .craft-story__media {
+  order: 2;
+}
+
+.craft-story__step--reverse .craft-story__text {
+  order: 1;
+}
+
+.craft-story__number {
+  font-family: var(--heading-family);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--secondary-accent);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.craft-story__title {
+  font-family: var(--heading-family);
+  font-size: var(--font-size-xl);
+  margin: 0 0 1.5rem;
+}
+
+.craft-story__text p {
+  color: var(--text-color-light);
+  line-height: 1.8;
+}
+
+@media (max-width: 740px) {
+  .craft-story__step,
+  .craft-story__step--reverse {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .craft-story__step--reverse .craft-story__media,
+  .craft-story__step--reverse .craft-story__text {
+    order: initial;
+  }
+}

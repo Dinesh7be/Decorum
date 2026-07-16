@@ -1,0 +1,152 @@
+/*
+ * theme/assets/section-shop-the-look.css
+ * Styling for the Shop The Look Hotspots Section
+ */
+
+.lookbook__header {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.lookbook__container {
+  position: relative;
+  width: 100%;
+}
+
+.lookbook__image-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--background-darken);
+}
+
+/* Hotspot Marker */
+.lookbook__marker {
+  position: absolute;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  background-color: var(--background);
+  color: var(--accent-color);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 500;
+  cursor: pointer;
+  z-index: 5;
+  transform: translate(-50%, -50%);
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.lookbook__marker:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  background-color: var(--accent-color);
+  color: var(--background);
+}
+
+.lookbook__marker::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--background);
+  animation: pulse-ring 2s infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 0.4; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Hotspot Popover Card */
+.lookbook__card {
+  border: none;
+  background: var(--background);
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  border-radius: var(--button-border-radius);
+  width: 250px;
+  overflow: visible;
+  position: absolute;
+  z-index: 10;
+}
+
+.lookbook__card-content {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.lookbook__card-img {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  background-color: var(--background-darken);
+  overflow: hidden;
+  border-radius: var(--button-border-radius);
+  position: relative;
+}
+
+.lookbook__card-img img,
+.lookbook__card-img svg {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.lookbook__image-placeholder {
+  padding-bottom: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+.lookbook__image-placeholder svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lookbook__card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: left;
+}
+
+.lookbook__card-title {
+  font-family: var(--heading-family);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.lookbook__card-price {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.lookbook__card-btn {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  text-decoration: underline;
+  margin-top: 0.5rem;
+  display: inline-block;
+}

@@ -1,0 +1,49 @@
+{% comment %}
+sections/main-blog.liquid
+{% endcomment %}
+
+{{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
+
+<section 
+  class="global__section" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="main-blog"
+>
+  <div class="grid__wrapper" style="margin-top: -2rem;">
+    {%- paginate blog.articles by 6 -%}
+      {%- if blog.articles.size > 0 -%}
+        {%- for article in blog.articles -%}
+          <div class="span-4 sm-span-12 blog__grid">
+            <a href="{{ article.url }}">
+              <div class="blog-card__image-box">
+                {%- if article.image != blank -%}
+                  {%- render 'basic-responsive-image', image: article.image, sizes: '(min-width: 740px) 33vw, 100vw' -%}
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </div>
+            </a>
+            <div>
+              <span class="blog-card__meta">{{ article.published_at | date: '%b %d, %Y' }}</span>
+              <h3 class="blog-card__title">
+                <a href="{{ article.url }}">{{ article.title }}</a>
+              </h3>
+              <p class="blog-card__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 25 }}</p>
+              <a href="{{ article.url }}" class="blog-card__read-more">{{ 'general.search.read_more' | t }}</a>
+            </div>
+          </div>
+        {%- endfor -%}
+        {%- render 'pagination', paginate: paginate -%}
+      {%- else -%}
+        <!-- Onboarding Blog Articles (SEC-005) -->
+        {%- render 'onboard-blog' -%}
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog Grid"
+}
+{% endschema %}

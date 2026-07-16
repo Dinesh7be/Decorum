@@ -1,0 +1,160 @@
+{{ 'section-why-choose-us.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/why-choose-us.liquid
+{% endcomment %}
+
+{%- liquid
+  assign heading = section.settings.title
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section 
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="why-choose-us"
+>
+  {%- if heading != blank -%}
+    <div class="grid__wrapper">
+      <div class="span-12 usp__header">
+        <h2>{{ heading | escape }}</h2>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="grid__wrapper">
+    {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+        {%- liquid
+          case section.blocks.size
+            when 1
+              assign col_span = 'span-12'
+            when 2
+              assign col_span = 'span-6'
+            when 3
+              assign col_span = 'span-4'
+            else
+              assign col_span = 'span-3'
+          endcase
+        -%}
+
+        <div class="{{ col_span }} sm-span-12 usp__card" {{ block.shopify_attributes }}>
+          <div class="usp__icon-wrapper">
+            {% render 'snip-icons', icon: block.settings.icon, size: '32px' %}
+          </div>
+          {%- if block.settings.title != blank -%}
+            <h3 class="usp__title">{{ block.settings.title | escape }}</h3>
+          {%- endif -%}
+          {%- if block.settings.text != blank -%}
+            <p class="usp__text">{{ block.settings.text | escape }}</p>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <!-- Onboarding state (SEC-005) -->
+      {%- for i in (1..3) -%}
+        {%- liquid
+          case i
+            when 1
+              assign icon = 'quality'
+              assign title = 'Premium Quality'
+              assign text = 'Crafted from sustainable solid wood and heavy-weight linen textiles built to endure generations.'
+            when 2
+              assign icon = 'delivery'
+              assign title = 'White-Glove Delivery'
+              assign text = 'Complementary delivery, inside placement, assembly, and packaging removal on all major orders.'
+            when 3
+              assign icon = 'warranty'
+              assign title = '10-Year Warranty'
+              assign text = 'We stand firmly behind our products. Every piece includes structural coverage for a full decade.'
+          endcase
+        -%}
+        <div class="span-4 sm-span-12 usp__card">
+          <div class="usp__icon-wrapper">
+            {% render 'snip-icons', icon: icon, size: '32px' %}
+          </div>
+          <h3 class="usp__title">{{ title }}</h3>
+          <p class="usp__text">{{ text }}</p>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Why Choose Us",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Why Choose Us"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "usp",
+      "name": "USP Card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "quality", "label": "Shield / Quality" },
+            { "value": "delivery", "label": "Truck / Delivery" },
+            { "value": "warranty", "label": "Document / Warranty" }
+          ],
+          "default": "quality"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Uncompromised Quality"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Crafted from solid oak wood and premium upholstery textiles."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why Choose Us",
+      "blocks": [
+        { "type": "usp", "settings": { "icon": "quality", "title": "Premium Quality" } },
+        { "type": "usp", "settings": { "icon": "delivery", "title": "White-Glove Delivery" } },
+        { "type": "usp", "settings": { "icon": "warranty", "title": "10-Year Warranty" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

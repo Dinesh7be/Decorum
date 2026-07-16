@@ -1,0 +1,58 @@
+/*
+  assets/section-accordion.css
+  Static styles for sections/accordion.liquid. Settings-driven colors are
+  applied via the scoped inline <style> block rendered by the section.
+*/
+
+.accordion__container {
+  width: 100%;
+}
+
+.accordion-row {
+  border-bottom: 1px solid var(--border-color);
+  padding: 1.5rem 1rem;
+  margin: 0;
+  transition: background-color var(--transition-fast), padding var(--transition-fast);
+}
+
+.accordion-row:first-of-type {
+  border-top: 1px solid var(--border-color);
+}
+
+.accordion-row:hover {
+  background-color: var(--background-darken);
+}
+
+.accordion-row__summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  list-style: none;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  user-select: none;
+}
+
+.accordion-row__summary::-webkit-details-marker {
+  display: none;
+}
+
+.accordion-row__icon {
+  transition: transform var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.accordion-row[open] .accordion-row__icon {
+  transform: rotate(180deg);
+}
+
+.accordion-row__content {
+  padding: 1.5rem 0 0.5rem 0;
+  line-height: 1.6;
+}

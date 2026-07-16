@@ -1,0 +1,156 @@
+{{ 'section-trade-program-signup.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/trade-program-signup.liquid
+
+B2B application form for interior designers/trade professionals. Uses
+Shopify's native `contact` form (real, working, no third-party backend) —
+submissions are tagged "trade-application" and land in the store's contact
+notification inbox like any other contact form.
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="trade-program-signup"
+>
+  <div class="grid__wrapper">
+    <div class="span-12">
+      <div class="trade-signup__layout">
+        <div class="trade-signup__intro">
+          {%- if section.settings.title != blank -%}
+            <h2 class="section__title">{{ section.settings.title | escape }}</h2>
+          {%- endif -%}
+          {%- if section.settings.subheading != blank -%}
+            <p style="color: var(--text-color-light);">{{ section.settings.subheading | escape }}</p>
+          {%- endif -%}
+          {%- if section.blocks.size > 0 -%}
+            <ul class="trade-signup__benefits">
+              {%- for block in section.blocks -%}
+                <li {{ block.shopify_attributes }}>{{ block.settings.benefit | escape }}</li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+
+        <div class="trade-signup__form-wrap">
+          {%- form 'contact', id: 'trade-signup-form' -%}
+            {%- if form.posted_successfully? -%}
+              <div class="trade-signup__success">
+                <p>{{ 'sections.trade_program.success' | t }}</p>
+              </div>
+            {%- else -%}
+              <div class="trade-signup__form">
+                <input type="hidden" name="contact[tags]" value="trade-application">
+                <div class="trade-signup__field">
+                  <label for="TradeCompany-{{ section.id }}">{{ 'sections.trade_program.company_name' | t }}</label>
+                  <input type="text" id="TradeCompany-{{ section.id }}" name="contact[Company name]" required>
+                </div>
+                <div class="trade-signup__field">
+                  <label for="TradeContactName-{{ section.id }}">{{ 'customer.contact.name' | t }}</label>
+                  <input type="text" id="TradeContactName-{{ section.id }}" name="contact[name]" required>
+                </div>
+                <div class="trade-signup__field">
+                  <label for="TradeEmail-{{ section.id }}">{{ 'customer.contact.email' | t }}</label>
+                  <input type="email" id="TradeEmail-{{ section.id }}" name="contact[email]" required>
+                </div>
+                <div class="trade-signup__field">
+                  <label for="TradeBusinessType-{{ section.id }}">{{ 'sections.trade_program.business_type' | t }}</label>
+                  <select id="TradeBusinessType-{{ section.id }}" name="contact[Business type]">
+                    <option value="Interior Designer">{{ 'sections.trade_program.type_designer' | t }}</option>
+                    <option value="Architect">{{ 'sections.trade_program.type_architect' | t }}</option>
+                    <option value="Retailer">{{ 'sections.trade_program.type_retailer' | t }}</option>
+                    <option value="Hospitality / Contract">{{ 'sections.trade_program.type_hospitality' | t }}</option>
+                    <option value="Other">{{ 'sections.trade_program.type_other' | t }}</option>
+                  </select>
+                </div>
+                <div class="trade-signup__field">
+                  <label for="TradeResale-{{ section.id }}">{{ 'sections.trade_program.resale_certificate' | t }}</label>
+                  <input type="text" id="TradeResale-{{ section.id }}" name="contact[Resale certificate / Tax ID]">
+                </div>
+                <div class="trade-signup__field">
+                  <label for="TradeMessage-{{ section.id }}">{{ 'customer.contact.message' | t }}</label>
+                  <textarea id="TradeMessage-{{ section.id }}" name="contact[body]" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn btn--full">
+                  {{ 'sections.trade_program.submit' | t }}
+                </button>
+              </div>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trade program signup",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Decorum Trade Program"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Exclusive pricing, dedicated support, and early access for interior designers and trade professionals."
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "text",
+          "id": "benefit",
+          "label": "Benefit",
+          "default": "Trade pricing on the full catalog"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trade program signup",
+      "blocks": [
+        { "type": "benefit", "settings": { "benefit": "Trade pricing on the full catalog" } },
+        { "type": "benefit", "settings": { "benefit": "Dedicated account manager" } },
+        { "type": "benefit", "settings": { "benefit": "Extended sample & swatch access" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

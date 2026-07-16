@@ -1,0 +1,72 @@
+/*
+ * theme/assets/section-faq.css
+ * Styling for the FAQ / Accordion Section
+ */
+
+.faq-section {
+  padding: 6rem 0;
+}
+
+.faq__container {
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.faq__header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.faq__title {
+  font-family: var(--heading-family);
+  font-size: var(--font-size-xl);
+}
+
+.faq__accordion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.faq__accordion-item {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.5rem;
+}
+
+.faq__accordion-details {
+  cursor: pointer;
+}
+
+.faq__accordion-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  font-weight: 600;
+  font-size: var(--font-size);
+  font-family: var(--heading-family);
+  padding: 1rem 0;
+  outline: none;
+}
+
+.faq__accordion-summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq__accordion-icon {
+  transition: transform var(--transition-fast);
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+.faq__accordion-content {
+  padding: 1.5rem 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-color-light);
+  line-height: 1.7;
+}
+
+/* Rotation effect on icon */
+.faq__accordion-details[open] .faq__accordion-icon {
+  transform: rotate(45deg);
+}

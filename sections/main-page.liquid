@@ -1,0 +1,23 @@
+{% comment %}
+sections/main-page.liquid
+{% endcomment %}
+
+<section 
+  class="global__section" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="main-page"
+>
+  <div class="grid__wrapper narrow main-page__container" style="margin-top: -2rem;">
+    <div class="span-12">
+      <div class="page-content rte main-page__content">
+        {{ page.content }}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page content"
+}
+{% endschema %}

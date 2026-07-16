@@ -1,0 +1,419 @@
+{
+  "accessibility": {
+    "account": "Kundenkontodetails anzeigen",
+    "close_drawer": "Fenster schließen",
+    "close_modal": "Dialog schließen",
+    "decrease_quantity": "Menge verringern",
+    "image_comparison_slider": "Bildvergleichs-Schieberegler",
+    "increase_quantity": "Menge erhöhen",
+    "next_slide": "Nächste Folie",
+    "open_cart": "Warenkorb öffnen",
+    "open_menu": "Menü öffnen",
+    "open_search": "Suche öffnen",
+    "previous_slide": "Vorherige Folie",
+    "skip_to_text": "Zum Inhalt springen"
+  },
+  "cart": {
+    "checkout": "Kasse",
+    "continue_shopping": "Weiter einkaufen",
+    "empty": "Ihr Warenkorb ist leer",
+    "general": {
+      "checkout": "Zur Kasse gehen",
+      "continue_shopping": "Weiter einkaufen",
+      "empty": "Ihr Warenkorb ist leer",
+      "explore_best_sellers": "Entdecken Sie unsere Bestseller unten, um Artikel in Ihren Warenkorb zu legen.",
+      "loading": "Warenkorb wird aktualisiert...",
+      "order_special_instructions": "Besondere Anweisungen zur Bestellung",
+      "remove": "Artikel entfernen",
+      "subtotal": "Zwischensumme",
+      "taxes_and_shipping_policy": "Steuern und Versand werden an der Kasse berechnet.",
+      "taxes_and_shipping_policy_html": "Steuern und <a href=\"{{ link }}\">Versand</a> werden an der Kasse berechnet.",
+      "taxes_included_and_shipping_policy_html": "Inklusive Steuern. <a href=\"{{ link }}\">Versand</a> wird an der Kasse berechnet.",
+      "taxes_included_but_shipping_at_checkout": "Inklusive Steuern. Versand wird an der Kasse berechnet.",
+      "title": "Ihr Warenkorb",
+      "update": "Warenkorb aktualisieren",
+      "view_cart": "Warenkorb ansehen"
+    },
+    "label": {
+      "product": "Produkt",
+      "quantity": "Menge",
+      "total": "Gesamt"
+    },
+    "title": "Warenkorb"
+  },
+  "collections": {
+    "general": {
+      "all_collections": "Alle Kollektionen",
+      "no_products": "Keine Produkte gefunden",
+      "no_products_subtext": "Entfernen Sie aktive Filter, um verfügbare Artikel zu sehen."
+    },
+    "sorting": {
+      "sort_by": "Sortieren nach"
+    }
+  },
+  "customer": {
+    "account": {
+      "date": "Datum",
+      "details": "Kontodetails",
+      "fulfillment_status": "Abwicklung",
+      "logout": "Abmelden",
+      "no_orders": "Sie haben noch keine Bestellungen aufgegeben.",
+      "order_number": "Bestellung",
+      "orders": "Bestellverlauf",
+      "payment_status": "Zahlung",
+      "title": "Mein Konto",
+      "total": "Gesamt",
+      "view_addresses": "Adressen ansehen ({{ count }})"
+    },
+    "activate_account": {
+      "decline": "Einladung ablehnen",
+      "password": "Passwort",
+      "password_confirm": "Passwort bestätigen",
+      "submit": "Konto aktivieren",
+      "subtext": "Erstellen Sie Ihr Passwort, um Ihr Konto zu aktivieren.",
+      "title": "Konto aktivieren"
+    },
+    "addresses": {
+      "add_new": "Neue Adresse hinzufügen",
+      "address1": "Adresse 1",
+      "address2": "Adresse 2",
+      "back_to_account": "Zurück zum Konto",
+      "cancel": "Abbrechen",
+      "city": "Stadt",
+      "company": "Firma",
+      "default": "Standard",
+      "first_name": "Vorname",
+      "last_name": "Nachname",
+      "phone": "Telefonnummer",
+      "save": "Adresse speichern",
+      "title": "Adressen",
+      "zip": "Postleitzahl"
+    },
+    "contact": {
+      "email": "E-Mail-Adresse",
+      "message": "Nachricht",
+      "name": "Name",
+      "phone": "Telefonnummer",
+      "send": "Nachricht senden",
+      "success": "Vielen Dank für Ihre Nachricht! Wir melden uns in Kürze bei Ihnen."
+    },
+    "login": {
+      "create_account": "Jetzt erstellen",
+      "email": "E-Mail-Adresse",
+      "forgot_password": "Passwort vergessen?",
+      "new_customer": "Noch kein Konto?",
+      "password": "Passwort",
+      "sign_in": "Anmelden",
+      "title": "Anmelden"
+    },
+    "order": {
+      "back_to_account": "Zurück zum Konto",
+      "date": "Aufgegeben am {{ date }}",
+      "product": "Produkt",
+      "quantity": "Menge",
+      "sku": "Artikelnummer",
+      "title": "Bestellung {{ name }}",
+      "total": "Gesamt"
+    },
+    "register": {
+      "already_have_account": "Sie haben bereits ein Konto?",
+      "email": "E-Mail-Adresse",
+      "first_name": "Vorname",
+      "last_name": "Nachname",
+      "password": "Passwort",
+      "sign_in": "Anmelden",
+      "submit": "Konto erstellen",
+      "title": "Konto erstellen"
+    },
+    "reset_password": {
+      "password": "Neues Passwort",
+      "password_confirm": "Passwort bestätigen",
+      "submit": "Passwort zurücksetzen",
+      "subtext": "Geben Sie ein neues Passwort für Ihr Konto ein.",
+      "title": "Passwort zurücksetzen"
+    }
+  },
+  "general": {
+    "404": {
+      "button": "Zurück zum Katalog",
+      "subtext": "Die gesuchte Seite existiert nicht, wurde verschoben oder ist vorübergehend nicht verfügbar.",
+      "title": "Seite nicht gefunden"
+    },
+    "accessibility": {
+      "primary_navigation": "Primäre Navigation"
+    },
+    "breadcrumbs": {
+      "home": "Startseite",
+      "label": "Breadcrumbs"
+    },
+    "menu": {
+      "title": "Menü"
+    },
+    "meta": {
+      "page": "Seite {{ page }}",
+      "tags": "Getaggt mit „{{ tags }}“"
+    },
+    "newsletter": {
+      "label": "E-Mail-Adresse",
+      "placeholder": "Geben Sie Ihre E-Mail-Adresse ein",
+      "submit": "Abonnieren",
+      "success": "Vielen Dank für Ihre Anmeldung!"
+    },
+    "pagination": {
+      "label": "Seitennummerierung",
+      "next": "Nächste Seite",
+      "page": "Seite {{ number }}",
+      "previous": "Vorherige Seite"
+    },
+    "password": {
+      "label": "Shop-Passwort",
+      "placeholder": "Passwort eingeben",
+      "submit": "Shop betreten",
+      "subtext": "Unsere neue Kollektion erscheint bald. Geben Sie das Shop-Passwort ein, um Zugang zu erhalten."
+    },
+    "search": {
+      "collections": "Kollektionen",
+      "no_results": "Keine Ergebnisse für „{{ terms }}“. Versuchen Sie einen anderen Suchbegriff.",
+      "no_results_suggest": "Keine Ergebnisse für Ihre Suche gefunden.",
+      "pages": "Seiten",
+      "placeholder": "Unsere Kollektionen durchsuchen...",
+      "products": "Produkte",
+      "read_more": "Weiterlesen",
+      "results_count": "{{ count }} Ergebnisse für „{{ terms }}“",
+      "search": "Suchen",
+      "submit": "Suche starten",
+      "view_all": "Alle Suchergebnisse anzeigen"
+    },
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "pinterest": "Pinterest"
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "apple_wallet": "Zu Apple Wallet hinzufügen",
+      "initial_value": "Ursprünglicher Wert: {{ value }}",
+      "qr_image_alt": "QR-Code zum Einlösen dieser Geschenkkarte",
+      "shop_link": "Jetzt einkaufen",
+      "subtext": "Hier sind die Details zu Ihrem Geschenkkarten-Guthaben",
+      "title": "Ihre {{ value }}-Geschenkkarte für {{ shop }}"
+    }
+  },
+  "localization": {
+    "country_label": "Land/Region",
+    "language_label": "Sprache"
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "In den Warenkorb",
+      "add_to_cart_error": "Artikel konnte nicht zum Warenkorb hinzugefügt werden. Bitte versuchen Sie es erneut.",
+      "check_availability": "Verfügbarkeit in anderen Filialen prüfen",
+      "choose_options": "Optionen wählen",
+      "delivery_frequency": "Lieferhäufigkeit",
+      "depth": "Tiefe",
+      "dimensions_heading": "Spezifikationen & Abmessungen",
+      "error_loading_quickview": "Fehler beim Laden der Schnellansicht. Bitte versuchen Sie es erneut.",
+      "example_product": "Beispielprodukt",
+      "height": "Höhe",
+      "increments_of": "Abgabe in Mengen von [count]",
+      "loading_quickview": "Produktoptionen werden geladen...",
+      "maximum_of": "Maximal [count]",
+      "minimum_of": "Mindestens [count]",
+      "on_sale": "Sale",
+      "one_time_purchase": "Einmaliger Kauf",
+      "out_of_stock": "Nicht vorrätig",
+      "pickup_available_at": "Abholung verfügbar bei {{ location_name }}",
+      "pickup_unavailable_at": "Abholung derzeit nicht verfügbar bei {{ location_name }}",
+      "quantity": "Menge",
+      "ready_for_pickup": "Abholbereit ({{ pickup_time }})",
+      "seat_height": "Sitzhöhe",
+      "share": "Teilen:",
+      "size_guide": "Größentabelle",
+      "sold_out": "Ausverkauft",
+      "subscription_options": "Abonnement-Optionen",
+      "view_full_details": "Alle Details ansehen",
+      "volume_pricing": "Mengenrabatt",
+      "width": "Breite"
+    }
+  },
+  "recipient": {
+    "form": {
+      "checkbox": "Ich möchte dies als Geschenk versenden",
+      "email": "E-Mail des Empfängers",
+      "email_placeholder": "E-Mail-Adresse",
+      "message": "Geschenknachricht (optional)",
+      "message_placeholder": "Schreiben Sie eine Nachricht...",
+      "name": "Name des Empfängers (optional)",
+      "name_placeholder": "Name",
+      "send_on": "Versanddatum (optional)"
+    }
+  },
+  "sections": {
+    "ask_expert": {
+      "embed_title": "Design-Beratung buchen",
+      "preferred_date": "Bevorzugtes Datum",
+      "project_details": "Erzählen Sie uns von Ihrem Projekt",
+      "submit": "Beratung anfragen",
+      "success": "Vielen Dank! Wir senden Ihnen in Kürze eine E-Mail zur Bestätigung Ihrer Beratung."
+    },
+    "before_after": {
+      "after": "Nachher",
+      "before": "Vorher"
+    },
+    "bundle_builder": {
+      "add_bundle": "Paket in den Warenkorb",
+      "onboarding_notice": "Fügen Sie im Sektionseditor Produkte hinzu, um ein Paket zu erstellen.",
+      "total_label": "Paketsumme:",
+      "you_save": "Sie sparen {{ amount }}"
+    },
+    "care_timeline": {
+      "product_specific_heading": "Pflege für Ihr {{ title }}"
+    },
+    "collection": {
+      "max": "Max",
+      "min": "Min",
+      "to": "bis"
+    },
+    "comparison": {
+      "clear": "Zurücksetzen",
+      "col_image": "Bild",
+      "col_material": "Material",
+      "col_price": "Preis",
+      "col_product": "Produkt",
+      "compare_label": "Vergleichen",
+      "compare_now": "Jetzt vergleichen",
+      "modal_title": "Produkte vergleichen",
+      "onboarding_notice": "Wählen Sie im Sektionseditor eine Kollektion aus, um Vergleiche zu aktivieren.",
+      "selected_count": "{{ count }} von {{ max }} ausgewählt",
+      "view_product": "Produkt ansehen"
+    },
+    "countdown": {
+      "days": "Tage",
+      "expired": "Angebot ist abgelaufen",
+      "hours": "Stunden",
+      "minutes": "Minuten",
+      "seconds": "Sekunden"
+    },
+    "craftsmanship_story": {
+      "step_number": "Schritt {{ number }}"
+    },
+    "delivery_tiers": {
+      "choose_tier": "Wählen Sie eine Lieferstufe",
+      "onboarding_notice": "Fügen Sie im Sektionseditor Service-Stufen hinzu, um diesen Vergleich zu füllen."
+    },
+    "faq": {
+      "a1": "<p>Unsere Rahmen werden aus hochwertigem FSC-zertifiziertem Massiveiche und Nussbaum gefertigt. Alle Polster bestehen aus hochelastischem Schaumstoff, bezogen mit natürlichem Leinen oder strukturiertem Bouclé.</p>",
+      "a2": "<p>Der Standardversand dauert 5–10 Werktage. Für größere Möbelstücke bieten wir eine kostenlose White-Glove-Lieferung mit Platzierung im Raum, Montage und Entsorgung der Verpackung.</p>",
+      "a3": "<p>Ja, wir gewähren 10 Jahre Garantie auf die Rahmenstruktur aller Möbel und 2 Jahre Garantie auf Textilbezüge und mechanische Teile.</p>",
+      "q1": "Welche Materialien verwenden Sie für Ihre Möbel?",
+      "q2": "Wie lange dauern Versand und Lieferung?",
+      "q3": "Bieten Sie eine strukturelle Garantie an?"
+    },
+    "featured_collection": {
+      "example_product_title": "Beispiel-Möbelstück",
+      "vendor": "Decorum Design",
+      "view_all": "Gesamte Kollektion ansehen"
+    },
+    "list_collections": {
+      "title": "Alle Kollektionen"
+    },
+    "lookbook": {
+      "view_product": "Produkt ansehen"
+    },
+    "material_explorer": {
+      "all_materials": "Alle",
+      "filter_group_label": "Nach Materialtyp filtern",
+      "no_matches": "Keine Materialien entsprechen diesem Filter.",
+      "onboarding_notice": "Fügen Sie im Sektionseditor Materialmuster hinzu, um dieses Raster zu füllen."
+    },
+    "onboarding": {
+      "blog_text_1": "Entdecken Sie die Prinzipien von klarem Wohnen, rohen Texturen und natürlichem Licht. So wählen Sie Möbelstücke, die Ihrem Wohnzimmer Leben einhauchen.",
+      "blog_text_2": "Warum Rahmen aus ofengetrocknetem Massiveichenholz jahrzehntelang halten. Einblicke in unsere Handwerkskunst, Verbindungsdetails und organische Veredelungsstandards.",
+      "blog_text_3": "Von architektonischen Plissee-Stehlampen bis zu modernen Pendelleuchten. Lernen Sie, Akzentlichter so zu platzieren, dass warme, gemütliche Schatten in den Ecken entstehen.",
+      "blog_title_1": "Einen ruhigen Wohnraum gestalten",
+      "blog_title_2": "Die Kunst der langsam gefertigten Möbel",
+      "blog_title_3": "Stilvoll einrichten mit Ambient-Beleuchtung",
+      "linen_lounge_chair": "Leinen-Loungesessel"
+    },
+    "room_collections": {
+      "explore": "Raum entdecken"
+    },
+    "room_configurator": {
+      "badge": "Demnächst verfügbar",
+      "join_waitlist": "Warteliste beitreten",
+      "success": "Sie stehen auf der Liste! Wir senden Ihnen eine E-Mail, sobald es verfügbar ist."
+    },
+    "room_fit": {
+      "depth_label": "Raumtiefe (cm)",
+      "match_count": "{{ count }} Stücke passen in Ihren Raum",
+      "no_matches": "Nichts in dieser Kollektion passt bisher zu diesen Maßen — versuchen Sie eine größere Raumgröße.",
+      "onboarding_notice": "Wählen Sie im Sektionseditor eine Kollektion aus, um den Rechner zu aktivieren.",
+      "submit": "Möbel finden",
+      "unit_cm": "Zentimeter",
+      "unit_in": "Zoll",
+      "unit_label": "Einheit",
+      "width_label": "Raumbreite (cm)"
+    },
+    "room_gallery": {
+      "onboarding_notice": "Fügen Sie im Sektionseditor Kundenfotos hinzu, um diese Galerie zu füllen."
+    },
+    "room_hotspots": {
+      "view_item": "{{ title }} ansehen",
+      "view_product": "Produkt ansehen"
+    },
+    "seasonal_lookbook": {
+      "next": "Nächste Folie",
+      "onboarding_notice": "Fügen Sie im Sektionseditor Story-Folien hinzu, um dieses Karussell zu füllen.",
+      "previous": "Vorherige Folie"
+    },
+    "shop_by_category": {
+      "example_category_title": "Beispielkategorie"
+    },
+    "style_quiz": {
+      "back": "Zurück",
+      "onboarding_notice": "Fügen Sie im Sektionseditor mindestens eine Frage und ein Ergebnis hinzu, um das Quiz zu aktivieren.",
+      "question_progress": "Frage {{ current }} von {{ total }}",
+      "restart": "Quiz wiederholen",
+      "shop_style": "{{ style }}-Stil entdecken"
+    },
+    "sustainability": {
+      "learn_more": "Mehr erfahren",
+      "onboarding_notice": "Fügen Sie im Sektionseditor Zertifizierungs-Badges hinzu. Nehmen Sie nur Aussagen auf, die Ihr Team belegen kann."
+    },
+    "testimonials": {
+      "author_1": "Sarah K.",
+      "author_2": "David M.",
+      "author_3": "Elena R.",
+      "meta_1": "Verifizierter Kauf &mdash; Austin",
+      "meta_2": "Verifizierter Kauf &mdash; Seattle",
+      "meta_3": "Verifizierter Kauf &mdash; Chicago",
+      "text_1": "Das Bouclé-Sofa ist das perfekte Herzstück meines Wohnzimmers. Hohe Qualität, extrem bequem, und das Lieferteam war großartig.",
+      "text_2": "Atemberaubendes minimalistisches Design. Der Esstisch aus Massiveiche wirkt äußerst hochwertig und stabil. Jeden Cent wert.",
+      "text_3": "Wunderschöne architektonische Schreibtischlampe. Der warme Lichtton schafft eine so gemütliche Atmosphäre. Ich kaufe hier definitiv wieder ein."
+    },
+    "trade_program": {
+      "business_type": "Geschäftsart",
+      "company_name": "Firmenname",
+      "resale_certificate": "Wiederverkaufsbescheinigung / Steuernummer",
+      "submit": "Bewerbung absenden",
+      "success": "Vielen Dank für Ihre Bewerbung! Unser Fachhandelsteam meldet sich innerhalb von 2 Werktagen bei Ihnen.",
+      "type_architect": "Architekt/in",
+      "type_designer": "Innenarchitekt/in",
+      "type_hospitality": "Gastgewerbe / Vertragskunde",
+      "type_other": "Sonstiges",
+      "type_retailer": "Einzelhändler"
+    },
+    "video": {
+      "video_player": "Videoplayer"
+    },
+    "why_choose_us": {
+      "text_1": "Gefertigt aus nachhaltigem Massivholz und schweren Leinentextilien, die Generationen überdauern.",
+      "text_2": "Kostenlose Lieferung, Platzierung im Innenraum, Montage und Entsorgung der Verpackung bei allen größeren Bestellungen.",
+      "text_3": "Wir stehen voll und ganz hinter unseren Produkten. Jedes Stück ist ein volles Jahrzehnt strukturell abgesichert.",
+      "title_1": "Erstklassige Qualität",
+      "title_2": "White-Glove-Lieferung",
+      "title_3": "10 Jahre Garantie"
+    }
+  }
+}

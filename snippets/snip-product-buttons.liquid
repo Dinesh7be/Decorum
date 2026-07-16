@@ -1,0 +1,129 @@
+{% comment %}
+snippets/snip-product-buttons.liquid
+
+Renders quantity selector, buy buttons, and dynamic checkout buttons.
+
+Accepts:
+- product:        {Object} Shopify Product object (required)
+- section_id:     {String} Section ID for selector targeting (required)
+
+Usage:
+{% render 'snip-product-buttons', product: product, section_id: section.id %}
+{% endcomment %}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign available = variant.available
+  assign qty_rule = variant.quantity_rule
+-%}
+
+<div class="product-form__buttons-container">
+  
+  <!-- Quantity Selector (B2B aware) -->
+  <div class="product-form__qty">
+    <label for="Quantity-{{ section_id }}">
+      {{ 'products.product.quantity' | t }}
+    </label>
+    <div class="qty-selector__wrapper">
+      <button 
+        type="button" 
+        class="qty-btn qty-btn--minus"
+        onclick="this.nextElementSibling.stepDown(); this.nextElementSibling.dispatchEvent(new Event('change', { bubbles: true }));"
+        aria-label="{{ 'accessibility.decrease_quantity' | t }}"
+      >
+        &minus;
+      </button>
+      <input 
+        type="number" 
+        id="Quantity-{{ section_id }}" 
+        name="quantity" 
+        value="{{ qty_rule.min | default: 1 }}" 
+        min="{{ qty_rule.min | default: 1 }}" 
+        step="{{ qty_rule.increment | default: 1 }}"
+        {% if qty_rule.max != blank %}max="{{ qty_rule.max }}"{% endif %}
+        class="qty-selector__input js-qty-input-{{ section_id }}"
+      >
+      <button 
+        type="button" 
+        class="qty-btn qty-btn--plus"
+        onclick="this.previousElementSibling.stepUp(); this.previousElementSibling.dispatchEvent(new Event('change', { bubbles: true }));"
+        aria-label="{{ 'accessibility.increase_quantity' | t }}"
+      >
+        &plus;
+      </button>
+    </div>
+  </div>
+
+  <!-- B2B Quantity Rules Info Block -->
+  <div 
+    class="product-form__quantity-rules js-quantity-rules-container-{{ section_id }}"
+    data-min-text="{{ 'products.product.minimum_of' | t: count: '[count]' }}"
+    data-max-text="{{ 'products.product.maximum_of' | t: count: '[count]' }}"
+    data-increment-text="{{ 'products.product.increments_of' | t: count: '[count]' }}"
+  >
+    {%- if qty_rule.min > 1 -%}
+      <div class="quantity-rule-item">{{ 'products.product.minimum_of' | t: count: qty_rule.min }}</div>
+    {%- endif -%}
+    {%- if qty_rule.max != blank -%}
+      <div class="quantity-rule-item">{{ 'products.product.maximum_of' | t: count: qty_rule.max }}</div>
+    {%- endif -%}
+    {%- if qty_rule.increment > 1 -%}
+      <div class="quantity-rule-item">{{ 'products.product.increments_of' | t: count: qty_rule.increment }}</div>
+    {%- endif -%}
+  </div>
+
+  <!-- B2B Volume Pricing Table -->
+  <div class="product-form__volume-pricing js-volume-pricing-container-{{ section_id }}" style="{% unless variant.quantity_price_breaks.size > 0 %}display: none;{% endunless %}">
+    <p class="volume-pricing__title">
+      {{ 'products.product.volume_pricing' | t }}
+    </p>
+    <ul class="volume-pricing__list js-volume-pricing-list">
+      {%- for price_break in variant.quantity_price_breaks -%}
+        <li>
+          <span>{{ price_break.minimum_quantity }}+</span>
+          <span>{{ price_break.price | money }}</span>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+
+  <!-- Gift Card Recipient Form (B5) -->
+  {%- if product.gift_card? -%}
+    {%- render 'snip-gift-card-recipient', product: product, section_id: section_id -%}
+  {%- endif -%}
+
+  <!-- Primary Cart CTA Button -->
+  <button 
+    type="submit" 
+    name="add" 
+    class="btn btn--full product-form__add-button js-buy-button-{{ section_id }}"
+    {% unless available %}disabled="disabled"{% endunless %}
+    data-add-text="{{ 'products.product.add_to_cart' | t }}"
+    data-sold-out-text="{{ 'products.product.sold_out' | t }}"
+    aria-label="{{ 'products.product.add_to_cart' | t }}"
+  >
+    <span>
+      {%- if available -%}
+        {{ 'products.product.add_to_cart' | t }}
+      {%- else -%}
+        {{ 'products.product.sold_out' | t }}
+      {%- endif -%}
+    </span>
+  </button>
+
+  <!-- Dynamic Checkout Button (Apple Pay, Google Pay, etc.) -->
+  {%- if section.settings.show_dynamic_checkout -%}
+    <div class="product-form__dynamic-checkout">
+      {{ form | payment_button }}
+    </div>
+  {%- endif -%}
+</div>
+
+<style>
+  /* Hide spinner buttons on input number */
+  .qty-selector__wrapper input[type=number]::-webkit-inner-spin-button, 
+  .qty-selector__wrapper input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+  }
+</style>

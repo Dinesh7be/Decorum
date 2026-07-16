@@ -1,0 +1,103 @@
+/*
+ * theme/assets/component-inner-page-banner.css
+ * Styling for the global inner page banner.
+ */
+
+.inner-page-banner {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5rem;
+}
+
+.inner-page-banner--no-image {
+  background: linear-gradient(135deg, #2b2927 0%, #151413 100%);
+}
+
+.inner-page-banner__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.inner-banner-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.inner-page-banner__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 2;
+}
+
+.inner-page-banner__container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+}
+
+.inner-page-banner__content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.inner-page-banner__title {
+  font-family: var(--heading-family);
+  font-size: calc(var(--font-size) * 2.2);
+  font-weight: 500;
+  color: #FFFFFF;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Breadcrumbs customization inside the banner */
+.inner-page-banner__breadcrumbs .breadcrumbs {
+  padding: 0 0 1rem 0 !important;
+}
+
+.inner-page-banner__breadcrumbs .breadcrumbs ol {
+  justify-content: center;
+}
+
+.inner-page-banner__breadcrumbs .breadcrumbs a,
+.inner-page-banner__breadcrumbs .breadcrumbs li,
+.inner-page-banner__breadcrumbs .breadcrumbs span {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-size: calc(var(--font-size-xs) - 1px) !important;
+}
+
+.inner-page-banner__breadcrumbs .breadcrumbs a:hover {
+  color: #FFFFFF !important;
+  text-decoration: underline;
+}
+
+.inner-page-banner__breadcrumbs .breadcrumbs li:not(:last-child):after {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+@media (max-width: 740px) {
+  .inner-page-banner {
+    height: 180px;
+    margin-bottom: 3.5rem;
+  }
+  
+  .inner-page-banner__title {
+    font-size: calc(var(--font-size) * 1.6);
+  }
+}

@@ -1,0 +1,141 @@
+{{ 'section-before-after.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/before-after.liquid
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section 
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="before-after"
+>
+  <div class="grid__wrapper">
+    <div class="span-10 push-1 sm-span-12">
+      {%- if section.settings.title != blank -%}
+        <h2 class="section__title" style="text-align: center; margin-bottom: 3rem;">
+          {{ section.settings.title | escape }}
+        </h2>
+      {%- endif -%}
+
+      <decor-before-after class="before-after__wrapper">
+        <div class="before-after__container">
+          
+          <!-- Before Image -->
+          <div class="before-after__image before-after__image--before">
+            {%- if section.settings.before_image != blank -%}
+              {%- render 'basic-responsive-image', image: section.settings.before_image, sizes: '(min-width: 740px) 80vw, 100vw', classes: 'before-after__img' -%}
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg before-after__img' }}
+            {%- endif -%}
+            <span class="before-after__label before-after__label--before">{{ 'sections.before_after.before' | t }}</span>
+          </div>
+          
+          <!-- After Image -->
+          <div class="before-after__image before-after__image--after">
+            {%- if section.settings.after_image != blank -%}
+              {%- render 'basic-responsive-image', image: section.settings.after_image, sizes: '(min-width: 740px) 80vw, 100vw', classes: 'before-after__img' -%}
+            {%- else -%}
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg before-after__img' }}
+            {%- endif -%}
+            <span class="before-after__label before-after__label--after">{{ 'sections.before_after.after' | t }}</span>
+          </div>
+
+          <!-- Slider Range Input -->
+          <input 
+            type="range" 
+            min="0" 
+            max="100" 
+            value="50" 
+            class="before-after__slider js-before-after-slider" 
+            aria-label="{{ 'accessibility.image_comparison_slider' | t }}"
+          >
+          
+          <!-- Custom Visual Slider Bar/Handle -->
+          <div class="before-after__slider-bar js-slider-bar">
+            <div class="before-after__slider-handle">
+              <span class="before-after__slider-handle-arrow">&harr;</span>
+            </div>
+          </div>
+
+        </div>
+      </decor-before-after>
+    </div>
+  </div>
+</section>
+
+<script>
+  if (!customElements.get('decor-before-after')) {
+    customElements.define('decor-before-after', class extends HTMLElement {
+      connectedCallback() {
+        const slider = this.querySelector('.js-before-after-slider');
+        const afterImg = this.querySelector('.before-after__image--after');
+        const sliderBar = this.querySelector('.js-slider-bar');
+        if (!slider || !afterImg || !sliderBar) return;
+        
+        const updateClip = () => {
+          const val = slider.value;
+          afterImg.style.clipPath = `inset(0 0 0 ${val}%)`;
+          sliderBar.style.left = `${val}%`;
+        };
+        
+        slider.addEventListener('input', updateClip);
+        slider.addEventListener('change', updateClip);
+      }
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Before / After Slider",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Visual Transformation"
+    },
+    {
+      "type": "image_picker",
+      "id": "before_image",
+      "label": "Before Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "after_image",
+      "label": "After Image"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Before / after slider"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,148 @@
+{{ 'section-text-with-icons.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/text-with-icons.liquid
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+
+  # Calculate width classes based on block size
+  assign col_width = 'span-4'
+  if section.blocks.size == 2
+    assign col_width = 'span-6'
+  elsif section.blocks.size == 4
+    assign col_width = 'span-3'
+  endif
+-%}
+
+<section 
+  class="global__section{{ space_class }} trust-row-section"
+  data-section-id="{{ section.id }}"
+  data-section-type="text-with-icons"
+  style="background-color: {{ section.settings.bg_color | default: 'var(--background-darken)' }};"
+>
+  <div class="grid__wrapper trust-row__grid">
+    {%- for block in section.blocks -%}
+      <div class="{{ col_width }} sm-span-12 trust-row__item" {{ block.shopify_attributes }}>
+        
+        <!-- Icon -->
+        <div class="trust-row__icon-container">
+          {%- if block.settings.image != blank -%}
+            <div class="trust-row__icon-img-wrapper" style="--icon-size: {{ section.settings.icon_size }}px;">
+              {%- render 'basic-responsive-image', image: block.settings.image, sizes: '100px' -%}
+            </div>
+          {%- elsif block.settings.icon != 'none' -%}
+            {%- render 'snip-icons', icon: block.settings.icon, size: '32px' -%}
+          {%- endif -%}
+        </div>
+
+        <!-- Content -->
+        <div class="trust-row__content">
+          {%- if block.settings.title != blank -%}
+            <h3 class="trust-row__title">
+              {{ block.settings.title | escape }}
+            </h3>
+          {%- endif -%}
+          {%- if block.settings.text != blank -%}
+            <p class="trust-row__text">
+              {{ block.settings.text | escape }}
+            </p>
+          {%- endif -%}
+        </div>
+
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Text with icons",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "icon_size",
+      "label": "Icon size (px or style)",
+      "default": "28px"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Trust item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom Icon Image"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Or Select Icon",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "star", "label": "Star" },
+            { "value": "warranty", "label": "Warranty / Badge" },
+            { "value": "ruler", "label": "Ruler" },
+            { "value": "chevron-right", "label": "Chevron" }
+          ],
+          "default": "warranty"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>On all orders above $150</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text with icons",
+      "blocks": [
+        { "type": "item", "settings": { "title": "Free Delivery", "icon": "star", "text": "<p>Complimentary shipping on all orders.</p>" } },
+        { "type": "item", "settings": { "title": "10-Year Warranty", "icon": "warranty", "text": "<p>FSC-certified oak structural frame.</p>" } },
+        { "type": "item", "settings": { "title": "Easy Returns", "icon": "star", "text": "<p>30-day trial and return policy.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

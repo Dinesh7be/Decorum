@@ -1,0 +1,72 @@
+/*
+ * theme/assets/section-ask-an-expert-booking.css
+ * Virtual design consultation booking — embed iframe or native form fallback.
+ */
+
+.expert-booking__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: flex-start;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.expert-booking__layout--no-image {
+  grid-template-columns: 1fr;
+  max-width: 600px;
+}
+
+.expert-booking__embed {
+  border: 1px solid var(--border-color);
+  border-radius: var(--button-border-radius);
+  overflow: hidden;
+  min-height: 600px;
+}
+
+.expert-booking__embed iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  border: none;
+  display: block;
+}
+
+.expert-booking__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.expert-booking__field label {
+  display: block;
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-color-light);
+  margin-bottom: 0.5rem;
+}
+
+.expert-booking__field input,
+.expert-booking__field textarea {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--button-border-radius);
+  font-size: var(--font-size-sm);
+  background: var(--background);
+}
+
+.expert-booking__success {
+  padding: 2rem;
+  background: var(--background-darken);
+  border-radius: var(--button-border-radius);
+  text-align: center;
+}
+
+@media (max-width: 740px) {
+  .expert-booking__layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

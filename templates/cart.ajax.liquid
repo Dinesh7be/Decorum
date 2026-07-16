@@ -1,0 +1,87 @@
+{% layout none %}
+{% comment %}
+templates/cart.ajax.liquid
+Alternate template used for rendering the dynamic AJAX Cart Drawer.
+{% endcomment %}
+
+<div class="cart-drawer__items" style="display: flex; flex-direction: column; gap: 2rem;">
+  {%- if cart.item_count > 0 -%}
+    {%- for item in cart.items -%}
+      <div class="cart-drawer__item" style="display: flex; gap: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
+        {%- if item.image != blank -%}
+          <img src="{{ item.image | image_url: width: 120 }}" alt="{{ item.title | default: item.product.title | escape }}" width="60" height="60" loading="lazy" style="object-fit: cover; background-color: var(--background-darken); border: 1px solid var(--border-color);">
+        {%- endif -%}
+        <div style="flex-grow: 1;">
+          <h4 style="font-family: var(--heading-family); font-size: var(--font-size-sm); font-weight: 600; margin: 0;">
+            <a href="{{ item.url }}">{{ item.product.title }}</a>
+          </h4>
+          {%- unless item.product.has_only_default_variant -%}
+            <span style="font-size: var(--font-size-xs); color: var(--text-color-light); text-transform: capitalize; display: block; margin-top: 0.2rem;">{{ item.variant.title }}</span>
+          {%- endunless -%}
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+            <!-- Quantity controls -->
+            <div style="display: inline-flex; align-items: center; border: 1px solid var(--border-color); height: 3rem;">
+              <button 
+                type="button" 
+                style="width: 2.5rem; height: 100%; border: none; background: none; cursor: pointer; font-size: var(--font-size-xs);"
+                onclick="var input = this.nextElementSibling; input.stepDown(); input.dispatchEvent(new Event('change', { bubbles: true }));"
+              >
+                &minus;
+              </button>
+              <input 
+                type="number" 
+                value="{{ item.quantity }}" 
+                min="0" 
+                style="width: 3rem; text-align: center; border: none; height: 100%; font-size: var(--font-size-xs);"
+                onchange="fetch('/cart/change.js', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ line: {{ forloop.index }}, quantity: this.value })
+                }).then(() => theme.pubsub.publish('cart:updated'));"
+              >
+              <button 
+                type="button" 
+                style="width: 2.5rem; height: 100%; border: none; background: none; cursor: pointer; font-size: var(--font-size-xs);"
+                onclick="var input = this.previousElementSibling; input.stepUp(); input.dispatchEvent(new Event('change', { bubbles: true }));"
+              >
+                &plus;
+              </button>
+            </div>
+
+            <span style="font-size: var(--font-size-xs); font-weight: 600;">{{ item.final_line_price | money }}</span>
+          </div>
+        </div>
+      </div>
+    {%- endfor -%}
+
+    <div class="cart-drawer__totals" style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; font-size: var(--font-size-sm); font-weight: 600; text-transform: uppercase;">
+        <span>{{ 'cart.general.subtotal' | t }}</span>
+        <span>{{ cart.total_price | money }}</span>
+      </div>
+      <p style="font-size: var(--font-size-xs); color: var(--text-color-light); margin: 0;">
+        {{ 'cart.general.taxes_and_shipping_policy' | t }}
+      </p>
+      
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <a href="{{ routes.cart_url }}" class="btn btn--secondary btn--full">
+          {{ 'cart.title' | t }}
+        </a>
+        <form action="{{ routes.cart_url }}" method="post" style="width: 100%;">
+          <button type="submit" name="checkout" class="btn btn--full">
+            {{ 'cart.checkout' | t }}
+          </button>
+        </form>
+      </div>
+    </div>
+
+  {%- else -%}
+    <div style="text-align: center; padding: 4rem 0;">
+      <p style="font-size: var(--font-size-sm); color: var(--text-color-light); margin-bottom: 2rem;">{{ 'cart.empty' | t }}</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn--sm">
+        {{ 'cart.continue_shopping' | t }}
+      </a>
+    </div>
+  {%- endif -%}
+</div>

@@ -1,0 +1,72 @@
+{% comment %}
+snippets/snip-product-details.liquid
+
+Renders details accordion blocks (Materials, Shipping, Care) using native disclosures.
+
+Accepts:
+- title:          {String} Accordion header title (required)
+- content:        {String} Rich text content (required)
+- open_default:   {Boolean} Whether to show accordion open by default (optional, default: false)
+
+Usage:
+{% render 'snip-product-details', title: block.settings.title, content: block.settings.content %}
+{% endcomment %}
+
+<details 
+  class="product-details__accordion"
+  {% if open_default %}open{% endif %}
+>
+  <summary>
+    <span>{{ title | escape }}</span>
+    <span class="accordion__icon">
+      {% render 'snip-icons', icon: 'chevron-down', size: '12px' %}
+    </span>
+  </summary>
+  
+  <div class="product-details__content">
+    {{ content }}
+  </div>
+</details>
+
+<style>
+  .product-details__accordion {
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.5rem 0;
+  }
+  
+  .product-details__accordion summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  /* Hide default details summary marker in Safari */
+  .product-details__accordion summary::-webkit-details-marker {
+    display: none;
+  }
+  
+  .accordion__icon {
+    transition: transform var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  /* Rotate disclosure chevron when open */
+  .product-details__accordion[open] summary .accordion__icon {
+    transform: rotate(180deg);
+  }
+  
+  .product-details__content {
+    padding-top: 1.5rem;
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    color: var(--text-color-light);
+  }
+</style>

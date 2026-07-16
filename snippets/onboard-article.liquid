@@ -1,0 +1,38 @@
+{% comment %}
+snippets/onboard-article.liquid
+
+Renders an onboarding article card for empty states.
+Accepts:
+- index: {Integer} The loop index (required)
+{% endcomment %}
+
+{%- liquid
+  case index
+    when 1
+      assign title = 'sections.onboarding.blog_title_1' | t
+      assign text = 'sections.onboarding.blog_text_1' | t
+    when 2
+      assign title = 'sections.onboarding.blog_title_2' | t
+      assign text = 'sections.onboarding.blog_text_2' | t
+    when 3
+      assign title = 'sections.onboarding.blog_title_3' | t
+      assign text = 'sections.onboarding.blog_text_3' | t
+  endcase
+  
+  assign placeholder_index = index | modulo: 3 | plus: 1
+  assign svg_name = 'collection-' | append: placeholder_index
+-%}
+
+<div class="span-4 sm-span-12 blog__grid">
+  <div class="blog-card__image-box">
+    {{ svg_name | placeholder_svg_tag: 'placeholder-svg' }}
+  </div>
+  <div>
+    <span class="blog-card__meta">Jul 06, 2026</span>
+    <h3 class="blog-card__title">
+      <a href="#">{{ title }}</a>
+    </h3>
+    <p class="blog-card__excerpt">{{ text }}</p>
+    <a href="#" class="blog-card__read-more">{{ 'general.search.read_more' | t }}</a>
+  </div>
+</div>

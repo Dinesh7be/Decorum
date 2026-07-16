@@ -1,0 +1,66 @@
+/*
+ * theme/assets/section-room-fit-calculator.css
+ * Room-dimension input form + a filtered product grid of items that fit.
+ */
+
+.room-fit__form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 2rem;
+  background: var(--background-darken);
+  border-radius: var(--button-border-radius);
+}
+
+.room-fit__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.room-fit__field label {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-color-light);
+}
+
+.room-fit__field input,
+.room-fit__field select {
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--button-border-radius);
+  background: var(--background);
+  font-size: var(--font-size-sm);
+  min-width: 140px;
+}
+
+.room-fit__status {
+  text-align: center;
+  color: var(--text-color-light);
+  margin-bottom: 2rem;
+  min-height: 1.5em;
+}
+
+.room-fit__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.room-fit__item[hidden] {
+  display: none;
+}
+
+@media (max-width: 980px) {
+  .room-fit__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 740px) {
+  .room-fit__grid { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+  .room-fit__form { flex-direction: column; align-items: stretch; }
+  .room-fit__field input, .room-fit__field select { min-width: 0; width: 100%; }
+}

@@ -1,0 +1,155 @@
+{{ 'section-map.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/map.liquid
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section 
+  class="global__section{{ space_class }} map-section"
+  data-section-id="{{ section.id }}"
+  data-section-type="map"
+  style="background-color: {{ section.settings.bg_color | default: 'transparent' }};"
+>
+  <div class="grid__wrapper map__grid">
+    
+    <div class="span-4 sm-span-12 map__info">
+      {%- if section.settings.subheading != blank -%}
+        <p class="map__subheading">
+          {{ section.settings.subheading | escape }}
+        </p>
+      {%- endif -%}
+      {%- if section.settings.title != blank -%}
+        <h2 class="map__title">
+          {{ section.settings.title | escape }}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.settings.address_hours != blank -%}
+        <div class="rte map__address-hours">
+          {{ section.settings.address_hours }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.button_text != blank and section.settings.button_url != blank -%}
+        <a href="{{ section.settings.button_url }}" class="btn">
+          {{ section.settings.button_text | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="span-8 sm-span-12">
+      <div class="map__embed-wrapper" style="--map-height: {{ section.settings.height_desktop | default: '400' }}px;">
+        {%- if section.settings.map_iframe != blank -%}
+          {{ section.settings.map_iframe }}
+        {%- elsif section.settings.image != blank -%}
+          {%- render 'basic-responsive-image', image: section.settings.image, sizes: '(min-width: 740px) 60vw, 100vw', classes: 'map__fallback-img' -%}
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg map__fallback-img' }}
+        {%- endif -%}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .map__fallback-img,
+  .map__fallback-img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Map / Location",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Visit Our Studio"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Store Locations"
+    },
+    {
+      "type": "richtext",
+      "id": "address_hours",
+      "label": "Address & Hours",
+      "default": "<p><strong>Address:</strong><br>108 Decorum Way, Suite B<br>San Francisco, CA 94103</p><p><strong>Hours:</strong><br>Mon - Fri: 10:00am - 6:00pm<br>Sat - Sun: 11:00am - 5:00pm</p>"
+    },
+    {
+      "type": "text",
+      "id": "map_iframe_url",
+      "label": "Google Maps Embed URL (Iframe src)",
+      "default": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.086387600867!2d-122.4194155!3d37.7749295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085976d034d587f%3A0xcd9743c4cf7e7db6!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1680000000000!5m2!1sen!2sus",
+      "info": "Paste the Google Maps iframe source URL here"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Fallback Map Image"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Label",
+      "default": "Get Directions"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button Link",
+      "default": "https://maps.google.com"
+    },
+    {
+      "type": "text",
+      "id": "height_desktop",
+      "label": "Map height (Desktop)",
+      "default": "400px"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Map / Location"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,151 @@
+{{ 'section-white-glove-delivery.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/white-glove-delivery.liquid
+
+Service-tier breakdown (e.g. standard ship / assembly / white-glove) as an
+accessible radio-tab group. Radios provide native keyboard support; JS just
+syncs which panel is visible on change — no modal/focus-trap needed since
+tabs don't interrupt the page.
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="white-glove-delivery"
+>
+  <div class="grid__wrapper">
+    <div class="span-12">
+      {%- if section.settings.title != blank -%}
+        <h2 class="section__title" style="text-align: center; margin-bottom: 3rem;">
+          {{ section.settings.title | escape }}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <decor-delivery-tabs>
+          <fieldset class="delivery-tiers__tabs" style="border: none; padding: 0; margin: 0 0 3rem;">
+            <legend class="visually-hidden">{{ 'sections.delivery_tiers.choose_tier' | t }}</legend>
+            {%- for block in section.blocks -%}
+              <input
+                type="radio"
+                name="delivery-tier-{{ section.id }}"
+                id="delivery-tier-{{ section.id }}-{{ forloop.index }}"
+                class="delivery-tiers__tab-input js-delivery-tab-input"
+                data-tier="{{ forloop.index }}"
+                {% if forloop.first %}checked{% endif %}
+              >
+              <label class="delivery-tiers__tab-label" for="delivery-tier-{{ section.id }}-{{ forloop.index }}">
+                {{ block.settings.name | escape }}
+              </label>
+            {%- endfor -%}
+          </fieldset>
+
+          {%- for block in section.blocks -%}
+            <div class="delivery-tiers__panel js-delivery-panel" data-tier="{{ forloop.index }}" {% if forloop.first %}style="display: block;"{% endif %} {{ block.shopify_attributes }}>
+              <p class="delivery-tiers__price">{{ block.settings.price_text | escape }}</p>
+              <p class="delivery-tiers__timeline">{{ block.settings.timeline_text | escape }}</p>
+              {%- if block.settings.features != blank -%}
+                <ul class="delivery-tiers__features">
+                  {%- assign feature_lines = block.settings.features | newline_to_br | split: '<br />' -%}
+                  {%- for line in feature_lines -%}
+                    {%- if line != blank -%}
+                      <li>{{ line | strip | escape }}</li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </decor-delivery-tabs>
+      {%- else -%}
+        <p style="text-align: center; color: var(--text-color-light);">
+          {{ 'sections.delivery_tiers.onboarding_notice' | t }}
+        </p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "White-glove delivery",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Choose Your Delivery Experience"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tier",
+      "name": "Service tier",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Tier Name",
+          "default": "Standard Shipping"
+        },
+        {
+          "type": "text",
+          "id": "price_text",
+          "label": "Price",
+          "default": "Free"
+        },
+        {
+          "type": "text",
+          "id": "timeline_text",
+          "label": "Timeline",
+          "default": "Arrives in 5-10 business days"
+        },
+        {
+          "type": "textarea",
+          "id": "features",
+          "label": "Features (one per line)",
+          "default": "Curbside or ground-floor drop-off\nTracking included\nSelf-assembly required"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "White-glove delivery",
+      "blocks": [
+        { "type": "tier", "settings": { "name": "Standard", "price_text": "Free", "timeline_text": "5-10 business days", "features": "Curbside drop-off\nTracking included\nSelf-assembly required" } },
+        { "type": "tier", "settings": { "name": "Assembly", "price_text": "$79", "timeline_text": "7-12 business days", "features": "Ground-floor room placement\nFull assembly\nPackaging removed" } },
+        { "type": "tier", "settings": { "name": "White Glove", "price_text": "$149", "timeline_text": "10-18 business days", "features": "In-home placement, any room\nFull assembly & setup\nPackaging removed\nOld furniture haul-away available" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

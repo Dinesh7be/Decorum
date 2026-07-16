@@ -1,0 +1,147 @@
+{{ 'section-ask-an-expert-booking.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/ask-an-expert-booking.liquid
+
+If the merchant supplies a booking_embed_url (Calendly, Acuity, etc.), embed
+it directly. Otherwise fall back to Shopify's native `contact` form tagged
+"consultation-request" — a real, working request path with zero third-party
+dependency, not a placeholder.
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="ask-an-expert-booking"
+>
+  <div class="grid__wrapper">
+    <div class="span-12">
+      {%- if section.settings.title != blank -%}
+        <h2 class="section__title" style="text-align: center; margin-bottom: 1rem;">
+          {{ section.settings.title | escape }}
+        </h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p style="text-align: center; color: var(--text-color-light); margin-bottom: 3rem; max-width: 640px; margin-left: auto; margin-right: auto;">
+          {{ section.settings.subheading | escape }}
+        </p>
+      {%- endif -%}
+
+      {%- if section.settings.booking_embed_url != blank -%}
+        <div class="expert-booking__embed">
+          <iframe
+            src="{{ section.settings.booking_embed_url | escape }}"
+            title="{{ 'sections.ask_expert.embed_title' | t }}"
+            loading="lazy"
+          ></iframe>
+        </div>
+      {%- else -%}
+        <div class="expert-booking__layout{% if section.settings.image == blank %} expert-booking__layout--no-image{% endif %}">
+          <div class="expert-booking__intro">
+            {%- if section.settings.image != blank -%}
+              {%- render 'basic-responsive-image', image: section.settings.image, sizes: '(min-width: 740px) 45vw, 100vw', loading: 'lazy' -%}
+            {%- endif -%}
+          </div>
+          <div class="expert-booking__form-wrap">
+            {%- form 'contact', id: 'expert-booking-form' -%}
+              {%- if form.posted_successfully? -%}
+                <div class="expert-booking__success">
+                  <p>{{ 'sections.ask_expert.success' | t }}</p>
+                </div>
+              {%- else -%}
+                <div class="expert-booking__form">
+                  <input type="hidden" name="contact[tags]" value="consultation-request">
+                  <div class="expert-booking__field">
+                    <label for="ExpertName-{{ section.id }}">{{ 'customer.contact.name' | t }}</label>
+                    <input type="text" id="ExpertName-{{ section.id }}" name="contact[name]" required>
+                  </div>
+                  <div class="expert-booking__field">
+                    <label for="ExpertEmail-{{ section.id }}">{{ 'customer.contact.email' | t }}</label>
+                    <input type="email" id="ExpertEmail-{{ section.id }}" name="contact[email]" required>
+                  </div>
+                  <div class="expert-booking__field">
+                    <label for="ExpertPhone-{{ section.id }}">{{ 'customer.contact.phone' | t }}</label>
+                    <input type="tel" id="ExpertPhone-{{ section.id }}" name="contact[phone]">
+                  </div>
+                  <div class="expert-booking__field">
+                    <label for="ExpertDate-{{ section.id }}">{{ 'sections.ask_expert.preferred_date' | t }}</label>
+                    <input type="date" id="ExpertDate-{{ section.id }}" name="contact[Preferred date]">
+                  </div>
+                  <div class="expert-booking__field">
+                    <label for="ExpertMessage-{{ section.id }}">{{ 'sections.ask_expert.project_details' | t }}</label>
+                    <textarea id="ExpertMessage-{{ section.id }}" name="contact[body]" rows="4"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn--full">
+                    {{ 'sections.ask_expert.submit' | t }}
+                  </button>
+                </div>
+              {%- endif -%}
+            {%- endform -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ask-an-expert booking",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Book a Free Design Consultation"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Talk through your space with a Decorum design expert, virtually."
+    },
+    {
+      "type": "url",
+      "id": "booking_embed_url",
+      "label": "Booking Widget Embed URL",
+      "info": "Optional. Paste a Calendly/Acuity/etc. scheduling page URL to embed it directly. Leave blank to show a request form instead."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image (shown next to the fallback form)"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ask-an-expert booking"
+    }
+  ]
+}
+{% endschema %}

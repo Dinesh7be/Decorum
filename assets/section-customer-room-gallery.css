@@ -1,0 +1,63 @@
+/*
+ * theme/assets/section-customer-room-gallery.css
+ * Customer-submitted room photo wall, masonry layout via CSS columns.
+ */
+
+.room-gallery__grid {
+  columns: 4;
+  column-gap: 1.5rem;
+}
+
+.room-gallery__item {
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: block;
+  border-radius: var(--button-border-radius);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+}
+
+.room-gallery__item img {
+  width: 100%;
+  display: block;
+}
+
+.room-gallery__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.2rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
+  color: #fff;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.room-gallery__item:hover .room-gallery__caption,
+.room-gallery__item:focus-visible .room-gallery__caption {
+  opacity: 1;
+}
+
+.room-gallery__name {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  display: block;
+}
+
+.room-gallery__handle {
+  font-size: var(--font-size-xs);
+  opacity: 0.85;
+}
+
+@media (max-width: 980px) {
+  .room-gallery__grid { columns: 3; }
+}
+
+@media (max-width: 740px) {
+  .room-gallery__grid { columns: 2; column-gap: 1rem; }
+  .room-gallery__item { margin-bottom: 1rem; }
+  .room-gallery__caption { opacity: 1; }
+}

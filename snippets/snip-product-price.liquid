@@ -1,0 +1,49 @@
+{% comment %}
+snippets/snip-product-price.liquid
+
+Renders a product's price (selected variant or first available).
+
+Accepts:
+- product:        {Object} Shopify Product object (required)
+- use_variant:    {Boolean} Whether to use variant price or product price range (optional)
+- section_id:     {String} Section ID for selector targeting (required)
+
+Usage:
+{% render 'snip-product-price', product: product, section_id: section.id %}
+{% endcomment %}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign compare_at_price = variant.compare_at_price
+  assign price = variant.price
+  assign is_on_sale = false
+  if compare_at_price > price
+    assign is_on_sale = true
+  endif
+-%}
+
+<div class="product-price js-product-price-{{ section_id }}">
+  <span class="product-price__sale js-price">
+    {{ price | money }}
+  </span>
+  
+  <span 
+    class="product-price__compare text-color-light js-compare-price" 
+    style="{% unless is_on_sale %}display: none;{% endunless %}"
+  >
+    {{ compare_at_price | money }}
+  </span>
+
+  <span 
+    class="product-price__unit js-unit-price" 
+    style="{% unless variant.unit_price_measurement %}display: none;{% endunless %}"
+  >
+    {%- if variant.unit_price_measurement -%}
+      {{ variant.unit_price | money }}/
+      {%- if variant.unit_price_measurement.reference_value != 1 -%}
+        {{ variant.unit_price_measurement.reference_value }}
+      {%- endif -%}
+      {{ variant.unit_price_measurement.reference_unit }}
+    {%- endif -%}
+  </span>
+</div>

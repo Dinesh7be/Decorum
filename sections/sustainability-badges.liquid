@@ -1,0 +1,172 @@
+{{ 'section-sustainability-badges.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/sustainability-badges.liquid
+
+*** EDITORIAL/LEGAL NOTICE ***
+This section renders whatever certification names, icons, and claim text a
+merchant enters into its blocks — it has NO default content that asserts a
+real certification (defaults below use placeholder copy only). Before
+publishing, verify every badge with legal/marketing: an FSC, GREENGUARD, OEKO-TEX,
+etc. logo or claim must only be shown if the certification is real, current,
+and the merchant can produce documentation. False certification claims are a
+legal liability, not a styling choice.
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="sustainability-badges"
+>
+  <div class="grid__wrapper">
+    <div class="span-12">
+      {%- if section.settings.title != blank -%}
+        <h2 class="section__title" style="text-align: center; margin-bottom: 1rem;">
+          {{ section.settings.title | escape }}
+        </h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p style="text-align: center; color: var(--text-color-light); margin-bottom: 3rem; max-width: 640px; margin-left: auto; margin-right: auto;">
+          {{ section.settings.subheading | escape }}
+        </p>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="sustainability-badges__grid">
+          {%- for block in section.blocks -%}
+            <div class="sustainability-badges__badge" {{ block.shopify_attributes }}>
+              <div class="sustainability-badges__icon">
+                {%- if block.settings.icon != blank -%}
+                  <img src="{{ block.settings.icon | image_url: width: 128 }}" alt="{{ block.settings.name | escape }}" width="64" height="64" loading="lazy">
+                {%- else -%}
+                  {% render 'snip-icons', icon: 'warranty', size: '28px' %}
+                {%- endif -%}
+              </div>
+              <h3 class="sustainability-badges__name">{{ block.settings.name | escape }}</h3>
+              {%- if block.settings.claim != blank -%}
+                <p class="sustainability-badges__claim">{{ block.settings.claim | escape }}</p>
+              {%- endif -%}
+              {%- if block.settings.learn_more_url != blank -%}
+                <a href="{{ block.settings.learn_more_url }}" class="sustainability-badges__link" target="_blank" rel="noopener">
+                  {{ 'sections.sustainability.learn_more' | t }}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <p style="text-align: center; color: var(--text-color-light);">
+          {{ 'sections.sustainability.onboarding_notice' | t }}
+        </p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Eco & certifications",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Our Commitments"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Add only certifications and claims your team can document and verify."
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Certification badge",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Certification Logo",
+          "info": "Use the certifying body's official logo artwork, not a generic icon, when making a specific certification claim."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Certification Name",
+          "default": "Certification Name",
+          "info": "Only enter a real certification your business currently holds."
+        },
+        {
+          "type": "textarea",
+          "id": "claim",
+          "label": "Claim Text",
+          "info": "Keep this factual and verifiable — avoid vague or unverifiable sustainability language."
+        },
+        {
+          "type": "url",
+          "id": "learn_more_url",
+          "label": "Verification / Learn More Link",
+          "info": "Link to the certifying body's registry or your documentation, so the claim is independently checkable."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sustainability & certifications",
+      "blocks": [
+        {
+          "type": "badge",
+          "settings": {
+            "name": "FSC Certified Wood",
+            "claim": "100% of our solid oak and walnut frames are sourced from responsibly managed forests."
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "name": "OEKO-TEX Textiles",
+            "claim": "All cushion linen and boucle covers are verified free from toxic chemicals."
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "name": "Greenguard Gold",
+            "claim": "Our sourced finishes and adhesives meet strict guidelines for low chemical emissions."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

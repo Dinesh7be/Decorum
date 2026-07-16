@@ -1,0 +1,119 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "vendor",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variants": {
+          "type": "variants",
+          "settings": {}
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {
+            "show_dynamic_checkout": true
+          }
+        },
+        "dimensions": {
+          "type": "dimensions",
+          "settings": {
+            "width": "84\"",
+            "height": "34\"",
+            "depth": "38\""
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "details_materials": {
+          "type": "details",
+          "settings": {
+            "title": "Materials & Care",
+            "content": "<p>Constructed using FSC solid wood legs and cushions filled with high-resilience foam wrapped in textured flax linen cover. Blot spills immediately with clean damp cloth. Professional cleaning recommended.</p>",
+            "open_default": true
+          }
+        },
+        "details_shipping": {
+          "type": "details",
+          "settings": {
+            "title": "Shipping & Delivery",
+            "content": "<p>Complimentary white-glove inside delivery on orders over $250. Items are unpacked, assembled, and packaging is removed. Standard delivery takes 5-10 business days.</p>",
+            "open_default": false
+          }
+        },
+        "sharing": {
+          "type": "sharing",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "variants",
+        "buttons",
+        "dimensions",
+        "description",
+        "details_materials",
+        "details_shipping",
+        "sharing"
+      ],
+      "settings": {
+        "gallery_layout": "slider"
+      }
+    },
+    "care_timeline": {
+      "type": "care-warranty-timeline",
+      "settings": {
+        "title": "Built to Last, Backed for Years"
+      },
+      "blocks": {
+        "m1": {
+          "type": "milestone",
+          "settings": {
+            "period": "Day 1",
+            "title": "30-Day Home Trial",
+            "description": "<p>Live with it. If it's not right, return it free within 30 days.</p>"
+          }
+        },
+        "m2": {
+          "type": "milestone",
+          "settings": {
+            "period": "Years 1-2",
+            "title": "Textile & Mechanical Coverage",
+            "description": "<p>Upholstery, cushions, and moving mechanical parts are covered for 2 years.</p>"
+          }
+        },
+        "m3": {
+          "type": "milestone",
+          "settings": {
+            "period": "Years 1-10",
+            "title": "Structural Frame Warranty",
+            "description": "<p>Solid wood frames and joinery are warrantied for a full decade.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "care_timeline"
+  ]
+}

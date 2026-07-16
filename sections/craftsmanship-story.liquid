@@ -1,0 +1,118 @@
+{{ 'section-craftsmanship-story.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/craftsmanship-story.liquid
+
+Static, scrollable process narrative (e.g. sourcing -> construction ->
+finishing). No JS required — alternating image/text rows built from
+"step" blocks for provenance/trust storytelling.
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="craftsmanship-story"
+>
+  <div class="grid__wrapper">
+    <div class="span-12">
+      {%- if section.settings.title != blank -%}
+        <h2 class="section__title" style="text-align: center; margin-bottom: 5rem;">
+          {{ section.settings.title | escape }}
+        </h2>
+      {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        <div class="craft-story__step{% if forloop.index0 % 2 == 1 %} craft-story__step--reverse{% endif %}" {{ block.shopify_attributes }}>
+          <div class="craft-story__media">
+            {%- if block.settings.image != blank -%}
+              {%- render 'basic-responsive-image', image: block.settings.image, sizes: '(min-width: 740px) 45vw, 100vw', loading: 'lazy' -%}
+            {%- else -%}
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <div class="craft-story__text">
+            <span class="craft-story__number">{{ 'sections.craftsmanship_story.step_number' | t: number: forloop.index }}</span>
+            <h3 class="craft-story__title">{{ block.settings.title | escape }}</h3>
+            <div class="rte">{{ block.settings.text }}</div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Craftsmanship story",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "From Raw Material to Finished Piece"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Process step",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Step Title",
+          "default": "Sourcing"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Step Description",
+          "default": "<p>We hand-select FSC-certified hardwood from sustainably managed forests, inspecting every board for grain and structural integrity before it reaches our workshop.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Craftsmanship story",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Sourcing" } },
+        { "type": "step", "settings": { "title": "Construction", "text": "<p>Master joiners cut and assemble each frame using traditional mortise-and-tenon joinery, reinforced for generational durability.</p>" } },
+        { "type": "step", "settings": { "title": "Finishing", "text": "<p>Every surface is hand-sanded and finished with low-VOC oils that deepen the wood's natural grain over time.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

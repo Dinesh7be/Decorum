@@ -1,0 +1,201 @@
+{{ 'section-video.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/video.liquid
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+
+  assign full_width = section.settings.full_width
+-%}
+
+<section 
+  class="global__section{{ space_class }} video-section"
+  data-section-id="{{ section.id }}"
+  data-section-type="video"
+>
+  {%- capture video_markup -%}
+    <!-- Video Element -->
+    <div class="video__wrapper">
+      {%- if section.settings.video_url.type == 'youtube' -%}
+        <iframe 
+          src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?autoplay={% if section.settings.autoplay %}1{% else %}0{% endif %}&loop=1&mute={% if section.settings.autoplay %}1{% else %}0{% endif %}&playlist={{ section.settings.video_url.id }}" 
+          allow="autoplay; encrypted-media" 
+          allowfullscreen
+          title="{{ 'sections.video.video_player' | t }}"
+        ></iframe>
+      {%- elsif section.settings.video_url.type == 'vimeo' -%}
+        <iframe 
+          src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}?autoplay={% if section.settings.autoplay %}1{% else %}0{% endif %}&loop=1&muted={% if section.settings.autoplay %}1{% else %}0{% endif %}" 
+          allow="autoplay; encrypted-media" 
+          allowfullscreen
+          title="{{ 'sections.video.video_player' | t }}"
+        ></iframe>
+      {%- elsif section.settings.video != blank -%}
+        {%- liquid
+          assign poster = ''
+          if section.settings.cover_image != blank
+            assign poster = section.settings.cover_image | image_url: width: 1200
+          endif
+        -%}
+        {{ section.settings.video | video_tag: autoplay: section.settings.autoplay, loop: true, muted: section.settings.autoplay, controls: true, poster: poster }}
+      {%- else -%}
+        {%- if section.settings.cover_image != blank -%}
+          {%- render 'basic-responsive-image', image: section.settings.cover_image, sizes: '100vw', classes: 'video__cover-img' -%}
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    <!-- Color Overlay -->
+    <div class="video__overlay" style="background: rgba(0,0,0,{{ section.settings.overlay_opacity | times: 0.01 }});"></div>
+
+    <!-- Overlay Content -->
+    {%- if section.settings.title != blank or section.settings.subheading != blank -%}
+      <div class="video__content-container">
+        <div class="video__content-card">
+          {%- if section.settings.subheading != blank -%}
+            <p class="video__subheading">
+              {{ section.settings.subheading | escape }}
+            </p>
+          {%- endif -%}
+          {%- if section.settings.title != blank -%}
+            <h2 class="video__title">
+              {{ section.settings.title | escape }}
+            </h2>
+          {%- endif -%}
+          {%- if section.settings.link_text != blank and section.settings.link_url != blank -%}
+            <a href="{{ section.settings.link_url }}" class="btn video__btn">
+              {{ section.settings.link_text | escape }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- if full_width -%}
+    <div class="video-section__container video__container" style="--video-height: {{ section.settings.height_desktop | default: '560px' }};">
+      {{ video_markup }}
+    </div>
+  {%- else -%}
+    <div class="grid__wrapper">
+      <div class="span-12 video__container--grid" style="--video-height: {{ section.settings.height_desktop | default: '500px' }};">
+        {{ video_markup }}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<style>
+  .video__cover-img,
+  .video__cover-img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Video",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Enable full width background video",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Minimal Living Aesthetics"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Behind the Scenes"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Shopify Video File"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "Or External Video URL",
+      "accept": ["youtube", "vimeo"],
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image",
+      "label": "Cover / Poster Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay (Background video loop)",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "default": 30,
+      "unit": "%",
+      "label": "Overlay Opacity"
+    },
+    {
+      "type": "text",
+      "id": "height_desktop",
+      "label": "Section Height",
+      "default": "500px"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Button Label"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Button Link"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video"
+    }
+  ]
+}
+{% endschema %}

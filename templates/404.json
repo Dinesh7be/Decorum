@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-404",
+      "settings": {
+        "show_title": false
+      }
+    },
+    "banner": {
+      "type": "hero-banner",
+      "settings": {
+        "title": "",
+        "subheading": "",
+        "height": "small",
+        "alignment": "center",
+        "overlay_opacity": 30,
+        "full_width": true
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "main"
+  ]
+}

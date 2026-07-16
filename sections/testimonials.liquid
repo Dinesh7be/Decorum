@@ -1,0 +1,202 @@
+{{ 'section-testimonials.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/testimonials.liquid
+{% endcomment %}
+
+{%- liquid
+  assign heading = section.settings.title
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+
+  # Onboarding checks
+  assign show_placeholders = false
+  if section.blocks.size == 0
+    assign show_placeholders = true
+  endif
+
+  assign enough_items = false
+  if section.blocks.size > 3
+    assign enough_items = true
+  endif
+-%}
+
+<section 
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="testimonials"
+>
+  {%- if heading != blank -%}
+    <div class="grid__wrapper">
+      <div class="span-12 testimonials__header">
+        <h2>{{ heading | escape }}</h2>
+        
+        {%- if enough_items -%}
+          <div class="carousel__nav-buttons">
+            <button class="carousel__btn js-carousel-prev" aria-label="{{ 'accessibility.previous_slide' | t }}">
+              {% render 'snip-icons', icon: 'chevron-left', size: '14px' %}
+            </button>
+            <button class="carousel__btn js-carousel-next" aria-label="{{ 'accessibility.next_slide' | t }}">
+              {% render 'snip-icons', icon: 'chevron-right', size: '14px' %}
+            </button>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <decor-carousel class="testimonials__wrapper">
+    <div class="grid__wrapper">
+      <div class="span-12">
+        <div class="testimonials__track js-carousel-track{% if section.blocks.size > 0 and section.blocks.size < 3 %} testimonials__track--center{% endif %}">
+          {%- if show_placeholders -%}
+            {%- for i in (1..3) -%}
+              {%- liquid
+                case i
+                  when 1
+                    assign author = 'sections.testimonials.author_1' | t
+                    assign meta = 'sections.testimonials.meta_1' | t
+                    assign text = 'sections.testimonials.text_1' | t
+                  when 2
+                    assign author = 'sections.testimonials.author_2' | t
+                    assign meta = 'sections.testimonials.meta_2' | t
+                    assign text = 'sections.testimonials.text_2' | t
+                  when 3
+                    assign author = 'sections.testimonials.author_3' | t
+                    assign meta = 'sections.testimonials.meta_3' | t
+                    assign text = 'sections.testimonials.text_3' | t
+                endcase
+              -%}
+              <div class="testimonials__slide">
+                <div class="testimonial__stars">
+                  {%- for j in (1..5) -%}
+                    {% render 'snip-icons', icon: 'star', size: '14px' %}
+                  {%- endfor -%}
+                </div>
+                <blockquote class="testimonial__quote">
+                  "{{ text }}"
+                </blockquote>
+                <div class="testimonial__author-info">
+                  <cite class="testimonial__author">{{ author }}</cite>
+                  <span class="testimonial__meta">{{ meta }}</span>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for block in section.blocks -%}
+              <div class="testimonials__slide" {{ block.shopify_attributes }}>
+                <div class="testimonial__stars">
+                  {%- for j in (1..block.settings.rating) -%}
+                    {% render 'snip-icons', icon: 'star', size: '14px' %}
+                  {%- endfor -%}
+                </div>
+                <blockquote class="testimonial__quote">
+                  "{{ block.settings.quote | escape }}"
+                </blockquote>
+                <div class="testimonial__author-info">
+                  <cite class="testimonial__author">{{ block.settings.author | escape }}</cite>
+                  {%- if block.settings.info != blank -%}
+                    <span class="testimonial__meta">{{ block.settings.info | escape }}</span>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    {%- if enough_items -%}
+      <div class="carousel__dots">
+        {%- for block in section.blocks -%}
+          <button 
+            class="carousel__dot js-carousel-dot {% if forloop.first %}active{% endif %}" 
+            aria-label="Go to slide {{ forloop.index }}"
+            aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+          ></button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </decor-carousel>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 9,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Customer Testimonial",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5,
+          "label": "Star Rating"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Customer Quote",
+          "default": "Beautifully crafted pieces that transformed our home decor. Outstanding service!"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Sarah Jenkins"
+        },
+        {
+          "type": "text",
+          "id": "info",
+          "label": "Author Details (Meta)",
+          "default": "Verified Buyer &mdash; New York"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" }
+      ]
+    }
+  ]
+}
+{% endschema %}

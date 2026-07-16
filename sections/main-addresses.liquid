@@ -1,0 +1,95 @@
+{% comment %}
+sections/main-addresses.liquid
+{% endcomment %}
+
+{{ 'component-customer.css' | asset_url | stylesheet_tag }}
+
+<section 
+  class="global__section" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="main-addresses"
+>
+  <div class="grid__wrapper customer__header-wrapper" style="margin-top: -2rem; margin-bottom: 2rem;">
+    <div class="span-12 customer__header-row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <a href="{{ routes.account_url }}" class="customer__header-back-link" style="text-decoration: underline;">&larr; {{ 'customer.addresses.back_to_account' | t }}</a>
+      </div>
+      <button class="btn" onclick="document.getElementById('AddAddressForm').style.display='block';">{{ 'customer.addresses.add_new' | t }}</button>
+    </div>
+  </div>
+
+  <div class="grid__wrapper address-form-row customer-table--margin" id="AddAddressForm" style="display: none;">
+    <div class="span-12 address-form-wrapper">
+      <h2 class="customer__column-title">{{ 'customer.addresses.add_new' | t }}</h2>
+      {%- form 'customer_address', customer.new_address -%}
+        <div class="address-form-row">
+          <div class="address-form-col">
+            <label for="AddressFirstNameNew">{{ 'customer.addresses.first_name' | t }}</label>
+            <input type="text" name="address[first_name]" id="AddressFirstNameNew" value="{{ form.first_name }}">
+          </div>
+          <div class="address-form-col">
+            <label for="AddressLastNameNew">{{ 'customer.addresses.last_name' | t }}</label>
+            <input type="text" name="address[last_name]" id="AddressLastNameNew" value="{{ form.last_name }}">
+          </div>
+        </div>
+        
+        <div class="address-form-field">
+          <label for="AddressCompanyNew">{{ 'customer.addresses.company' | t }}</label>
+          <input type="text" name="address[company]" id="AddressCompanyNew" value="{{ form.company }}">
+        </div>
+
+        <div class="address-form-field">
+          <label for="AddressAddress1New">{{ 'customer.addresses.address1' | t }}</label>
+          <input type="text" name="address[address1]" id="AddressAddress1New" value="{{ form.address1 }}" required>
+        </div>
+
+        <div class="address-form-field">
+          <label for="AddressAddress2New">{{ 'customer.addresses.address2' | t }}</label>
+          <input type="text" name="address[address2]" id="AddressAddress2New" value="{{ form.address2 }}">
+        </div>
+
+        <div class="address-form-row">
+          <div class="address-form-col">
+            <label for="AddressCityNew">{{ 'customer.addresses.city' | t }}</label>
+            <input type="text" name="address[city]" id="AddressCityNew" value="{{ form.city }}" required>
+          </div>
+          <div class="address-form-col">
+            <label for="AddressZipNew">{{ 'customer.addresses.zip' | t }}</label>
+            <input type="text" name="address[zip]" id="AddressZipNew" value="{{ form.zip }}" required>
+          </div>
+        </div>
+
+        <div class="address-form-field">
+          <label for="AddressPhoneNew">{{ 'customer.addresses.phone' | t }}</label>
+          <input type="text" name="address[phone]" id="AddressPhoneNew" value="{{ form.phone }}">
+        </div>
+
+        <div class="address-form-field--submit">
+          <button type="submit" class="btn">{{ 'customer.addresses.save' | t }}</button>
+          <button type="button" class="btn btn--secondary" onclick="document.getElementById('AddAddressForm').style.display='none';">{{ 'customer.addresses.cancel' | t }}</button>
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+
+  <div class="grid__wrapper">
+    {%- for address in customer.addresses -%}
+      <div class="span-4 sm-span-12 customer-card customer-card--address">
+        {%- if address == customer.default_address -%}
+          <span class="customer-card__default-badge">{{ 'customer.addresses.default' | t }}</span>
+        {%- endif -%}
+        
+        <div>
+          <p class="customer-card__name">{{ address.first_name }} {{ address.last_name }}</p>
+          {{ address | format_address }}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer Addresses"
+}
+{% endschema %}

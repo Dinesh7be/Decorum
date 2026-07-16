@@ -1,0 +1,48 @@
+{% comment %}
+snippets/pickup-availability.liquid
+{% endcomment %}
+
+{%- liquid
+  assign pick_up_availabilities = variant.store_availabilities | where: 'pick_up_enabled', true
+-%}
+
+{%- if pick_up_availabilities.size > 0 -%}
+  <div class="pickup-availability-container">
+     <div class="pickup-availability__icon">
+       {% render 'snip-icons', icon: 'quality', size: '20px' %}
+     </div>
+     <div>
+       {%- assign closest_location = pick_up_availabilities.first -%}
+       {%- if closest_location.available -%}
+         <p class="pickup-availability__text-available">
+           {{ 'products.product.pickup_available_at' | t: location_name: closest_location.location.name }}
+         </p>
+         <p class="pickup-availability__time">
+           {{ closest_location.pick_up_time }}
+         </p>
+       {%- else -%}
+         <p class="pickup-availability__text-unavailable">
+           {{ 'products.product.pickup_unavailable_at' | t: location_name: closest_location.location.name }}
+         </p>
+       {%- endif -%}
+       
+       <details class="pickup-availability__details">
+         <summary class="pickup-availability__summary">{{ 'products.product.check_availability' | t }}</summary>
+         <ul class="pickup-availability__list" role="list">
+           {%- for availability in pick_up_availabilities -%}
+             <li class="pickup-availability__list-item">
+               <p class="pickup-availability__location-name">{{ availability.location.name }}</p>
+               <p class="pickup-availability__status">
+                 {%- if availability.available -%}
+                   {{ 'products.product.ready_for_pickup' | t: pickup_time: availability.pick_up_time }}
+                 {%- else -%}
+                   {{ 'products.product.out_of_stock' | t }}
+                 {%- endif -%}
+               </p>
+             </li>
+           {%- endfor -%}
+         </ul>
+       </details>
+     </div>
+  </div>
+{%- endif -%}

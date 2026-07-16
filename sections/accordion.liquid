@@ -1,0 +1,147 @@
+{{ 'section-accordion.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/accordion.liquid
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section
+  id="accordion--{{ section.id }}"
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="accordion"
+>
+  <div class="grid__wrapper">
+    <div class="span-8 push-2 sm-span-12">
+      {%- if section.settings.title != blank -%}
+        <h2 class="section__title" style="text-align: center; margin-bottom: 3rem;">
+          {{ section.settings.title | escape }}
+        </h2>
+      {%- endif -%}
+
+      <div class="accordion__container">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.heading != blank and block.settings.content != blank -%}
+            <details
+              class="accordion-row"
+              {{ block.shopify_attributes }}
+            >
+              <summary class="accordion-row__summary">
+                <span>{{ block.settings.heading | escape }}</span>
+                <span class="accordion-row__icon">
+                  {% render 'snip-icons', icon: 'chevron-down', size: '12px' %}
+                </span>
+              </summary>
+              <div class="accordion-row__content">
+                {{ block.settings.content }}
+              </div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #accordion--{{ section.id }} .accordion-row {
+    border-bottom-color: {{ section.settings.border_color | default: '#E6E1DA' }};
+  }
+  #accordion--{{ section.id }} .accordion-row__summary {
+    color: {{ section.settings.heading_color | default: '#2B2927' }};
+  }
+  #accordion--{{ section.id }} .accordion-row__icon {
+    color: {{ section.settings.icon_color | default: '#8C7D70' }};
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collapsible content",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Row Heading Color",
+      "default": "#2B2927"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Row Divider Color",
+      "default": "#E6E1DA"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Chevron Icon Color",
+      "default": "#8C7D70"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Accordion Row Title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Provide collapsible content details here. You can dynamic source this setting to metafields too.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collapsible content",
+      "blocks": [
+        { "type": "row", "settings": { "heading": "What is your return policy?" } },
+        { "type": "row", "settings": { "heading": "How long does shipping take?" } },
+        { "type": "row", "settings": { "heading": "Do you offer structural warranties?" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

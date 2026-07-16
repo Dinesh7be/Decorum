@@ -1,0 +1,50 @@
+/*
+ * theme/assets/section-text-with-icons.css
+ * Styling for the Text With Icons (Trust Indicators) Section
+ */
+
+.trust-row__grid {
+  padding: 3rem 0;
+}
+
+.trust-row__item {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding: 1.5rem;
+}
+
+.trust-row__icon-container {
+  color: var(--accent-color);
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trust-row__icon-img-wrapper {
+  width: var(--icon-size, 32px);
+  height: var(--icon-size, 32px);
+}
+
+.trust-row__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.trust-row__title {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+  color: var(--accent-color);
+}
+
+.trust-row__text {
+  font-size: var(--font-size-xs);
+  color: var(--text-color-light);
+  line-height: 1.5;
+  margin: 0;
+}

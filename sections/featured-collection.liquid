@@ -1,0 +1,235 @@
+{{ 'section-featured-collection.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/featured-collection.liquid
+{% endcomment %}
+
+{%- liquid
+  assign heading = section.settings.title
+  assign collection = collections[section.settings.collection]
+  assign grid_cols = section.settings.grid | default: 4
+  assign limit = section.settings.limit | default: 8
+  assign is_carousel = section.settings.carousel
+  assign mobile_1pr = section.settings.mobile_1pr
+
+  # Map grid cols to span classes
+  assign col_span = 3
+  if grid_cols == 2
+    assign col_span = 6
+  elsif grid_cols == 3
+    assign col_span = 4
+  elsif grid_cols == 5
+    assign col_span = 2
+  endif
+
+  # Calculate space class
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+
+  # Onboarding check
+  assign show_placeholders = false
+  if collection == blank or collection.all_products_count == 0
+    assign show_placeholders = true
+  endif
+
+  # Determine loop size
+  assign product_list = collection.products
+  if show_placeholders
+    assign product_list = (1..limit)
+  endif
+
+  # Check carousel eligibility (enough products to warrant carousel)
+  assign enough_items = false
+  if is_carousel
+    if show_placeholders
+      assign item_count = limit
+    else
+      assign item_count = collection.products_count
+    endif
+    if item_count > grid_cols
+      assign enough_items = true
+    endif
+  endif
+-%}
+
+<section 
+  id="featured-collection--{{ section.id }}"
+  class="global__section{{ space_class }} {% if mobile_1pr %}mobile--1pr{% endif %}"
+  data-section-id="{{ section.id }}"
+  data-section-type="featured-collection"
+  style="--columns: {{ grid_cols }};"
+>
+  <div class="grid__wrapper featured-collection__header">
+    <div class="featured-collection__header-left">
+      {%- if heading != blank -%}
+        <h2 class="featured-collection__header-title">{{ heading | escape }}</h2>
+      {%- endif -%}
+    </div>
+    
+    <div class="featured-collection__header-right">
+      {%- if section.settings.show_view_all and collection != blank -%}
+        <a href="{{ collection.url }}" class="featured-collection__view-all">
+          {{ 'sections.featured_collection.view_all' | t }}
+        </a>
+      {%- endif -%}
+
+      <!-- Carousel Navigation Triggers -->
+      {%- if is_carousel and enough_items -%}
+        <div class="carousel__nav-buttons">
+          <button class="carousel__btn js-carousel-prev" aria-label="{{ 'accessibility.previous_slide' | t }}">
+            {% render 'snip-icons', icon: 'chevron-left', size: '14px' %}
+          </button>
+          <button class="carousel__btn js-carousel-next" aria-label="{{ 'accessibility.next_slide' | t }}">
+            {% render 'snip-icons', icon: 'chevron-right', size: '14px' %}
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if is_carousel -%}
+    <!-- Carousel Layout -->
+    <decor-carousel class="featured-collection__carousel-wrapper">
+      <div class="grid__wrapper">
+        <div class="span-12">
+          <div class="featured-collection__carousel-track js-carousel-track">
+            {%- for item in product_list limit: limit -%}
+              {%- liquid
+                # Calculate loading strategy for performance (above the fold load)
+                assign loading = 'lazy'
+                assign fetch_priority = 'auto'
+                if section.index == 1 and forloop.index <= grid_cols
+                  assign loading = 'eager'
+                  assign fetch_priority = 'high'
+                endif
+              -%}
+              <div class="grid-item">
+                {%- if show_placeholders -%}
+                  {%- render 'onboard-product', index: forloop.index -%}
+                {%- else -%}
+                  {%- render 'product-listing', product: item, loading: loading, fetchpriority: fetch_priority -%}
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+      
+      {%- if enough_items -%}
+        <div class="carousel__dots">
+          {%- for item in product_list limit: limit -%}
+            <button 
+              class="carousel__dot js-carousel-dot {% if forloop.first %}active{% endif %}" 
+              aria-label="Go to slide {{ forloop.index }}"
+              aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+            ></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </decor-carousel>
+
+  {%- else -%}
+    <!-- Standard Grid Layout -->
+    <div class="grid__wrapper">
+      {%- for item in product_list limit: limit -%}
+        {%- liquid
+          # Calculate loading strategy for performance (above the fold load)
+          assign loading = 'lazy'
+          assign fetch_priority = 'auto'
+          if section.index == 1 and forloop.index <= grid_cols
+            assign loading = 'eager'
+            assign fetch_priority = 'high'
+          endif
+        -%}
+        <div class="span-{{ col_span }} sm-span-6 grid-item">
+          {%- if show_placeholders -%}
+            {%- render 'onboard-product', index: forloop.index -%}
+          {%- else -%}
+            {%- render 'product-listing', product: item, loading: loading, fetchpriority: fetch_priority -%}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection"
+    },
+    {
+      "type": "range",
+      "id": "grid",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Products per row (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 8,
+      "label": "Maximum products to show"
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel",
+      "label": "Enable Carousel Slider",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All Link",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_1pr",
+      "label": "Show 1 per row on mobile",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection"
+    }
+  ]
+}
+{% endschema %}

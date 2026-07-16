@@ -1,0 +1,200 @@
+{% comment %}
+snippets/snip-product-variants.liquid
+
+Renders variant options (swatches, pills, dropdowns) for the product buy-box.
+
+Accepts:
+- product:        {Object} Shopify Product object (required)
+- section_id:     {String} Section ID for selector targeting (required)
+
+Usage:
+{% render 'snip-product-variants', product: product, section_id: section.id %}
+{% endcomment %}
+
+{%- unless product.has_only_default_variant -%}
+  <decor-variant-selector data-section="{{ section_id }}">
+    <div class="product-form__variants">
+      {%- for option in product.options_with_values -%}
+        <div class="product-form__option" data-option-index="{{ forloop.index0 }}">
+          <label class="product-form__option-label">
+            {{ option.name }}: <span class="product-form__selected-value">{{ option.selected_value }}</span>
+          </label>
+          
+          <div class="product-form__option-values">
+            {%- for value in option.values -%}
+              {%- liquid
+                assign checked = false
+                if option.selected_value == value
+                  assign checked = true
+                endif
+
+                assign is_color = false
+                assign option_name_downcase = option.name | downcase
+                if option_name_downcase contains 'color' or option_name_downcase contains 'colour'
+                  assign is_color = true
+                endif
+
+                assign swatch_color = null
+                assign swatch_image = null
+                if value.swatch.color != blank
+                  assign swatch_color = value.swatch.color
+                elsif value.swatch.image != blank
+                  assign swatch_image = value.swatch.image | image_url: width: 50, height: 50
+                else
+                  assign color_downcase = value | downcase
+                  if color_downcase contains 'beige' or color_downcase contains 'cream'
+                    assign swatch_color = '#E1D9C1'
+                  elsif color_downcase contains 'oak' or color_downcase contains 'brown' or color_downcase contains 'walnut'
+                    assign swatch_color = '#B38F68'
+                  elsif color_downcase contains 'charcoal' or color_downcase contains 'black' or color_downcase contains 'slate'
+                    assign swatch_color = '#2B2927'
+                  elsif color_downcase contains 'linen' or color_downcase contains 'white' or color_downcase contains 'sandstone'
+                    assign swatch_color = '#FAF9F6'
+                  elsif color_downcase contains 'grey' or color_downcase contains 'gray'
+                    assign swatch_color = '#A0A0A0'
+                  elsif color_downcase contains 'terracotta' or color_downcase contains 'clay' or color_downcase contains 'tan'
+                    assign swatch_color = '#C97B63'
+                  elsif color_downcase contains 'olive' or color_downcase contains 'green'
+                    assign swatch_color = '#707A65'
+                  elsif color_downcase contains 'velvet' or color_downcase contains 'blue'
+                    assign swatch_color = '#4A5B6E'
+                  else
+                    assign swatch_color = color_downcase
+                  endif
+                endif
+              -%}
+
+              {%- if is_color -%}
+                <div class="variant-swatch__wrapper">
+                  <input 
+                    type="radio" 
+                    id="section-{{ section_id }}-option-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}" 
+                    name="option-{{ forloop.parentloop.index0 }}" 
+                    value="{{ value | escape }}"
+                    {% if checked %}checked{% endif %}
+                    class="variant-input-hidden"
+                  >
+                  <label 
+                    for="section-{{ section_id }}-option-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}"
+                    class="variant-swatch {% if checked %}variant-swatch--active{% endif %}"
+                    style="
+                      background-color: {{ swatch_color }};
+                      {% if swatch_image != blank %}background-image: url({{ swatch_image }});{% endif %}
+                    "
+                    title="{{ value }}"
+                    aria-label="{{ value }}"
+                  >
+                    <span class="visually-hidden">{{ value }}</span>
+                  </label>
+                </div>
+              {%- else -%}
+                <div class="variant-pill__wrapper">
+                  <input 
+                    type="radio" 
+                    id="section-{{ section_id }}-option-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}" 
+                    name="option-{{ forloop.parentloop.index0 }}" 
+                    value="{{ value | escape }}"
+                    {% if checked %}checked{% endif %}
+                    class="variant-input-hidden"
+                  >
+                  <label 
+                    for="section-{{ section_id }}-option-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}"
+                    class="variant-pill {% if checked %}variant-pill--active{% endif %}"
+                  >
+                    {{ value }}
+                  </label>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <!-- Hidden master input to pass variant ID to form -->
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" class="js-master-variant-input">
+
+    <!-- Injection of variant JSON data for JS consumption (JS-003, B2B, Subscriptions) -->
+    <script type="application/json" class="js-variants-json">
+      [
+        {%- for variant in product.variants -%}
+          {
+            "id": {{ variant.id | json }},
+            "title": {{ variant.title | json }},
+            "price": {{ variant.price | json }},
+            "compare_at_price": {{ variant.compare_at_price | json }},
+            "available": {{ variant.available | json }},
+            "quantity_rule": {
+              "min": {{ variant.quantity_rule.min | default: 1 | json }},
+              "max": {{ variant.quantity_rule.max | json }},
+              "increment": {{ variant.quantity_rule.increment | default: 1 | json }}
+            },
+            "quantity_price_breaks": [
+              {%- for price_break in variant.quantity_price_breaks -%}
+                {
+                  "minimum_quantity": {{ price_break.minimum_quantity | json }},
+                  "price": {{ price_break.price | json }},
+                  "price_formatted": {{ price_break.price | money | json }}
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ],
+            "selling_plan_allocations": [
+              {%- for allocation in variant.selling_plan_allocations -%}
+                {
+                  "selling_plan_id": {{ allocation.selling_plan.id | json }},
+                  "price": {{ allocation.price | json }},
+                  "price_formatted": {{ allocation.price | money | json }},
+                  "compare_at_price": {{ allocation.compare_at_price | json }},
+                  "compare_at_price_formatted": {{ allocation.compare_at_price | money | json }}
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ]
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    </script>
+  </decor-variant-selector>
+{%- else -%}
+  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" class="js-master-variant-input">
+  
+  <!-- Injection of variant JSON data for JS consumption (B2B, Subscriptions) when only default variant exists -->
+  <script type="application/json" class="js-variants-json">
+    [
+      {
+        "id": {{ product.selected_or_first_available_variant.id | json }},
+        "title": {{ product.selected_or_first_available_variant.title | json }},
+        "price": {{ product.selected_or_first_available_variant.price | json }},
+        "compare_at_price": {{ product.selected_or_first_available_variant.compare_at_price | json }},
+        "available": {{ product.selected_or_first_available_variant.available | json }},
+        "quantity_rule": {
+          "min": {{ product.selected_or_first_available_variant.quantity_rule.min | default: 1 | json }},
+          "max": {{ product.selected_or_first_available_variant.quantity_rule.max | json }},
+          "increment": {{ product.selected_or_first_available_variant.quantity_rule.increment | default: 1 | json }}
+        },
+        "quantity_price_breaks": [
+          {%- for price_break in product.selected_or_first_available_variant.quantity_price_breaks -%}
+            {
+              "minimum_quantity": {{ price_break.minimum_quantity | json }},
+              "price": {{ price_break.price | json }},
+              "price_formatted": {{ price_break.price | money | json }}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ],
+        "selling_plan_allocations": [
+          {%- for allocation in product.selected_or_first_available_variant.selling_plan_allocations -%}
+            {
+              "selling_plan_id": {{ allocation.selling_plan.id | json }},
+              "price": {{ allocation.price | json }},
+              "price_formatted": {{ allocation.price | money | json }},
+              "compare_at_price": {{ allocation.compare_at_price | json }},
+              "compare_at_price_formatted": {{ allocation.compare_at_price | money | json }}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      }
+    ]
+  </script>
+{%- endunless -%}
+
+<!-- Render Selling Plans Selector -->
+{%- render 'snip-selling-plans', product: product, section_id: section_id -%}

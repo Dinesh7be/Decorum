@@ -1,0 +1,38 @@
+{% comment %}
+sections/main-404.liquid
+{% endcomment %}
+
+<section 
+  class="global__section main-404" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="main-404"
+>
+  <div class="grid__wrapper narrow">
+    <div class="span-12 main-404__content">
+      <span class="main-404__badge">404</span>
+      {%- if section.settings.show_title -%}
+        <h1 class="main-404__title">{{ 'general.404.title' | t }}</h1>
+      {%- endif -%}
+      <p class="main-404__text">
+        {{ 'general.404.subtext' | t }}
+      </p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn">
+        {{ 'general.404.button' | t }}
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "404 Page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show Page Title",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

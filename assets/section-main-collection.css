@@ -1,0 +1,145 @@
+/*
+ * theme/assets/section-main-collection.css
+ * Styling for the Main Collection Page Template
+ */
+
+.collection__header {
+  padding: 4rem 0 3rem 0;
+  text-align: center;
+}
+
+.collection__title {
+  margin-bottom: 1.5rem;
+}
+
+.collection__description {
+  max-width: 700px;
+  margin: 0 auto;
+  color: var(--text-color-light);
+}
+
+/* Sidebar and Main Layout */
+.collection__layout {
+  padding-bottom: 6rem;
+}
+
+.collection__sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+@media (max-width: 740px) {
+  .collection__sidebar {
+    display: none; /* In production: add sidebar popover/drawer toggle */
+  }
+}
+
+.active-filters {
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.active-filters__remove-btn {
+  font-size: 1rem !important;
+  padding: 0.5rem 1rem !important;
+  text-transform: none !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-group {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 2rem;
+}
+
+.filter-group__title {
+  font-family: var(--heading-family);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+}
+
+.filter-group__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
+}
+
+.filter-group__item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: var(--font-size-sm);
+}
+
+.filter-group__checkbox {
+  width: 1.8rem;
+  height: 1.8rem;
+  accent-color: var(--accent-color);
+  cursor: pointer;
+}
+
+/* Price Range */
+.filter-group__price-range {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.filter-group__price-range input {
+  padding: 0.8rem 1rem !important;
+}
+
+/* Sort dropdown */
+.collection__sort-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 3rem;
+}
+
+.collection__sort-select {
+  width: auto !important;
+  padding: 0.8rem 3rem 0.8rem 1.5rem !important;
+  font-size: var(--font-size-xs) !important;
+}
+
+.filter-group__price-range-col {
+  flex-grow: 1;
+}
+
+.filter-group__price-range-to {
+  align-self: flex-end;
+  padding-bottom: 1rem;
+}
+
+/* Grid Load state */
+#ProductGridContainer.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.collection__sort-bar label {
+  margin-bottom: 0;
+}
+
+.collection__empty {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.collection__empty-text {
+  margin-bottom: 3rem;
+  color: var(--text-color-light);
+}

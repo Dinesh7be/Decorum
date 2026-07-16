@@ -1,0 +1,251 @@
+{{ 'section-header.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/header.liquid
+{% endcomment %}
+
+{%- liquid
+  assign logo = section.settings.logo | default: settings.logo
+  assign logo_width = section.settings.logo_max_width
+  assign main_menu = section.settings.main_menu | default: 'main-menu'
+-%}
+
+<header 
+  class="header__wrapper" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="header"
+>
+  <div class="grid__wrapper header__container">
+    <!-- Mobile Toggle -->
+    <button 
+      class="header__mobile-toggle" 
+      popovertarget="mobile-menu-popover" 
+      aria-label="{{ 'accessibility.open_menu' | t }}"
+    >
+      {% render 'snip-icons', icon: 'menu', size: '20px' %}
+    </button>
+
+    <!-- Logo / Brand Name -->
+    <div class="header__logo">
+      {%- if logo != blank -%}
+        <a href="{{ routes.root_url }}" class="header__logo-link">
+          <img 
+            src="{{ logo | image_url: width: logo_width }}" 
+            alt="{{ logo.alt | default: shop.name }}" 
+            class="header__logo-img"
+            width="{{ logo_width }}"
+            height="{{ logo_width | divided_by: logo.aspect_ratio | round }}"
+            style="max-width: {{ logo_width }}px;"
+          >
+        </a>
+      {%- else -%}
+        <a href="{{ routes.root_url }}" class="header__logo-link">
+          {{ shop.name }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <!-- Navigation Menu (Desktop) -->
+    <nav class="header__nav" role="navigation" aria-label="{{ 'general.accessibility.primary_navigation' | t }}">
+      <ul class="header__nav-list" role="list">
+        {%- for link in linklists[main_menu].links -%}
+          {%- liquid
+            assign has_dropdown = false
+            if link.links != blank
+              assign has_dropdown = true
+            endif
+          -%}
+          <li class="header__nav-item">
+            <a 
+              href="{{ link.url }}" 
+              class="header__nav-link"
+              {% if has_dropdown %}
+                aria-haspopup="true"
+                aria-expanded="false"
+              {% endif %}
+            >
+              {{ link.title }}
+            </a>
+
+            {%- if has_dropdown -%}
+              <ul class="header__dropdown" role="list">
+                {%- for childlink in link.links -%}
+                  <li>
+                    <a href="{{ childlink.url }}" class="header__dropdown-link">
+                      {{ childlink.title }}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header__actions">
+      <!-- Search Button -->
+      {%- if section.settings.show_search -%}
+        <button 
+          class="header__action-btn" 
+          popovertarget="search-drawer-popover" 
+          aria-label="{{ 'accessibility.open_search' | t }}"
+        >
+          {% render 'snip-icons', icon: 'search', size: '20px' %}
+        </button>
+      {%- endif -%}
+
+      <!-- Customer Account Link -->
+      {%- if shop.customer_accounts_enabled -%}
+        <a 
+          href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" 
+          class="header__action-btn" 
+          aria-label="{{ 'accessibility.account' | t }}"
+        >
+          {% render 'snip-icons', icon: 'warranty', size: '20px' %}
+        </a>
+      {%- endif -%}
+
+      <!-- Cart Button -->
+      <button 
+        class="header__action-btn" 
+        popovertarget="cart-drawer-popover" 
+        aria-label="{{ 'accessibility.open_cart' | t }}"
+      >
+        {% render 'snip-icons', icon: 'cart', size: '20px' %}
+        <span 
+          class="header__cart-count js-cart-count" 
+          {% if cart.item_count == 0 %}style="display: none;"{% endif %}
+        >
+          {{ cart.item_count }}
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Global Search Drawer Popover (A11Y-004, A11Y-003) -->
+<div id="search-drawer-popover" popover="auto" class="drawer__root" role="dialog" aria-modal="true" aria-labelledby="search-drawer-title">
+  <decor-drawer popover-id="search-drawer-popover">
+    <div class="drawer__container drawer--top">
+      <div class="drawer__header">
+        <h2 id="search-drawer-title" class="drawer__title">{{ 'general.search.search' | t }}</h2>
+        <button class="drawer__close js-drawer-close" aria-label="{{ 'accessibility.close_drawer' | t }}">
+          {% render 'snip-icons', icon: 'close', size: '20px' %}
+        </button>
+      </div>
+      <div class="drawer__content search-drawer__content">
+        <predictive-search>
+          <form action="{{ routes.search_url }}" method="get" role="search" class="search-drawer__form">
+            <input 
+              type="search" 
+              name="q" 
+              placeholder="{{ 'general.search.placeholder' | t }}" 
+              class="search-drawer__input"
+              aria-label="{{ 'general.search.search' | t }}"
+              autocomplete="off"
+            >
+            <button type="submit" class="search-drawer__submit" aria-label="{{ 'general.search.submit' | t }}">
+              {% render 'snip-icons', icon: 'search', size: '22px' %}
+            </button>
+          </form>
+          <div id="predictive-search-results-placeholder" class="js-predictive-results" style="margin-top: 2rem; max-height: 60vh; overflow-y: auto;"></div>
+        </predictive-search>
+      </div>
+    </div>
+  </decor-drawer>
+</div>
+
+<!-- Mobile Navigation Drawer Popover (A11Y-004) -->
+<div id="mobile-menu-popover" popover="auto" class="drawer__root" role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
+  <decor-drawer popover-id="mobile-menu-popover">
+    <div class="drawer__container drawer--left">
+      <div class="drawer__header">
+        <h2 id="mobile-menu-title" class="drawer__title">{{ 'general.menu.title' | t }}</h2>
+        <button class="drawer__close js-drawer-close" aria-label="{{ 'accessibility.close_drawer' | t }}">
+          {% render 'snip-icons', icon: 'close', size: '20px' %}
+        </button>
+      </div>
+      <div class="drawer__content">
+        <nav class="mobile-nav" role="navigation">
+          <ul class="mobile-nav__list">
+            {%- for link in linklists[main_menu].links -%}
+              <li>
+                <a href="{{ link.url }}" class="mobile-nav__link">
+                  {{ link.title }}
+                </a>
+                {%- if link.links != blank -%}
+                  <ul class="mobile-nav__sublist">
+                    {%- for childlink in link.links -%}
+                      <li>
+                        <a href="{{ childlink.url }}" class="mobile-nav__sublink">
+                          {{ childlink.title }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </decor-drawer>
+</div>
+
+<style>
+  /* Dynamic logo position and styles */
+  {%- if section.settings.logo_position == 'center' -%}
+    .header__container {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+  {%- endif -%}
+</style>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "range",
+      "id": "logo_max_width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "default": 120,
+      "unit": "px",
+      "label": "Logo Width"
+    },
+    {
+      "type": "select",
+      "id": "logo_position",
+      "label": "Logo alignment",
+      "options": [
+        { "value": "left", "label": "Left aligned" },
+        { "value": "center", "label": "Center aligned" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Navigation Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search icon",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

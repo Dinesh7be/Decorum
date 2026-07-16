@@ -1,0 +1,9 @@
+{% comment %}
+snippets/onboard-blog.liquid
+
+Renders a list of onboarding article placeholders.
+{% endcomment %}
+
+{%- for i in (1..3) -%}
+  {%- render 'onboard-article', index: i -%}
+{%- endfor -%}

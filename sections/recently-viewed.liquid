@@ -1,0 +1,157 @@
+{% comment %}
+sections/recently-viewed.liquid
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section 
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="recently-viewed"
+>
+  <decor-recently-viewed 
+    class="recently-viewed__wrapper"
+    data-current-handle="{% if template.name == 'product' %}{{ product.handle }}{% endif %}"
+    style="display: block;"
+  >
+    <div class="grid__wrapper">
+      <div class="span-12">
+        {%- if section.settings.title != blank -%}
+          <h2 class="section__title" style="text-align: center; margin-bottom: 3rem;">
+            {{ section.settings.title | escape }}
+          </h2>
+        {%- endif -%}
+        
+        <div class="grid__wrapper js-recently-viewed-grid" style="column-gap: var(--grid-gap); row-gap: var(--grid-gap);">
+          <!-- Dynamically populated via JavaScript or fallback liquid -->
+          {%- if request.design_mode -%}
+            {%- for i in (1..4) -%}
+              <div class="span-3 sm-span-6">
+                {%- render 'onboard-product', index: i -%}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- assign fallback = section.settings.fallback_collection -%}
+            {%- if fallback != blank and collections[fallback].products_count > 0 -%}
+              {%- for product in collections[fallback].products limit: 4 -%}
+                <div class="span-3 sm-span-6">
+                  {%- render 'product-card', product: product -%}
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              <!-- Dynamic fallback if no settings selected -->
+              {%- for i in (1..4) -%}
+                <div class="span-3 sm-span-6">
+                  {%- render 'onboard-product', index: i -%}
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </decor-recently-viewed>
+</section>
+
+<script>
+  if (!customElements.get('decor-recently-viewed')) {
+    customElements.define('decor-recently-viewed', class extends HTMLElement {
+      connectedCallback() {
+        const currentHandle = this.getAttribute('data-current-handle');
+        
+        // Save current handle to storage if we are on a product page
+        if (currentHandle) {
+          let recentlyViewed = JSON.parse(localStorage.getItem('decor_recently_viewed') || '[]');
+          recentlyViewed = recentlyViewed.filter(h => h !== currentHandle);
+          recentlyViewed.unshift(currentHandle);
+          localStorage.setItem('decor_recently_viewed', JSON.stringify(recentlyViewed.slice(0, 8)));
+        }
+
+        this.renderList();
+      }
+
+      renderList() {
+        const container = this.querySelector('.js-recently-viewed-grid');
+        if (!container) return;
+
+        const currentHandle = this.getAttribute('data-current-handle');
+        let handles = JSON.parse(localStorage.getItem('decor_recently_viewed') || '[]');
+        
+        // Filter out current product if present
+        const filtered = handles.filter(h => h !== currentHandle).slice(0, 4);
+
+        if (filtered.length === 0) {
+          // If no items viewed yet, keep the server-side rendered fallback products visible
+          return;
+        }
+
+        const rootUrl = window.Shopify && window.Shopify.routes && window.Shopify.routes.root || '/';
+        
+        Promise.all(filtered.map(handle => 
+          fetch(`${rootUrl}products/${handle}?view=ajax`)
+            .then(response => {
+              if (!response.ok) throw new Error('Could not load card');
+              return response.text();
+            })
+            .catch(() => null)
+        )).then(htmls => {
+          const validHtmls = htmls.filter(html => html !== null && html.trim() !== '');
+          if (validHtmls.length === 0) {
+            this.style.display = 'none';
+            return;
+          }
+          container.innerHTML = validHtmls.map(html => `<div class="span-3 sm-span-6">${html}</div>`).join('');
+        });
+      }
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Recently Viewed",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Recently Viewed Products"
+    },
+    {
+      "type": "collection",
+      "id": "fallback_collection",
+      "label": "Fallback Collection",
+      "info": "Displayed when the customer has not viewed any products yet."
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recently Viewed"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,37 @@
+{% comment %}
+sections/main-article.liquid
+{% endcomment %}
+
+{{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
+
+<article 
+  class="global__section" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="main-article"
+>
+  {%- if article.image != blank -%}
+    <div class="grid__wrapper" style="margin-top: -2rem; margin-bottom: 4rem;">
+      <div class="span-12 article__featured-image-wrapper">
+        {%- render 'basic-responsive-image', image: article.image, sizes: '100vw', loading: 'eager' -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="grid__wrapper narrow" {% unless article.image %}style="margin-top: -2rem;"{% endunless %}>
+    <div class="span-12 article__header" style="text-align: center; margin-bottom: 3.5rem;">
+      <div class="article__meta" style="margin-bottom: 1.5rem; font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-color-light);">
+        {{ article.published_at | date: '%B %d, %Y' }} &bull; By {{ article.author }}
+      </div>
+      <h1 class="article__title" style="font-size: var(--font-size-xxl); margin-bottom: 1.5rem;">{{ article.title }}</h1>
+    </div>
+    <div class="span-12 rte article__content">
+      {{ article.content }}
+    </div>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Article Content"
+}
+{% endschema %}

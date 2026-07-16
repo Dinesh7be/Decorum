@@ -1,0 +1,75 @@
+{% comment %}
+sections/main-order.liquid
+{% endcomment %}
+
+{{ 'component-customer.css' | asset_url | stylesheet_tag }}
+
+<section 
+  class="global__section" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="main-order"
+>
+  <div class="grid__wrapper customer__header-wrapper" style="margin-top: -2rem; margin-bottom: 2rem;">
+    <div class="span-12 customer__header-row customer__header-row--order" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <a href="{{ routes.account_url }}" class="customer__header-back-link" style="text-decoration: underline;">&larr; {{ 'customer.order.back_to_account' | t }}</a>
+      <p class="order-date-text" style="color: var(--text-color-light); font-size: var(--font-size-sm); margin: 0;">
+        {%- assign order_date = order.created_at | date: "%B %d, %Y %I:%M %p" -%}
+        {{ 'customer.order.date' | t: date: order_date }}
+      </p>
+    </div>
+  </div>
+
+  <div class="grid__wrapper">
+    <div class="span-12">
+      <table class="customer-table customer-table--margin">
+        <thead>
+          <tr class="customer-table__head-row">
+            <th class="customer-table__th">{{ 'customer.order.product' | t }}</th>
+            <th class="customer-table__th">{{ 'customer.order.sku' | t }}</th>
+            <th class="customer-table__th customer-table__th--quantity">{{ 'customer.order.quantity' | t }}</th>
+            <th class="customer-table__th customer-table__th--total">{{ 'customer.order.total' | t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for line_item in order.line_items -%}
+            <tr class="customer-table__body-row">
+              <td class="order-item-td-padding">
+                <span class="order-item-title">{{ line_item.product.title | default: line_item.title }}</span>
+                {%- unless line_item.product.has_only_default_variant -%}
+                  <div class="order-item-options">
+                    {%- for option in line_item.options_with_values -%}
+                      <p class="order-item-option-line">{{ option.name }}: {{ option.value }}</p>
+                    {%- endfor -%}
+                  </div>
+                {%- endunless -%}
+                {%- if line_item.selling_plan_allocation != blank -%}
+                  <p class="order-item-subscription">
+                    Subscription: {{ line_item.selling_plan_allocation.selling_plan.name }}
+                  </p>
+                {%- endif -%}
+                {%- if line_item.unit_price_measurement -%}
+                  <div class="order-item-unit-price">
+                    {{ line_item.unit_price | money }}/
+                    {%- if line_item.unit_price_measurement.reference_value != 1 -%}
+                      {{ line_item.unit_price_measurement.reference_value }}
+                    {%- endif -%}
+                    {{ line_item.unit_price_measurement.reference_unit }}
+                  </div>
+                {%- endif -%}
+              </td>
+              <td class="order-item-td-padding order-item-sku">{{ line_item.sku }}</td>
+              <td class="order-item-td-padding customer-table__td--quantity">{{ line_item.quantity }}</td>
+              <td class="customer-table__td--total order-item-td-padding">{{ line_item.final_line_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Order Details"
+}
+{% endschema %}

@@ -1,0 +1,187 @@
+{{ 'section-product-comparison-builder.css' | asset_url | stylesheet_tag: preload: true }}
+{{ 'component-product-listing.css' | asset_url | stylesheet_tag }}
+
+{% comment %}
+sections/product-comparison-builder.liquid
+
+Merchant picks a collection; every product renders through the standard
+product-listing snippet with a "Compare" checkbox overlay. Each card also
+carries a hidden <template> with its comparison-table row (thumbnail clone +
+price/material/dimension text), pre-rendered server-side. decor-compare-builder
+(theme.js) only tracks up to 3 checked boxes and clones those templates into
+a table inside the existing decor-modal component — it never builds an <img>
+or fetches data at runtime.
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+
+  assign compare_collection = collections[section.settings.collection]
+  assign modal_id = 'compare-modal-' | append: section.id
+-%}
+
+<section
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="product-comparison-builder"
+>
+  <div class="grid__wrapper">
+    <div class="span-12">
+      {%- if section.settings.title != blank -%}
+        <h2 class="section__title compare-builder__section-title">
+          {{ section.settings.title | escape }}
+        </h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="compare-builder__section-subheading">
+          {{ section.settings.subheading | escape }}
+        </p>
+      {%- endif -%}
+
+      {%- if compare_collection != blank -%}
+        <decor-compare-builder data-modal-id="{{ modal_id }}" data-max="3">
+          <div class="compare-builder__grid">
+            {%- for product in compare_collection.products limit: 24 -%}
+              {%- liquid
+                assign p_width = product.metafields.custom.width
+                assign p_height = product.metafields.custom.height
+                assign p_depth = product.metafields.custom.depth
+                assign p_material = product.metafields.custom.material | default: product.type
+              -%}
+              <div class="compare-builder__card">
+                <label class="compare-builder__checkbox-wrap">
+                  <input type="checkbox" class="js-compare-checkbox" value="{{ product.id }}">
+                  {{ 'sections.comparison.compare_label' | t }}
+                </label>
+                {%- render 'product-listing', product: product, loading: 'lazy' -%}
+
+                <template class="js-compare-template" data-product-id="{{ product.id }}">
+                  <tr>
+                    <td>
+                      <div class="compare-builder__thumb">
+                        {%- if product.featured_media != blank -%}
+                          {%- assign compare_alt = product.title | escape -%}
+                          {{ product.featured_media | image_url: width: 140, height: 140, crop: 'center' | image_tag: alt: compare_alt, loading: 'lazy' }}
+                        {%- endif -%}
+                      </div>
+                    </td>
+                    <td>
+                      <strong>{{ product.title | escape }}</strong><br>
+                      <a href="{{ product.url }}">{{ 'sections.comparison.view_product' | t }}</a>
+                    </td>
+                    <td>{{ product.price | money }}</td>
+                    <td>{{ p_material | default: '—' }}</td>
+                    <td>{{ p_width | default: '—' }}</td>
+                    <td>{{ p_height | default: '—' }}</td>
+                    <td>{{ p_depth | default: '—' }}</td>
+                  </tr>
+                </template>
+              </div>
+            {%- endfor -%}
+          </div>
+        </decor-compare-builder>
+
+        {%- capture compare_count_template -%}
+          {{ 'sections.comparison.selected_count' | t: count: '{count}', max: '{max}' }}
+        {%- endcapture -%}
+        <div class="compare-builder__bar js-compare-bar" data-visible="false">
+          <span
+            class="compare-builder__bar-count js-compare-count"
+            data-template="{{ compare_count_template | strip | escape }}"
+          ></span>
+          <button type="button" class="btn btn--sm js-compare-open" popovertarget="{{ modal_id }}" disabled>
+            {{ 'sections.comparison.compare_now' | t }}
+          </button>
+          <button type="button" class="btn btn--secondary btn--sm js-compare-clear">
+            {{ 'sections.comparison.clear' | t }}
+          </button>
+        </div>
+
+        <div id="{{ modal_id }}" popover="auto" class="modal__root" role="dialog" aria-modal="true" aria-labelledby="{{ modal_id }}-title">
+          <decor-modal popover-id="{{ modal_id }}">
+            <div class="modal__container compare-builder__modal-container">
+              <div class="modal__header compare-builder__modal-header">
+                <h2 id="{{ modal_id }}-title" class="modal__title compare-builder__modal-title">{{ 'sections.comparison.modal_title' | t }}</h2>
+                <button type="button" class="modal__close js-modal-close" aria-label="{{ 'accessibility.close_modal' | t }}">
+                  {% render 'snip-icons', icon: 'close', size: '20px' %}
+                </button>
+              </div>
+              <div class="compare-builder__table-wrap">
+                <table class="compare-builder__table">
+                  <thead>
+                    <tr>
+                      <th>{{ 'sections.comparison.col_image' | t }}</th>
+                      <th>{{ 'sections.comparison.col_product' | t }}</th>
+                      <th>{{ 'sections.comparison.col_price' | t }}</th>
+                      <th>{{ 'sections.comparison.col_material' | t }}</th>
+                      <th>{{ 'products.product.width' | t }}</th>
+                      <th>{{ 'products.product.height' | t }}</th>
+                      <th>{{ 'products.product.depth' | t }}</th>
+                    </tr>
+                  </thead>
+                  <tbody class="js-compare-modal-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </decor-modal>
+        </div>
+      {%- else -%}
+        <p class="compare-builder__onboarding-notice">
+          {{ 'sections.comparison.onboarding_notice' | t }}
+        </p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Compare products",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Compare Products"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Select up to 3 pieces to compare side by side."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection to Compare"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product comparison builder"
+    }
+  ]
+}
+{% endschema %}

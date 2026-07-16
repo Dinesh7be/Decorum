@@ -1,0 +1,63 @@
+{% comment %}
+snippets/snip-gift-card-recipient.liquid
+
+Renders gift card recipient form fields.
+{% endcomment %}
+
+<div class="recipient-form__wrapper">
+  <input 
+    type="checkbox" 
+    name="properties[__shopify_send_as]" 
+    value="gift"
+    class="recipient-checkbox-input"
+    id="Recipient-Checkbox-{{ section_id }}"
+  >
+  <label for="Recipient-Checkbox-{{ section_id }}" class="recipient-checkbox-label">
+    <span>{{ 'recipient.form.checkbox' | t }}</span>
+  </label>
+
+  <div class="recipient-fields">
+    <div class="recipient-field">
+      <label for="Recipient-Email-{{ section_id }}">{{ 'recipient.form.email' | t }} <span aria-hidden="true">*</span></label>
+      <input 
+        type="email" 
+        id="Recipient-Email-{{ section_id }}" 
+        name="properties[Recipient email]" 
+        placeholder="{{ 'recipient.form.email_placeholder' | t }}"
+        class="recipient-input"
+      >
+    </div>
+
+    <div class="recipient-field">
+      <label for="Recipient-Name-{{ section_id }}">{{ 'recipient.form.name' | t }}</label>
+      <input 
+        type="text" 
+        id="Recipient-Name-{{ section_id }}" 
+        name="properties[Recipient name]" 
+        placeholder="{{ 'recipient.form.name_placeholder' | t }}"
+        class="recipient-input"
+      >
+    </div>
+
+    <div class="recipient-field">
+      <label for="Recipient-Message-{{ section_id }}">{{ 'recipient.form.message' | t }}</label>
+      <textarea 
+        id="Recipient-Message-{{ section_id }}" 
+        name="properties[Gift message]" 
+        placeholder="{{ 'recipient.form.message_placeholder' | t }}"
+        rows="4"
+        class="recipient-input recipient-textarea"
+      ></textarea>
+    </div>
+
+    <div class="recipient-field">
+      <label for="Recipient-Send-On-{{ section_id }}">{{ 'recipient.form.send_on' | t }}</label>
+      <input 
+        type="date" 
+        id="Recipient-Send-On-{{ section_id }}" 
+        name="properties[Send on]" 
+        class="recipient-input"
+      >
+    </div>
+  </div>
+</div>

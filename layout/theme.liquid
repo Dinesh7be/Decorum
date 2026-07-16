@@ -1,0 +1,137 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.accent_color }}">
+    
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.shopify.com" crossorigin>
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- capture seo_title -%}
+      {{ page_title }}
+      {%- if current_tags -%}
+        {%- assign meta_tags = current_tags | join: ', ' -%}
+        &nbsp;&ndash;&nbsp;{{ 'general.meta.tags' | t: tags: meta_tags }}
+      {%- endif -%}
+      {%- if current_page != 1 -%}
+        &nbsp;&ndash;&nbsp;{{ 'general.meta.page' | t: page: current_page }}
+      {%- endif -%}
+      {%- assign escaped_page_title = page_title | escape -%}
+      {%- unless escaped_page_title contains shop.name -%}
+        &nbsp;&ndash;&nbsp;{{ shop.name }}
+      {%- endunless -%}
+    {%- endcapture -%}
+    <title>{{ seo_title | strip }}</title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    {%- render 'structured-data' -%}
+    {%- render 'social-meta-tags' -%}
+    
+    <!-- Preload Assets (PERF-001) -->
+    {{ 'theme.js' | asset_url | preload_tag: as: 'script' }}
+
+    <script>
+      window.themeStrings = {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        cart: {{ 'cart.title' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        addToCartError: {{ 'products.product.add_to_cart_error' | t | json }}
+      };
+    </script>
+
+    <!-- Fonts are loaded via css-variables.liquid -->
+
+    {%- render 'css-variables' -%}
+
+    {{ 'stylesheet.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'component-product-listing.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'component-inner-page-banner.css' | asset_url | stylesheet_tag: preload: true }}
+
+    {{ content_for_header }}
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    </script>
+  </head>
+
+  <body class="template-{{ template | replace: '.', '-' | handleize }} theme-buttons--{{ settings.button_border_radius | replace: 'px', '' | handleize }}">
+    <!-- Skip to main content link (A11Y-001) -->
+    <a class="skip-link visually-hidden" href="#main-content">
+      {{ 'accessibility.skip_to_text' | t }}
+    </a>
+
+    {%- sections 'header-group' -%}
+
+    <main id="main-content" class="main-content-area" role="main" tabindex="-1">
+      {%- unless template == 'index' or template == 'password' or template == 'giftcard' -%}
+        {%- render 'inner-page-banner' -%}
+      {%- endunless -%}
+      {{ content_for_layout }}
+    </main>
+
+    {%- sections 'footer-group' -%}
+
+    <!-- Global Cart Drawer (JS-007, A11Y-004) -->
+    <div id="cart-drawer-popover" popover="auto" class="drawer__root" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title">
+      <decor-cart-drawer popover-id="cart-drawer-popover">
+        <div class="drawer__container drawer--right">
+          <div class="drawer__header">
+            <h2 id="cart-drawer-title" class="drawer__title">{{ 'cart.title' | t }}</h2>
+            <button class="drawer__close js-drawer-close" aria-label="{{ 'accessibility.close_drawer' | t }}">
+              {% render 'snip-icons', icon: 'close', size: '20px' %}
+            </button>
+          </div>
+          <div class="drawer__content js-cart-drawer-content">
+            <!-- Server rendered cart markup loaded dynamically here -->
+            <div class="cart-drawer__loading-placeholder" style="text-align: center; padding: 4rem 0;">
+              <p>{{ 'cart.general.loading' | t }}</p>
+            </div>
+          </div>
+        </div>
+      </decor-cart-drawer>
+    </div>
+
+    <!-- Global Quick View Modal (JS-007, A11Y-004) -->
+    <div id="quickview-modal-popover" popover="auto" class="modal__root" role="dialog" aria-modal="true" aria-labelledby="quickview-modal-title">
+      <decor-modal popover-id="quickview-modal-popover">
+        <div class="modal__container">
+          <button class="modal__close js-modal-close" aria-label="{{ 'accessibility.close_modal' | t }}">
+            {% render 'snip-icons', icon: 'close', size: '16px' %}
+          </button>
+          <div class="modal__content js-quick-view-content" style="padding: 3rem;">
+            <!-- Server-rendered quickview HTML injected here via AJAX -->
+          </div>
+        </div>
+      </decor-modal>
+    </div>
+
+    {%- section 'newsletter-popup' -%}
+
+    <!-- Config JSON Injection (JS-003) -->
+    <script id="cart-config" type="application/json">
+      {
+        "cart_url": {{ routes.cart_url | json }},
+        "cart_add_url": {{ routes.cart_add_url | json }},
+        "cart_change_url": {{ routes.cart_change_url | json }},
+        "cart_update_url": {{ routes.cart_update_url | json }},
+        "add_to_cart": {{ 'products.product.add_to_cart' | t | json }},
+        "money_format": {{ shop.money_format | json }},
+        "cart_action": {{ settings.cart_type | json }},
+        "add_to_cart_error": {{ 'products.product.add_to_cart_error' | t | json }},
+        "loading_quickview": {{ 'products.product.loading_quickview' | t | json }},
+        "error_loading_quickview": {{ 'products.product.error_loading_quickview' | t | json }}
+      }
+    </script>
+
+    <!-- Theme Core Scripts -->
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+  </body>
+</html>

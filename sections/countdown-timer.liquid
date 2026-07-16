@@ -1,0 +1,203 @@
+{{ 'section-countdown-timer.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/countdown-timer.liquid
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+
+  assign expired_text = section.settings.expired_text
+  if expired_text == blank
+    assign expired_text = 'sections.countdown.expired' | t
+  endif
+-%}
+
+<section 
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="countdown-timer"
+  style="background-color: {{ section.settings.bg_color | default: 'var(--background-darken)' }};"
+>
+  <div class="grid__wrapper">
+    <div class="span-8 push-2 sm-span-12 countdown__content-wrapper">
+      {%- if section.settings.title != blank -%}
+        <h2 class="section__title countdown__title" style="color: {{ section.settings.text_color | default: 'var(--accent-color)' }};">
+          {{ section.settings.title | escape }}
+        </h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="section__subheading countdown__subheading" style="color: {{ section.settings.text_color | default: 'var(--text-color-light)' }};">
+          {{ section.settings.subheading | escape }}
+        </p>
+      {%- endif -%}
+
+      <decor-countdown 
+        class="countdown__wrapper" 
+        data-end-date="{{ section.settings.end_date | escape }}"
+        data-expired-text="{{ expired_text | escape }}"
+        aria-live="polite"
+      >
+        <div class="countdown__grid">
+          <div class="countdown__item">
+            <span class="countdown__value js-days" style="color: {{ section.settings.text_color | default: 'var(--accent-color)' }};">00</span>
+            <span class="countdown__label" style="color: {{ section.settings.text_color | default: 'var(--text-color-light)' }};">{{ 'sections.countdown.days' | t }}</span>
+          </div>
+          <span class="countdown__divider" style="color: {{ section.settings.text_color | default: 'var(--border-color)' }};">:</span>
+          <div class="countdown__item">
+            <span class="countdown__value js-hours" style="color: {{ section.settings.text_color | default: 'var(--accent-color)' }};">00</span>
+            <span class="countdown__label" style="color: {{ section.settings.text_color | default: 'var(--text-color-light)' }};">{{ 'sections.countdown.hours' | t }}</span>
+          </div>
+          <span class="countdown__divider" style="color: {{ section.settings.text_color | default: 'var(--border-color)' }};">:</span>
+          <div class="countdown__item">
+            <span class="countdown__value js-minutes" style="color: {{ section.settings.text_color | default: 'var(--accent-color)' }};">00</span>
+            <span class="countdown__label" style="color: {{ section.settings.text_color | default: 'var(--text-color-light)' }};">{{ 'sections.countdown.minutes' | t }}</span>
+          </div>
+          <span class="countdown__divider" style="color: {{ section.settings.text_color | default: 'var(--border-color)' }};">:</span>
+          <div class="countdown__item">
+            <span class="countdown__value js-seconds" style="color: {{ section.settings.text_color | default: 'var(--accent-color)' }};">00</span>
+            <span class="countdown__label" style="color: {{ section.settings.text_color | default: 'var(--text-color-light)' }};">{{ 'sections.countdown.seconds' | t }}</span>
+          </div>
+        </div>
+      </decor-countdown>
+
+      {%- if section.settings.link_text != blank and section.settings.link_url != blank -%}
+        <div class="countdown__btn-container">
+          <a href="{{ section.settings.link_url }}" class="btn btn--sm">
+            {{ section.settings.link_text | escape }}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  if (!customElements.get('decor-countdown')) {
+    customElements.define('decor-countdown', class extends HTMLElement {
+      connectedCallback() {
+        this.endDateStr = this.getAttribute('data-end-date');
+        if (!this.endDateStr) return;
+        
+        this.endTime = new Date(this.endDateStr).getTime();
+        if (isNaN(this.endTime)) return;
+
+        this.daysEl = this.querySelector('.js-days');
+        this.hoursEl = this.querySelector('.js-hours');
+        this.minutesEl = this.querySelector('.js-minutes');
+        this.secondsEl = this.querySelector('.js-seconds');
+        
+        this.updateTimer();
+        this.interval = setInterval(() => this.updateTimer(), 1000);
+      }
+      
+      updateTimer() {
+        const now = new Date().getTime();
+        const diff = this.endTime - now;
+        
+        if (diff <= 0) {
+          if (this.interval) clearInterval(this.interval);
+          this.innerHTML = `<p class="countdown__expired-msg" style="font-size: var(--font-size-lg); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">${this.getAttribute('data-expired-text')}</p>`;
+          return;
+        }
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        if (this.daysEl) this.daysEl.textContent = String(days).padStart(2, '0');
+        if (this.hoursEl) this.hoursEl.textContent = String(hours).padStart(2, '0');
+        if (this.minutesEl) this.minutesEl.textContent = String(minutes).padStart(2, '0');
+        if (this.secondsEl) this.secondsEl.textContent = String(seconds).padStart(2, '0');
+      }
+      
+      disconnectedCallback() {
+        if (this.interval) clearInterval(this.interval);
+      }
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Countdown Timer",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Limited Time Offers"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "The seasonal collection is going fast. Secure yours today."
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "Target Date (ISO Format)",
+      "default": "2026-12-31T23:59:59",
+      "info": "Format: YYYY-MM-DDTHH:MM:SS (e.g. 2026-12-31T23:59:59)"
+    },
+    {
+      "type": "text",
+      "id": "expired_text",
+      "label": "Expired Message",
+      "default": "Offer has expired"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Button Label",
+      "default": "Shop Sale Now"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#2B2927"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Countdown timer"
+    }
+  ]
+}
+{% endschema %}

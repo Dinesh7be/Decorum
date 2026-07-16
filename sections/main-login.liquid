@@ -1,0 +1,46 @@
+{% comment %}
+sections/main-login.liquid
+{% endcomment %}
+
+{{ 'component-customer.css' | asset_url | stylesheet_tag }}
+
+<section 
+  class="global__section" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="main-login"
+>
+  <div class="grid__wrapper narrow" style="margin-top: -2rem;">
+    <div class="span-12 customer-form-container">
+      {%- form 'customer_login' -%}
+        {{ form.errors | default_errors }}
+
+        <div class="customer-form__row">
+          <label for="CustomerEmail">{{ 'customer.login.email' | t }}</label>
+          <input type="email" name="customer[email]" id="CustomerEmail" autocomplete="email" required>
+        </div>
+
+        {%- if form.password_needed -%}
+          <div class="customer-form__row--password">
+            <div class="customer-form__password-header">
+              <label for="CustomerPassword">{{ 'customer.login.password' | t }}</label>
+              <a href="#recover" class="customer-form__forgot-link">{{ 'customer.login.forgot_password' | t }}</a>
+            </div>
+            <input type="password" name="customer[password]" id="CustomerPassword" autocomplete="current-password" required>
+          </div>
+        {%- endif -%}
+
+        <button type="submit" class="btn btn--full customer-form__submit-btn">{{ 'customer.login.sign_in' | t }}</button>
+
+        <p class="customer-form__footer-text">
+          {{ 'customer.login.new_customer' | t }} <a href="{{ routes.account_register_url }}" class="customer-form__footer-link">{{ 'customer.login.create_account' | t }}</a>
+        </p>
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer Login"
+}
+{% endschema %}

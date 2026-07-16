@@ -1,0 +1,44 @@
+{% comment %}
+sections/main-activate-account.liquid
+{% endcomment %}
+
+{{ 'component-customer.css' | asset_url | stylesheet_tag }}
+
+<section 
+  class="global__section" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="main-activate-account"
+>
+  <div class="grid__wrapper narrow" style="margin-top: -2rem;">
+    <div class="span-12 activate-account-wrapper">
+      <p class="activate-account__text">
+        {{ 'customer.activate_account.subtext' | t }}
+      </p>
+
+      {%- form 'activate_customer_password' -%}
+        {{ form.errors | default_errors }}
+
+        <div class="activate-account__row">
+          <label for="CustomerPassword">{{ 'customer.activate_account.password' | t }}</label>
+          <input type="password" name="customer[password]" id="CustomerPassword" autocomplete="new-password" placeholder="{{ 'customer.activate_account.password' | t }}" required>
+        </div>
+
+        <div class="activate-account__row--confirm">
+          <label for="CustomerPasswordConfirmation">{{ 'customer.activate_account.password_confirm' | t }}</label>
+          <input type="password" name="customer[password_confirmation]" id="CustomerPasswordConfirmation" autocomplete="new-password" placeholder="{{ 'customer.activate_account.password_confirm' | t }}" required>
+        </div>
+
+        <div class="activate-account__actions">
+          <button type="submit" class="btn activate-account__btn">{{ 'customer.activate_account.submit' | t }}</button>
+          <button type="submit" name="decline" class="btn btn--secondary activate-account__btn">{{ 'customer.activate_account.decline' | t }}</button>
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Activate Account"
+}
+{% endschema %}

@@ -1,0 +1,76 @@
+/*
+ * theme/assets/section-bundle-save-builder.css
+ * Curated bundle with a running total and estimated savings as items toggle.
+ */
+
+.bundle-builder__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.bundle-builder__item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.2rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--button-border-radius);
+}
+
+.bundle-builder__item-checkbox {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.bundle-builder__item-image {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--button-border-radius);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--background-darken);
+}
+
+.bundle-builder__item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bundle-builder__item-info {
+  flex-grow: 1;
+}
+
+.bundle-builder__item-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  margin: 0 0 0.3rem;
+}
+
+.bundle-builder__item-price {
+  font-size: var(--font-size-sm);
+  color: var(--text-color-light);
+}
+
+.bundle-builder__summary {
+  border-top: 1px solid var(--border-color);
+  padding-top: 2rem;
+  text-align: center;
+}
+
+.bundle-builder__summary-row {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  font-size: var(--font-size-lg);
+  margin-bottom: 0.5rem;
+}
+
+.bundle-builder__savings {
+  color: var(--secondary-accent);
+  font-size: var(--font-size-sm);
+  margin-bottom: 2rem;
+}

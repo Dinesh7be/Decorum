@@ -1,0 +1,196 @@
+{{ 'section-main-collection.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/main-collection.liquid
+{% endcomment %}
+
+{%- liquid
+  assign limit = section.settings.products_per_page | default: 12
+-%}
+
+<section 
+  class="global__section" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="main-collection"
+>
+  <!-- Collection Header -->
+  {%- if collection.description != blank -%}
+    <div class="grid__wrapper collection__header" style="padding-top: 0; margin-top: -2rem; margin-bottom: 4rem;">
+      <div class="span-12">
+        <div class="collection__description rte">{{ collection.description }}</div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="grid__wrapper collection__layout">
+    <!-- Sidebar: Filters (AJAX enabled with decor-filters) -->
+    <div class="span-3 sm-span-12">
+      <decor-filters class="collection__sidebar">
+        <form id="CollectionFiltersForm" class="filter-form">
+          <!-- Active filter details -->
+          <div id="ActiveFilters" class="active-filters">
+            {%- for filter in collection.filters -%}
+              {%- for value in filter.active_values -%}
+                <a 
+                  href="{{ value.url_to_remove }}" 
+                  class="btn btn--secondary active-filters__remove-btn"
+                >
+                  {{ filter.label }}: {{ value.label }} &times;
+                </a>
+              {%- endfor -%}
+              {%- if filter.type == "price_range" -%}
+                {%- if filter.min_value.value != blank or filter.max_value.value != blank -%}
+                  <a 
+                    href="{{ filter.url_to_remove }}" 
+                    class="btn btn--secondary active-filters__remove-btn"
+                  >
+                    {%- if filter.min_value.value -%}{{ filter.min_value.value | money }}{%- else -%}$0{%- endif -%} - 
+                    {%- if filter.max_value.value -%}{{ filter.max_value.value | money }}{%- else -%}{{ filter.range_max | money }}{%- endif -%} &times;
+                  </a>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          <!-- Filters Loop -->
+          {%- if collection.filters.size > 0 -%}
+            {%- for filter in collection.filters -%}
+              <div class="filter-group">
+                <h3 class="filter-group__title">{{ filter.label }}</h3>
+                
+                {%- case filter.type -%}
+                  {%- when 'list' -%}
+                    <ul class="filter-group__list" role="list">
+                      {%- for value in filter.values -%}
+                        <li class="filter-group__item">
+                          <input 
+                            type="checkbox" 
+                            name="{{ value.param_name }}" 
+                            value="{{ value.value }}" 
+                            id="Filter-{{ filter.label | handle }}-{{ forloop.index }}"
+                            class="filter-group__checkbox"
+                            {% if value.active %}checked{% endif %}
+                            {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                          >
+                          <label for="Filter-{{ filter.label | handle }}-{{ forloop.index }}">
+                            {{ value.label }} ({{ value.count }})
+                          </label>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+
+                  {%- when 'price_range' -%}
+                    <div class="filter-group__price-range">
+                      <div class="filter-group__price-range-col">
+                        <label for="Filter-Price-Min">{{ 'sections.collection.min' | t }}</label>
+                        <input 
+                          type="number" 
+                          name="{{ filter.min_value.param_name }}" 
+                          id="Filter-Price-Min"
+                          placeholder="0"
+                          value="{{ filter.min_value.value | divided_by: 100 }}"
+                          min="0"
+                          max="{{ filter.range_max | divided_by: 100 }}"
+                        >
+                      </div>
+                      <span class="filter-group__price-range-to">{{ 'sections.collection.to' | t }}</span>
+                      <div class="filter-group__price-range-col">
+                        <label for="Filter-Price-Max">{{ 'sections.collection.max' | t }}</label>
+                        <input 
+                          type="number" 
+                          name="{{ filter.max_value.param_name }}" 
+                          id="Filter-Price-Max"
+                          placeholder="{{ filter.range_max | divided_by: 100 }}"
+                          value="{{ filter.max_value.value | divided_by: 100 }}"
+                          min="0"
+                          max="{{ filter.range_max | divided_by: 100 }}"
+                        >
+                      </div>
+                    </div>
+                {%- endcase -%}
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+
+          <!-- Keep sorting query parameters inside form -->
+          <input type="hidden" name="sort_by" value="{{ collection.sort_by }}">
+        </form>
+      </decor-filters>
+    </div>
+
+    <!-- Right: Products Grid -->
+    <div class="span-9 sm-span-12">
+      <!-- Sort Bar -->
+      <div class="collection__sort-bar">
+        <label for="SortBy">{{ 'collections.sorting.sort_by' | t }}</label>
+        <select 
+          name="sort_by" 
+          id="SortBy" 
+          class="collection__sort-select"
+          onchange="document.querySelector('#CollectionFiltersForm input[name=sort_by]').value = this.value; document.querySelector('#CollectionFiltersForm').dispatchEvent(new Event('change'));"
+        >
+          {%- for option in collection.sort_options -%}
+            <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected="selected"{% endif %}>
+              {{ option.name }}
+            </option>
+          {%- endfor -%}
+        </select>
+      </div>
+
+      <!-- Products -->
+      <div id="ProductGridContainer">
+        {%- paginate collection.products by limit -%}
+          {%- if collection.products.size > 0 -%}
+            <div class="grid__wrapper edge">
+              {%- for product in collection.products -%}
+                {%- liquid
+                  assign loading = 'lazy'
+                  assign fetch_priority = 'auto'
+                  if forloop.index <= 3
+                    assign loading = 'eager'
+                    assign fetch_priority = 'high'
+                  endif
+                -%}
+                <div class="span-4 sm-span-6 grid-item">
+                  {%- render 'product-listing', product: product, loading: loading, fetchpriority: fetch_priority -%}
+                </div>
+              {%- endfor -%}
+            </div>
+
+            {%- render 'pagination', paginate: paginate -%}
+          {%- else -%}
+            <div class="collection__empty">
+              <h3>{{ 'collections.general.no_products' | t }}</h3>
+              <p class="collection__empty-text">{{ 'collections.general.no_products_subtext' | t }}</p>
+            </div>
+            
+            <div class="grid__wrapper edge">
+              {%- for i in (1..6) -%}
+                <div class="span-4 sm-span-6 grid-item">
+                  {%- render 'onboard-product', index: i -%}
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endpaginate -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection Grid",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 6,
+      "max": 24,
+      "step": 6,
+      "default": 12,
+      "label": "Products per page"
+    }
+  ]
+}
+{% endschema %}

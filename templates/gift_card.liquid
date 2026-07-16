@@ -1,0 +1,184 @@
+{% layout 'gift_card' %}
+{% comment %}
+templates/gift_card.liquid
+{% endcomment %}
+
+{%- liquid
+  assign formatted_initial_value = gift_card.initial_value | money
+  assign formatted_balance = gift_card.balance | money
+-%}
+
+<div class="giftcard-template">
+  <!-- Brand logo or name -->
+  <div class="giftcard__header">
+    <a href="{{ shop.url }}" class="giftcard__shop-link">
+      {{ shop.name }}
+    </a>
+  </div>
+
+  <span class="giftcard__subtitle">
+    {{ 'gift_cards.issued.subtext' | t }}
+  </span>
+  
+  <h1 class="giftcard__title">
+    {{ 'gift_cards.issued.title' | t: value: formatted_initial_value, shop: shop.name }}
+  </h1>
+  
+  <div class="giftcard__card">
+    <h2 class="giftcard__balance">
+      {{ formatted_balance }}
+    </h2>
+    <p class="giftcard__initial-val">
+      {{ 'gift_cards.issued.initial_value' | t: value: formatted_initial_value }}
+    </p>
+    
+    <!-- QR Code (P0 blocker 9) -->
+    <div class="giftcard__qr-container">
+      <img
+        src="https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl={{ gift_card.qr_identifier }}&choe=UTF-8"
+        alt="{{ 'gift_cards.issued.qr_image_alt' | t }}"
+        width="120"
+        height="120"
+        loading="lazy"
+        class="giftcard__qr-image"
+      >
+    </div>
+    
+    <div class="giftcard__code-container">
+      <code class="giftcard__code">
+        {{ gift_card.code | format_code }}
+      </code>
+    </div>
+  </div>
+  
+  <div class="giftcard__actions">
+    <a href="{{ shop.url }}" class="btn btn--full giftcard__btn" target="_blank">
+      {{ 'gift_cards.issued.shop_link' | t }}
+    </a>
+
+    <!-- Apple Wallet Badge (P0 blocker 9) -->
+    {%- if gift_card.pass_url -%}
+      <a href="{{ gift_card.pass_url }}" class="giftcard__apple-wallet">
+        <img 
+          src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" 
+          width="144" 
+          height="45" 
+          alt="{{ 'gift_cards.issued.apple_wallet' | t }}" 
+          loading="lazy"
+        >
+      </a>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .giftcard-template {
+    max-width: 500px;
+    margin: 6rem auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding: 0 2rem;
+    font-family: var(--body-family);
+    color: var(--text-color);
+  }
+
+  .giftcard__shop-link {
+    font-family: var(--heading-family);
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--accent-color);
+    text-decoration: none;
+  }
+
+  .giftcard__subtitle {
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    color: var(--text-color-light);
+    letter-spacing: 0.1em;
+  }
+
+  .giftcard__title {
+    font-size: var(--font-size-xl);
+    font-family: var(--heading-family);
+    color: var(--accent-color);
+    margin: 0;
+  }
+
+  .giftcard__card {
+    background-color: var(--background-darken);
+    padding: 4rem 2rem;
+    border-radius: var(--button-border-radius);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .giftcard__balance {
+    font-size: var(--font-size-xxl);
+    margin: 0;
+    font-family: var(--heading-family);
+    color: var(--accent-color);
+  }
+
+  .giftcard__initial-val {
+    font-size: var(--font-size-sm);
+    color: var(--text-color-light);
+    margin: 0;
+  }
+
+  .giftcard__qr-container {
+    margin-top: 1rem;
+  }
+
+  .giftcard__qr-image {
+    display: block;
+    margin: 0 auto;
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    background-color: #fff;
+  }
+
+  .giftcard__code-container {
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  .giftcard__code {
+    font-size: var(--font-size);
+    background-color: var(--background);
+    padding: 1.2rem 2rem;
+    border: 1px dashed var(--border-color);
+    display: inline-block;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    color: var(--accent-color);
+    border-radius: var(--button-border-radius);
+  }
+
+  .giftcard__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .giftcard__btn {
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .giftcard__apple-wallet {
+    display: inline-block;
+    transition: transform var(--transition-fast);
+  }
+
+  .giftcard__apple-wallet:hover {
+    transform: scale(1.02);
+  }
+</style>

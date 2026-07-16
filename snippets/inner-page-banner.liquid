@@ -1,0 +1,83 @@
+{% comment %}
+snippets/inner-page-banner.liquid
+
+Renders a premium full-bleed header banner for inner pages.
+Includes breadcrumbs, template title, and dynamic background image.
+{% endcomment %}
+
+{%- liquid
+  assign banner_image = settings.inner_page_banner_image
+  
+  if template contains 'collection' and collection.image != blank
+    assign banner_image = collection.image
+  elsif template contains 'article' and article.image != blank
+    assign banner_image = article.image
+  endif
+
+  # Resolve the banner title based on the template type
+  assign banner_title = page_title
+  if template contains 'collection'
+    assign banner_title = collection.title
+  elsif template contains 'product'
+    assign banner_title = product.title
+  elsif template contains 'page'
+    assign banner_title = page.title
+  elsif template contains 'blog'
+    assign banner_title = blog.title
+  elsif template contains 'article'
+    assign banner_title = article.title
+  elsif template contains 'search'
+    if search.performed
+      assign banner_title = 'general.search.results_count' | t: count: search.results_count, terms: search.terms
+    else
+      assign banner_title = 'general.search.search' | t
+    endif
+  elsif template contains 'cart'
+    assign banner_title = 'cart.title' | t
+  elsif template contains '404'
+    assign banner_title = 'general.404.title' | t
+  elsif template contains 'list-collections'
+    assign banner_title = 'collections.general.all_collections' | t
+  elsif template contains 'login'
+    assign banner_title = 'customer.login.title' | t
+  elsif template contains 'register'
+    assign banner_title = 'customer.register.title' | t
+  elsif template contains 'account'
+    assign banner_title = 'customer.account.title' | t
+  elsif template contains 'addresses'
+    assign banner_title = 'customer.addresses.title' | t
+  elsif template contains 'order'
+    assign banner_title = 'customer.order.title' | t: name: order.name
+  elsif template contains 'reset_password'
+    assign banner_title = 'customer.reset_password.title' | t
+  elsif template contains 'activate_account'
+    assign banner_title = 'customer.activate_account.title' | t
+  endif
+-%}
+
+<div class="inner-page-banner {% if banner_image == blank %}inner-page-banner--no-image{% endif %}">
+  {%- if banner_image != blank -%}
+    <div class="inner-page-banner__image">
+      {{ banner_image | image_url: width: 2000 | image_tag:
+        widths: '375, 550, 750, 1100, 1500, 1780, 2000',
+        sizes: '100vw',
+        loading: 'eager',
+        fetchpriority: 'high',
+        class: 'inner-banner-img'
+      }}
+    </div>
+  {%- endif -%}
+
+  <!-- Dark overlay to ensure text contrast and premium look -->
+  <div class="inner-page-banner__overlay"></div>
+
+  <!-- Content Container -->
+  <div class="inner-page-banner__container grid__wrapper">
+    <div class="span-12 inner-page-banner__content">
+      <div class="inner-page-banner__breadcrumbs">
+        {% render 'breadcrumbs' %}
+      </div>
+      <h1 class="inner-page-banner__title">{{ banner_title }}</h1>
+    </div>
+  </div>
+</div>

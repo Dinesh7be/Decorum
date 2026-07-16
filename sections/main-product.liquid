@@ -1,0 +1,632 @@
+{{ 'section-main-product.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/main-product.liquid
+{% endcomment %}
+
+{%- liquid
+  assign gallery_layout = section.settings.gallery_layout
+  assign current_variant = product.selected_or_first_available_variant
+  assign first_image = product.featured_media.preview_image
+
+  assign has_model = false
+  for media in product.media
+    if media.media_type == 'model'
+      assign has_model = true
+      break
+    endif
+  endfor
+-%}
+
+{%- if has_model -%}
+  {{ 'shopify-model-viewer-ui.css' | shopify_asset_url | stylesheet_tag }}
+  <script src="{{ 'shopify-model-viewer-ui.js' | shopify_asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+<section 
+  id="product-section--{{ section.id }}"
+  class="global__section product__container"
+  data-section-id="{{ section.id }}"
+  data-section-type="main-product"
+>
+  <div class="grid__wrapper">
+    <!-- Left Column: Product Gallery -->
+    <div class="span-7 sm-span-12 product__gallery">
+      {%- if gallery_layout == 'slider' -%}
+        <!-- Slider Gallery -->
+        <decor-carousel class="product__gallery-main-carousel">
+          <div class="product__gallery-main">
+            <div class="product__gallery-carousel-track js-carousel-track">
+              {%- if product.media.size > 0 -%}
+                {%- for media in product.media -%}
+                  <div 
+                    class="product__gallery-slide js-gallery-slide" 
+                    data-media-id="{{ media.id }}"
+                  >
+                    {%- liquid
+                      assign loading = 'lazy'
+                      assign fetch_priority = 'auto'
+                      if forloop.first
+                        assign loading = 'eager'
+                        assign fetch_priority = 'high'
+                      endif
+                    -%}
+                    
+                    {%- case media.media_type -%}
+                      {%- when 'image' -%}
+                        <div class="product__media-zoom {% if settings.enable_image_zoom %}js-zoom-image{% endif %}">
+                          {%- render 'basic-responsive-image', 
+                            image: media, 
+                            sizes: '(min-width: 740px) 50vw, 100vw',
+                            loading: loading,
+                            fetchpriority: fetch_priority
+                          -%}
+                        </div>
+                      {%- when 'video' -%}
+                        <div class="product__media-video">
+                          {{ media | video_tag: autoplay: false, loop: true, controls: true, preload: 'none' }}
+                        </div>
+                      {%- when 'external_video' -%}
+                        <div class="product__media-external-video">
+                          {{ media | external_video_tag }}
+                        </div>
+                      {%- when 'model' -%}
+                        <div class="product__media-model">
+                          {{ media | model_viewer_tag: image_size: '800x800', reveal: 'interaction', toggleable: true }}
+                        </div>
+                    {%- endcase -%}
+                  </div>
+                {%- endfor -%}
+              {%- else -%}
+                <!-- Onboarding Product Slides (SEC-005) -->
+                {%- for i in (1..3) -%}
+                  {%- assign svg_name = 'product-' | append: i -%}
+                  <div class="product__gallery-slide js-gallery-slide">
+                    <div class="product-card__image-placeholder">
+                      {{ svg_name | placeholder_svg_tag: 'placeholder-svg' }}
+                    </div>
+                  </div>
+                {%- endfor -%}
+              {%- endif -%}
+            </div>
+          </div>
+
+          <!-- Thumbnails -->
+          {%- if product.media.size > 1 -%}
+            <div class="product__gallery-thumbnails">
+              {%- for media in product.media -%}
+                <div 
+                  class="product__gallery-thumb js-carousel-dot {% if forloop.first %}active{% endif %}" 
+                  aria-label="View media {{ forloop.index }}"
+                >
+                  <img
+                    src="{{ media.preview_image | image_url: width: 120, height: 120, crop: 'center' }}"
+                    alt="{{ media.alt | default: product.title | escape }}"
+                    width="60"
+                    height="60"
+                    loading="lazy"
+                  >
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- elsif product.media.size == 0 -%}
+            <!-- Onboarding Thumbnails -->
+            <div class="product__gallery-thumbnails">
+              {%- for i in (1..3) -%}
+                {%- assign svg_name = 'product-' | append: i -%}
+                <div 
+                  class="product__gallery-thumb js-carousel-dot {% if forloop.first %}active{% endif %}" 
+                  aria-label="View media {{ forloop.index }}"
+                >
+                  <div class="product-card__image-placeholder">
+                    {{ svg_name | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </decor-carousel>
+
+      {%- else -%}
+        <!-- Stacked/Grid Gallery -->
+        <div class="product__gallery--{{ gallery_layout }}">
+          {%- if product.media.size > 0 -%}
+            {%- for media in product.media -%}
+              <div class="product__gallery-item js-gallery-slide" data-media-id="{{ media.id }}">
+                {%- liquid
+                  assign loading = 'lazy'
+                  assign fetch_priority = 'auto'
+                  if forloop.first
+                    assign loading = 'eager'
+                    assign fetch_priority = 'high'
+                  endif
+                -%}
+                
+                {%- case media.media_type -%}
+                  {%- when 'image' -%}
+                    <div class="product__media-zoom {% if settings.enable_image_zoom %}js-zoom-image{% endif %}">
+                      {%- render 'basic-responsive-image', 
+                        image: media, 
+                        sizes: '(min-width: 740px) 50vw, 100vw',
+                        loading: loading,
+                        fetchpriority: fetch_priority
+                      -%}
+                    </div>
+                  {%- when 'video' -%}
+                    <div class="product__media-video">
+                      {{ media | video_tag: autoplay: false, loop: true, controls: true, preload: 'none' }}
+                    </div>
+                  {%- when 'external_video' -%}
+                    <div class="product__media-external-video">
+                      {{ media | external_video_tag }}
+                    </div>
+                  {%- when 'model' -%}
+                    <div class="product__media-model">
+                      {{ media | model_viewer_tag: image_size: '800x800', reveal: 'interaction', toggleable: true }}
+                    </div>
+                {%- endcase -%}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <!-- Onboarding Stacked Gallery -->
+            {%- for i in (1..3) -%}
+              {%- assign svg_name = 'product-' | append: i -%}
+              <div class="product__gallery-item js-gallery-slide">
+                <div class="product-card__image-placeholder">
+                  {{ svg_name | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Right Column: Product buy-box -->
+    <div class="span-5 sm-span-12 product__info-container">
+      {%- form 'product', product, id: 'product-form-main', class: 'js-product-form' -%}
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              {%- render block -%}
+
+            {%- when 'custom_liquid' -%}
+              {{ block.settings.custom_liquid }}
+
+            {%- when 'vendor' -%}
+              <div class="product__info-vendor">{{ product.vendor }}</div>
+
+            {%- when 'title' -%}
+              <h1 class="product__info-title">{{ product.title }}</h1>
+
+            {%- when 'price' -%}
+              {%- render 'snip-product-price', product: product, section_id: section.id -%}
+              <div class="product-form__installments">
+                {{ form | payment_terms }}
+              </div>
+
+            {%- when 'variants' -%}
+              {%- render 'snip-product-variants', product: product, section_id: section.id -%}
+
+            {%- when 'buttons' -%}
+              <decor-cart-form>
+                {%- render 'snip-product-buttons', product: product, section_id: section.id, form: form -%}
+              </decor-cart-form>
+              <div class="js-pickup-container">
+                {%- render 'pickup-availability', variant: product.selected_or_first_available_variant -%}
+              </div>
+              <div 
+                class="js-complementary-products" 
+                data-product-id="{{ product.id }}"
+                data-limit="4"
+              ></div>
+
+            {%- when 'dimensions' -%}
+              {%- render 'snip-product-dimensions', 
+                product: product, 
+                width: block.settings.width, 
+                height: block.settings.height, 
+                depth: block.settings.depth 
+              -%}
+
+            {%- when 'description' -%}
+              <div class="product__info-description rte">
+                {{ product.description }}
+              </div>
+
+            {%- when 'details' -%}
+              {%- render 'snip-product-details', 
+                title: block.settings.title, 
+                content: block.settings.content,
+                open_default: block.settings.open_default
+              -%}
+
+            {%- when 'specs' -%}
+              {%- assign specs_content = block.settings.content | default: product.metafields.custom.specifications -%}
+              {%- if specs_content != blank -%}
+                {%- render 'snip-product-details', 
+                  title: block.settings.title | default: 'Specifications', 
+                  content: specs_content,
+                  open_default: block.settings.open_default
+                -%}
+              {%- endif -%}
+
+            {%- when 'materials' -%}
+              {%- assign materials_content = block.settings.content | default: product.metafields.custom.materials -%}
+              {%- if materials_content != blank -%}
+                {%- render 'snip-product-details', 
+                  title: block.settings.title | default: 'Materials', 
+                  content: materials_content,
+                  open_default: block.settings.open_default
+                -%}
+              {%- endif -%}
+
+            {%- when 'care_instructions' -%}
+              {%- assign care_content = block.settings.content | default: product.metafields.custom.care_instructions -%}
+              {%- if care_content != blank -%}
+                {%- render 'snip-product-details', 
+                  title: block.settings.title | default: 'Care Instructions', 
+                  content: care_content,
+                  open_default: block.settings.open_default
+                -%}
+              {%- endif -%}
+
+            {%- when 'size_chart' -%}
+              {%- liquid
+                assign size_chart_title = block.settings.title
+                if size_chart_title == blank
+                  assign size_chart_title = 'products.product.size_guide' | t
+                endif
+              -%}
+              <div class="product-size-chart__wrapper">
+                <button 
+                  type="button" 
+                  class="product-size-chart__trigger-btn link-btn"
+                  popovertarget="size-chart-popover-{{ block.id }}"
+                  style="display: inline-flex; align-items: center; gap: 0.5rem; background: none; border: none; padding: 0.5rem 0; font-weight: 500; font-size: var(--font-size-sm); text-transform: uppercase; cursor: pointer; text-decoration: underline;"
+                >
+                  {% render 'snip-icons', icon: 'ruler', size: '16px' %}
+                  <span>{{ size_chart_title }}</span>
+                </button>
+
+                <!-- Size Chart Modal Popover (A11Y-004) -->
+                <div id="size-chart-popover-{{ block.id }}" popover="auto" class="modal__root" role="dialog" aria-modal="true" aria-labelledby="size-chart-title-{{ block.id }}">
+                  <decor-modal popover-id="size-chart-popover-{{ block.id }}">
+                    <div class="modal__container">
+                      <div class="modal__header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2 id="size-chart-title-{{ block.id }}" class="modal__title" style="margin: 0;">{{ size_chart_title | escape }}</h2>
+                        <button type="button" class="modal__close js-modal-close" aria-label="{{ 'accessibility.close_modal' | t }}" style="background: none; border: none; cursor: pointer;">
+                          {% render 'snip-icons', icon: 'close', size: '20px' %}
+                        </button>
+                      </div>
+                      <div class="modal__content" style="max-height: 70vh; overflow-y: auto;">
+                        {%- if block.settings.image != blank -%}
+                          {%- render 'basic-responsive-image', image: block.settings.image, sizes: '100vw' -%}
+                        {%- elsif block.settings.page != blank -%}
+                          <div class="rte">
+                            {{ pages[block.settings.page].content }}
+                          </div>
+                        {%- else -%}
+                          <p>Please select an image or page in the theme editor block settings.</p>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </decor-modal>
+                </div>
+              </div>
+
+            {%- when 'sharing' -%}
+              <div class="product__sharing">
+                <span class="product__sharing-title">{{ 'products.product.share' | t }}</span>
+                <div class="product__sharing-links">
+                  <a href="//www.facebook.com/sharer.php?u={{ shop.url | append: product.url }}" target="_blank" class="product__sharing-link">FB</a>
+                  <a href="//pinterest.com/pin/create/button/?url={{ shop.url | append: product.url }}&media={{ product.featured_media | image_url: width: 1024 }}" target="_blank" class="product__sharing-link">PIN</a>
+                </div>
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+<!-- Sticky Add to Cart Banner -->
+{%- if settings.enable_sticky_cart -%}
+  <div class="product-sticky-cart js-product-sticky-cart">
+    <div class="grid__wrapper">
+      <div class="span-12 product-sticky-cart__container">
+        <div class="product-sticky-cart__details">
+          {%- if first_image != blank -%}
+            <img src="{{ first_image | image_url: width: 100, height: 100, crop: 'center' }}" alt="{{ product.title | escape }}" class="product-sticky-cart__img" width="50" height="50" loading="lazy">
+          {%- endif -%}
+          <div class="product-sticky-cart__info">
+            <h4 class="product-sticky-cart__title">{{ product.title }}</h4>
+            <span class="product-sticky-cart__price js-price">{{ current_variant.price | money }}</span>
+          </div>
+        </div>
+        
+        <decor-cart-form>
+          {%- form 'product', product, class: 'product-sticky-cart__form' -%}
+            <input type="hidden" name="id" value="{{ current_variant.id }}" class="js-sticky-variant-id">
+            <button 
+              type="submit" 
+              class="btn btn--sm js-buy-button-{{ section.id }}" 
+              {% unless current_variant.available %}disabled="disabled"{% endunless %}
+              data-add-text="{{ 'products.product.add_to_cart' | t }}"
+              data-sold-out-text="{{ 'products.product.sold_out' | t }}"
+              aria-label="{{ 'products.product.add_to_cart' | t }}"
+            >
+              {%- if current_variant.available -%}
+                {{ 'products.product.add_to_cart' | t }}
+              {%- else -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- endif -%}
+            </button>
+          {%- endform -%}
+        </decor-cart-form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sticky cart intersection and scroll visibility
+    document.addEventListener('DOMContentLoaded', function() {
+      var buyForm = document.getElementById('product-form-main');
+      var stickyCart = document.querySelector('.js-product-sticky-cart');
+      if (!buyForm || !stickyCart) return;
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            stickyCart.classList.remove('active');
+          } else {
+            stickyCart.classList.add('active');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      observer.observe(buyForm);
+    });
+  </script>
+{%- endif -%}
+
+<!-- Variant Image Slider Control Bridge -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    theme.pubsub.subscribe('variant:image-change', function(data) {
+      if (data.sectionId !== '{{ section.id }}') return;
+      var slide = document.querySelector('.js-gallery-slide[data-media-id="' + data.mediaId + '"]');
+      if (!slide) return;
+      
+      // If we are in a carousel, scroll track to that slide offset
+      var track = document.querySelector('.js-carousel-track');
+      if (track) {
+        track.scrollTo({
+          left: slide.offsetLeft,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product information",
+  "settings": [
+    {
+      "type": "select",
+      "id": "gallery_layout",
+      "label": "Gallery Layout (Desktop)",
+      "options": [
+        { "value": "slider", "label": "Slider" },
+        { "value": "stacked", "label": "Stacked Columns" },
+        { "value": "grid", "label": "2-Column Grid" }
+      ],
+      "default": "slider"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid"
+        }
+      ]
+    },
+    {
+      "type": "vendor",
+      "name": "Vendor / Brand",
+      "limit": 1
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "variants",
+      "name": "Variant Selector",
+      "limit": 1
+    },
+    {
+      "type": "buttons",
+      "name": "Buy Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "label": "Show Dynamic Checkout",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "dimensions",
+      "name": "Dimensions Table",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "width",
+          "label": "Width",
+          "default": "84\""
+        },
+        {
+          "type": "text",
+          "id": "height",
+          "label": "Height",
+          "default": "34\""
+        },
+        {
+          "type": "text",
+          "id": "depth",
+          "label": "Depth",
+          "default": "38\""
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "details",
+      "name": "Details Accordion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Accordion Title",
+          "default": "Materials & Care"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Accordion Content",
+          "default": "<p>Carefully constructed using premium FSC-certified oak hardwood legs and high-resiliency cushion fillings wrapped in an abrasion-resistant, easy-to-clean blend. Wipe with clean damp cloth. Professional cleaning recommended.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by Default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "specs",
+      "name": "Specifications (Specs)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Specifications"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content Override",
+          "info": "Leave blank to dynamically display product.metafields.custom.specifications"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by Default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "materials",
+      "name": "Materials",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Materials"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content Override",
+          "info": "Leave blank to dynamically display product.metafields.custom.materials"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by Default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "care_instructions",
+      "name": "Care Instructions",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Care Instructions"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content Override",
+          "info": "Leave blank to dynamically display product.metafields.custom.care_instructions"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by Default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "size_chart",
+      "name": "Size Chart Guide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Size Guide"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Size Guide Image"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Size Guide Page Override"
+        }
+      ]
+    },
+    {
+      "type": "sharing",
+      "name": "Social Share Links",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}

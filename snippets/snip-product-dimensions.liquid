@@ -1,0 +1,50 @@
+{% comment %}
+snippets/snip-product-dimensions.liquid
+
+Displays a table of product dimensions. Values are populated from metafields or default settings.
+
+Accepts:
+- product:        {Object} Shopify Product object (required)
+- width:          {String} Default Width value (optional)
+- height:         {String} Default Height value (optional)
+- depth:          {String} Default Depth value (optional)
+
+Usage:
+{% render 'snip-product-dimensions', product: product, width: block.settings.width, height: block.settings.height %}
+{% endcomment %}
+
+{%- liquid
+  # Resolve from metafields or defaults
+  assign prod_width = product.metafields.custom.width | default: width | default: '84"'
+  assign prod_height = product.metafields.custom.height | default: height | default: '34"'
+  assign prod_depth = product.metafields.custom.depth | default: depth | default: '38"'
+  assign prod_seat = product.metafields.custom.seat_height | default: '18"'
+-%}
+
+<div class="product-dimensions__container">
+  <h4 class="product-dimensions__title">
+    {{ 'products.product.dimensions_heading' | t }}
+  </h4>
+  <table class="product-dimensions__table">
+    <tbody>
+      <tr class="product-dimensions__row">
+        <td class="product-dimensions__label">{{ 'products.product.width' | t }}</td>
+        <td class="product-dimensions__value">{{ prod_width }}</td>
+      </tr>
+      <tr class="product-dimensions__row">
+        <td class="product-dimensions__label">{{ 'products.product.height' | t }}</td>
+        <td class="product-dimensions__value">{{ prod_height }}</td>
+      </tr>
+      <tr class="product-dimensions__row">
+        <td class="product-dimensions__label">{{ 'products.product.depth' | t }}</td>
+        <td class="product-dimensions__value">{{ prod_depth }}</td>
+      </tr>
+      {%- if product.tags contains 'Sofa' or product.tags contains 'Chair' -%}
+        <tr>
+          <td class="product-dimensions__label">{{ 'products.product.seat_height' | t }}</td>
+          <td class="product-dimensions__value">{{ prod_seat }}</td>
+        </tr>
+      {%- endif -%}
+    </tbody>
+  </table>
+</div>

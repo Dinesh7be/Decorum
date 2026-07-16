@@ -1,0 +1,75 @@
+{% comment %}
+sections/main-account.liquid
+{% endcomment %}
+
+{{ 'component-customer.css' | asset_url | stylesheet_tag }}
+
+<section 
+  class="global__section" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="main-account"
+>
+  <div class="grid__wrapper customer__header-wrapper" style="margin-top: -2rem; margin-bottom: 2rem;">
+    <div class="span-12 customer__header-row" style="display: flex; justify-content: flex-end;">
+      <a href="{{ routes.account_logout_url }}" class="customer__header-logout-link" style="text-decoration: underline;">{{ 'customer.account.logout' | t }}</a>
+    </div>
+  </div>
+
+  <div class="grid__wrapper">
+    <!-- Left Column: Order History -->
+    <div class="span-8 sm-span-12 customer__left-column">
+      <h2 class="customer__column-title">{{ 'customer.account.orders' | t }}</h2>
+
+      {%- paginate customer.orders by 10 -%}
+        {%- if customer.orders.size > 0 -%}
+          <table class="customer-table">
+            <thead>
+              <tr class="customer-table__head-row">
+                <th class="customer-table__th">{{ 'customer.account.order_number' | t }}</th>
+                <th class="customer-table__th">{{ 'customer.account.date' | t }}</th>
+                <th class="customer-table__th">{{ 'customer.account.payment_status' | t }}</th>
+                <th class="customer-table__th">{{ 'customer.account.fulfillment_status' | t }}</th>
+                <th class="customer-table__th customer-table__th--total">{{ 'customer.account.total' | t }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for order in customer.orders -%}
+                <tr class="customer-table__body-row">
+                  <td class="customer-table__td">
+                    <a href="{{ order.customer_url }}" class="customer-table__order-link">{{ order.name }}</a>
+                  </td>
+                  <td class="customer-table__td customer-table__td--order-date">{{ order.created_at | time_tag: format: 'date' }}</td>
+                  <td class="customer-table__td">{{ order.financial_status_label }}</td>
+                  <td class="customer-table__td">{{ order.fulfillment_status_label }}</td>
+                  <td class="customer-table__td customer-table__td--total">{{ order.total_price | money }}</td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+          {%- render 'pagination', paginate: paginate -%}
+        {%- else -%}
+          <p class="customer__no-orders">{{ 'customer.account.no_orders' | t }}</p>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+
+    <!-- Right Column: Account Details -->
+    <div class="span-4 sm-span-12 customer__right-column">
+      <h2 class="customer__column-title">{{ 'customer.account.details' | t }}</h2>
+      
+      <div class="customer-card">
+        <p class="customer-card__name">{{ customer.name }}</p>
+        {{ customer.default_address | format_address }}
+        <a href="{{ routes.account_addresses_url }}" class="customer-card__view-addresses">
+          {{ 'customer.account.view_addresses' | t: count: customer.addresses_count }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer Account"
+}
+{% endschema %}

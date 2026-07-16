@@ -1,0 +1,57 @@
+/*
+ * theme/assets/section-multicolumn.css
+ * Styling for the Multicolumn Section
+ */
+
+.multicolumn__grid {
+  padding: 4rem 0;
+}
+
+.multicolumn__header-col {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.multicolumn__item {
+  text-align: var(--multicolumn-align, center);
+  padding: 2rem;
+}
+
+.multicolumn__image-wrapper {
+  margin-bottom: 2rem;
+  display: inline-block;
+  width: var(--multicolumn-img-width, 60px);
+  height: var(--multicolumn-img-width, 60px);
+}
+
+.multicolumn__icon-wrapper {
+  margin-bottom: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-color);
+}
+
+.multicolumn__title {
+  font-family: var(--heading-family);
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.multicolumn__text {
+  color: var(--text-color-light);
+  line-height: 1.6;
+}
+
+.multicolumn__btn-container {
+  margin-top: 1.5rem;
+}
+
+.multicolumn__link {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.05em;
+  text-decoration: underline;
+}

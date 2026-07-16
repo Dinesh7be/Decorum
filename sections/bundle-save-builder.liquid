@@ -1,0 +1,163 @@
+{{ 'section-bundle-save-builder.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/bundle-save-builder.liquid
+
+Curated multi-product bundle (e.g. "Living Room Set"). Each "item" block adds
+a product; shoppers can uncheck items they don't want, and the running total
++ estimated savings recalculate client-side (decor-bundle-builder, theme.js).
+"Add bundle to cart" adds every checked item's first-available variant via
+/cart/add.js in one request.
+
+Note: the discount shown here is informational math on the storefront price —
+actually discounting the cart total at checkout requires a matching Shopify
+automatic discount/bundle rule configured separately by the merchant.
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="bundle-save-builder"
+>
+  <div class="grid__wrapper">
+    <div class="span-6 push-3 sm-span-12">
+      {%- if section.settings.title != blank -%}
+        <h2 class="section__title" style="text-align: center; margin-bottom: 1rem;">
+          {{ section.settings.title | escape }}
+        </h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p style="text-align: center; color: var(--text-color-light); margin-bottom: 3rem;">
+          {{ section.settings.subheading | escape }}
+        </p>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <decor-bundle-builder data-discount-percent="{{ section.settings.discount_percent }}">
+          <div class="bundle-builder__list">
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign bundle_product = all_products[block.settings.product]
+                assign bundle_variant = bundle_product.selected_or_first_available_variant
+              -%}
+              {%- if bundle_product != blank and bundle_variant != blank -%}
+                <label class="bundle-builder__item" {{ block.shopify_attributes }}>
+                  <input
+                    type="checkbox"
+                    class="bundle-builder__item-checkbox js-bundle-item"
+                    checked
+                    data-variant-id="{{ bundle_variant.id }}"
+                    data-price="{{ bundle_variant.price }}"
+                  >
+                  <span class="bundle-builder__item-image">
+                    {%- if bundle_product.featured_media != blank -%}
+                      <img src="{{ bundle_product.featured_media | image_url: width: 140, height: 140, crop: 'center' }}" alt="{{ bundle_product.title | escape }}" width="72" height="72" loading="lazy">
+                    {%- endif -%}
+                  </span>
+                  <span class="bundle-builder__item-info">
+                    <span class="bundle-builder__item-title">{{ bundle_product.title }}</span>
+                    <span class="bundle-builder__item-price">{{ bundle_variant.price | money }}</span>
+                  </span>
+                </label>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          <div class="bundle-builder__summary">
+            <div class="bundle-builder__summary-row">
+              <span>{{ 'sections.bundle_builder.total_label' | t }}</span>
+              <span class="js-bundle-total">{{ 0 | money }}</span>
+            </div>
+            {%- capture savings_template -%}
+              {{ 'sections.bundle_builder.you_save' | t: amount: '{amount}' }}
+            {%- endcapture -%}
+            <p class="bundle-builder__savings js-bundle-savings" data-template="{{ savings_template | strip | escape }}"></p>
+            <button type="button" class="btn js-bundle-add">
+              {{ 'sections.bundle_builder.add_bundle' | t }}
+            </button>
+          </div>
+        </decor-bundle-builder>
+      {%- else -%}
+        <p style="text-align: center; color: var(--text-color-light);">
+          {{ 'sections.bundle_builder.onboarding_notice' | t }}
+        </p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bundle & save builder",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Build the Living Room Set"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Uncheck anything you don't need — savings update automatically."
+    },
+    {
+      "type": "range",
+      "id": "discount_percent",
+      "label": "Estimated Bundle Savings",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 10,
+      "unit": "%",
+      "info": "Displayed as informational savings only. Configure a matching Shopify discount/bundle rule to apply this at checkout."
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Bundle item",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bundle & save builder"
+    }
+  ]
+}
+{% endschema %}

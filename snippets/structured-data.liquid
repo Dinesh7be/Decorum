@@ -1,0 +1,73 @@
+{% comment %}
+snippets/structured-data.liquid
+
+Generates JSON-LD structured data for SEO.
+{% endcomment %}
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": {{ shop.name | json }},
+  {% if settings.logo != blank %}
+    "logo": {{ settings.logo | image_url: width: 300 | prepend: "https:" | json }},
+  {% endif %}
+  "sameAs": [
+    {{ settings.social_facebook_link | json }},
+    {{ settings.social_instagram_link | json }},
+    {{ settings.social_pinterest_link | json }},
+    {{ settings.social_twitter_link | json }}
+  ],
+  "url": {{ shop.url | append: page.url | json }}
+}
+</script>
+
+{%- if request.page_type == 'product' -%}
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "image": [
+      {{ product.featured_media | image_url: width: 1024 | prepend: "https:" | json }}
+    ],
+    "description": {{ product.description | strip_html | strip_newlines | json }},
+    "sku": {{ product.selected_or_first_available_variant.sku | default: product.selected_or_first_available_variant.id | json }},
+    "brand": {
+      "@type": "Brand",
+      "name": {{ product.vendor | json }}
+    },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": {{ cart.currency.iso_code | json }},
+      "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
+      "priceValidUntil": "2030-12-31",
+      "itemCondition": "http://schema.org/NewCondition",
+      "availability": "http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+      "url": {{ shop.url | append: product.selected_or_first_available_variant.url | json }}
+    }
+  }
+  </script>
+{%- elsif request.page_type == 'article' -%}
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": {{ article.title | json }},
+    "image": [
+      {{ article.image | image_url: width: 1024 | prepend: "https:" | json }}
+    ],
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "dateModified": {{ article.updated_at | default: article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "author": {
+      "@type": "Person",
+      "name": {{ article.author | json }}
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": {{ shop.name | json }}
+    },
+    "description": {{ article.excerpt_or_content | strip_html | truncate: 160 | json }}
+  }
+  </script>
+{%- endif -%}

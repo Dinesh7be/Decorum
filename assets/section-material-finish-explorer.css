@@ -1,0 +1,105 @@
+/*
+ * theme/assets/section-material-finish-explorer.css
+ * Filterable swatch grid of wood/fabric/finish/metal options.
+ */
+
+.material-explorer__filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 3rem;
+}
+
+.material-explorer__filter-btn {
+  padding: 0.7rem 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  background: var(--background);
+  color: var(--text-color);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.material-explorer__filter-btn[aria-pressed="true"] {
+  background: var(--accent-color);
+  color: var(--background);
+  border-color: var(--accent-color);
+}
+
+.material-explorer__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.material-explorer__swatch {
+  text-decoration: none;
+  color: var(--text-color);
+  display: block;
+}
+
+.material-explorer__swatch[hidden] {
+  display: none;
+}
+
+.material-explorer__swatch-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background-color: var(--background-darken);
+  border: 1px solid var(--border-color);
+}
+
+.material-explorer__swatch-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.material-explorer__swatch-color {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+.material-explorer__swatch-name {
+  display: block;
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.material-explorer__swatch-type {
+  display: block;
+  text-align: center;
+  font-size: var(--font-size-xs);
+  color: var(--text-color-light);
+  text-transform: capitalize;
+}
+
+.material-explorer__empty {
+  text-align: center;
+  color: var(--text-color-light);
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 980px) {
+  .material-explorer__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 740px) {
+  .material-explorer__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}

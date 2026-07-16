@@ -1,0 +1,105 @@
+/*
+ * theme/assets/section-design-style-quiz.css
+ * Multi-step interactive quiz mapping answers to a decor style result.
+ */
+
+.style-quiz {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.style-quiz__progress {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-color-light);
+  margin-bottom: 2rem;
+}
+
+.style-quiz__track {
+  position: relative;
+}
+
+.style-quiz__question {
+  display: none;
+}
+
+.style-quiz__question[data-active="true"] {
+  display: block;
+  animation: style-quiz-fade 0.3s ease;
+}
+
+.style-quiz__question legend {
+  font-family: var(--heading-family);
+  font-size: var(--font-size-lg);
+  margin-bottom: 2rem;
+  padding: 0;
+  width: 100%;
+}
+
+.style-quiz__options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.style-quiz__option-btn {
+  width: 100%;
+  padding: 1.5rem 1rem;
+  background: var(--background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--button-border-radius);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  color: var(--text-color);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.style-quiz__option-btn:hover,
+.style-quiz__option-btn:focus-visible {
+  border-color: var(--accent-color);
+  background: var(--background-darken);
+}
+
+.style-quiz__nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.style-quiz__result {
+  display: none;
+}
+
+.style-quiz__result[data-visible="true"] {
+  display: block;
+  animation: style-quiz-fade 0.4s ease;
+}
+
+.style-quiz__result-title {
+  font-family: var(--heading-family);
+  font-size: var(--font-size-xl);
+  margin-bottom: 1.5rem;
+}
+
+.style-quiz__result-desc {
+  color: var(--text-color-light);
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+@keyframes style-quiz-fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 740px) {
+  .style-quiz__options {
+    grid-template-columns: 1fr;
+  }
+}

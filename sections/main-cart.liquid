@@ -1,0 +1,189 @@
+{{ 'section-main-cart.css' | asset_url | stylesheet_tag }}
+
+{% comment %}
+sections/main-cart.liquid
+{% endcomment %}
+
+<section 
+  class="global__section" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="main-cart"
+>
+  <div class="grid__wrapper" style="margin-top: -2rem;">
+    <div class="span-12">
+      {%- if cart.item_count > 0 -%}
+        <form action="{{ routes.cart_url }}" method="post" novalidate class="cart-form">
+          <table class="cart-table">
+            <thead>
+              <tr class="cart-table__head-row">
+                <th class="cart-table__th">{{ 'cart.label.product' | t }}</th>
+                <th class="cart-table__th cart-table__th--quantity">{{ 'cart.label.quantity' | t }}</th>
+                <th class="cart-table__th cart-table__th--total">{{ 'cart.label.total' | t }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for item in cart.items -%}
+                <tr class="cart-table__body-row">
+                  <td class="cart-table__td-product">
+                    {%- if item.image != blank -%}
+                      <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title | default: item.product.title | escape }}" width="80" height="{{ 80 | divided_by: item.image.aspect_ratio | round }}" class="cart-table__product-image" loading="lazy">
+                    {%- endif -%}
+                    <div>
+                      <a href="{{ item.url }}" class="cart-table__product-title">
+                        {{ item.product.title }}
+                      </a>
+
+                      {%- unless item.product.has_only_default_variant -%}
+                        <div class="cart-item__options">
+                          {%- for option in item.options_with_values -%}
+                            <p class="cart-item__option-line">{{ option.name }}: {{ option.value }}</p>
+                          {%- endfor -%}
+                        </div>
+                      {%- endunless -%}
+
+                      {%- if item.selling_plan_allocation != blank -%}
+                        <p class="cart-item__subscription">
+                          Subscription: {{ item.selling_plan_allocation.selling_plan.name }}
+                        </p>
+                      {%- endif -%}
+
+                      {%- if item.unit_price_measurement -%}
+                        <div class="cart-item__unit-price">
+                          {{ item.unit_price | money }}/
+                          {%- if item.unit_price_measurement.reference_value != 1 -%}
+                            {{ item.unit_price_measurement.reference_value }}
+                          {%- endif -%}
+                          {{ item.unit_price_measurement.reference_unit }}
+                        </div>
+                      {%- endif -%}
+
+                      <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0" class="cart-item__remove-link">
+                        {{ 'cart.general.remove' | t }}
+                      </a>
+                    </div>
+                  </td>
+                  
+                  <td class="cart-table__td-quantity">
+                    <div class="cart-table__qty-selector">
+                      <button type="button" class="cart-table__qty-btn" onclick="this.nextElementSibling.stepDown(); this.closest('form').submit();">&minus;</button>
+                      <input 
+                        type="number" 
+                        name="updates[]" 
+                        value="{{ item.quantity }}" 
+                        min="0" 
+                        id="updates_{{ item.key }}"
+                        class="cart-table__qty-input"
+                        onchange="this.closest('form').submit();"
+                      >
+                      <button type="button" class="cart-table__qty-btn" onclick="this.previousElementSibling.stepUp(); this.closest('form').submit();">&plus;</button>
+                    </div>
+                  </td>
+
+                  <td class="cart-table__td-total">
+                    {{ item.final_line_price | money }}
+                  </td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+
+          <div class="cart__footer-wrapper">
+            <!-- Cart Notes (P0 blocker 8) -->
+            <div class="cart__notes">
+              <label for="Cart-note" class="cart__notes-label">{{ 'cart.general.order_special_instructions' | t }}</label>
+              <textarea 
+                name="note" 
+                id="Cart-note" 
+                rows="4" 
+                class="cart__notes-textarea" 
+                placeholder="{{ 'cart.general.order_special_instructions' | t }}..."
+              >{{ cart.note }}</textarea>
+            </div>
+
+            <!-- Summary panel -->
+            <div class="cart__summary">
+              
+              <!-- Automatic Discount Display (P0 blocker 8) -->
+              {%- if cart.cart_level_discount_applications.size > 0 -%}
+                <div class="cart__discounts">
+                  {%- for discount in cart.cart_level_discount_applications -%}
+                    <p class="cart__discount-item">
+                      Discount ({{ discount.title }}): -{{ discount.total_allocated_amount | money }}
+                    </p>
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+
+              <div class="cart__subtotal-row">
+                <span>{{ 'cart.general.subtotal' | t }}</span>
+                <span>{{ cart.total_price | money }}</span>
+              </div>
+              
+              {%- liquid
+                if cart.taxes_included and shop.shipping_policy.body != blank
+                  assign cart_notice = 'cart.general.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url
+                elsif cart.taxes_included
+                  assign cart_notice = 'cart.general.taxes_included_but_shipping_at_checkout' | t
+                elsif shop.shipping_policy.body != blank
+                  assign cart_notice = 'cart.general.taxes_and_shipping_policy_html' | t: link: shop.shipping_policy.url
+                else
+                  assign cart_notice = 'cart.general.taxes_and_shipping_policy' | t
+                endif
+              -%}
+              <p class="cart__notice">
+                {{ cart_notice }}
+              </p>
+
+              <div class="cart__buttons">
+                <button type="submit" name="update" class="btn btn--secondary">
+                  {{ 'cart.general.update' | t }}
+                </button>
+                <button type="submit" name="checkout" class="btn">
+                  {{ 'cart.checkout' | t }}
+                </button>
+              </div>
+
+              <!-- Accelerated Checkout Buttons (P0 blocker 8) -->
+              {%- if additional_checkout_buttons -%}
+                <div class="additional-checkout-buttons cart__additional-buttons">
+                  {{ content_for_additional_checkout_buttons }}
+                </div>
+              {%- endif -%}
+
+            </div>
+          </div>
+        </form>
+      {%- else -%}
+        <div class="cart__empty-container">
+          <h3>{{ 'cart.empty' | t }}</h3>
+          <p class="cart__empty-subtext">{{ 'cart.general.explore_best_sellers' | t }}</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn cart__continue-btn">
+            {{ 'cart.continue_shopping' | t }}
+          </a>
+        </div>
+        
+        <div class="grid__wrapper edge cart__empty-grid">
+          {%- for i in (1..3) -%}
+            <div class="span-4 sm-span-6 grid-item">
+              {%- render 'onboard-product', index: i -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart Page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show Page Title",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,175 @@
+{{ 'section-shop-the-room-hotspots.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/shop-the-room-hotspots.liquid
+
+Full room lifestyle scene with 1-6 tagged-product hotspots. Distinct,
+original build from any single-product "shop the look" pattern: each pin
+opens its own native-popover card (Esc/outside-click dismiss is free from
+the Popover API, with a classList fallback via decor-room-hotspot for
+browsers without it, matching the rest of the theme's popover fallback
+convention).
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="shop-the-room-hotspots"
+>
+  <div class="grid__wrapper">
+    <div class="span-12">
+      {%- if section.settings.title != blank -%}
+        <h2 class="section__title" style="text-align: center; margin-bottom: 3rem;">
+          {{ section.settings.title | escape }}
+        </h2>
+      {%- endif -%}
+
+      <decor-room-hotspot class="room-hotspots__scene">
+        {%- if section.settings.image != blank -%}
+          {%- render 'basic-responsive-image', image: section.settings.image, sizes: '100vw', loading: 'lazy' -%}
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign tagged_product = all_products[block.settings.product]
+            
+            assign prod_title = 'Example Product'
+            assign prod_price = 19900 | money
+            assign prod_url = '#'
+            assign has_image = false
+            
+            if tagged_product != blank
+              assign prod_title = tagged_product.title
+              assign prod_price = tagged_product.price | money
+              assign prod_url = tagged_product.url
+              if tagged_product.featured_media != blank
+                assign has_image = true
+              endif
+            endif
+          -%}
+          <button
+            type="button"
+            class="room-hotspots__pin js-hotspot-pin"
+            style="left: {{ block.settings.x_pos }}%; top: {{ block.settings.y_pos }}%;"
+            popovertarget="room-hotspot-{{ section.id }}-{{ forloop.index }}"
+            aria-label="{{ 'sections.room_hotspots.view_item' | t: title: prod_title }}"
+            {{ block.shopify_attributes }}
+          >+</button>
+
+          <div
+            id="room-hotspot-{{ section.id }}-{{ forloop.index }}"
+            popover="auto"
+            class="room-hotspots__card"
+            style="left: {{ block.settings.x_pos }}%; top: {{ block.settings.y_pos }}%;"
+            role="dialog"
+            aria-label="{{ prod_title | escape }}"
+          >
+            <div class="room-hotspots__card-image">
+              {%- if has_image -%}
+                <img src="{{ tagged_product.featured_media | image_url: width: 140, height: 140, crop: 'center' }}" alt="{{ prod_title | escape }}" width="72" height="72" loading="lazy">
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <h3 class="room-hotspots__card-title">{{ prod_title }}</h3>
+            <span class="room-hotspots__card-price">{{ prod_price }}</span>
+            <a href="{{ prod_url }}" class="room-hotspots__card-link">
+              {{ 'sections.room_hotspots.view_product' | t }}
+            </a>
+          </div>
+        {%- endfor -%}
+      </decor-room-hotspot>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop the room hotspots",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Shop This Room"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Room Scene Image"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "hotspot",
+      "name": "Product hotspot",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Product"
+        },
+        {
+          "type": "range",
+          "id": "x_pos",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50,
+          "unit": "%",
+          "label": "Horizontal Position"
+        },
+        {
+          "type": "range",
+          "id": "y_pos",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50,
+          "unit": "%",
+          "label": "Vertical Position"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop the room hotspots",
+      "blocks": [
+        { "type": "hotspot", "settings": { "x_pos": 25, "y_pos": 40 } },
+        { "type": "hotspot", "settings": { "x_pos": 55, "y_pos": 60 } },
+        { "type": "hotspot", "settings": { "x_pos": 75, "y_pos": 30 } }
+      ]
+    }
+  ]
+}
+{% endschema %}

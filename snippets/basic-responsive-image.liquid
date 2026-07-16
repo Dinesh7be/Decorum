@@ -1,0 +1,63 @@
+{% comment %}
+  snippets/basic-responsive-image.liquid
+
+  Renders a responsive image with an aspect-ratio box wrapper to prevent
+  Cumulative Layout Shift (CLS).
+
+  Accepts:
+  - image:           Shopify Image object (required)
+  - widths:          Comma-separated list of image widths (optional)
+  - sizes:           Sizes attribute value (optional, default: 100vw)
+  - loading:         Loading strategy: lazy or eager (optional, default: lazy)
+  - fetchpriority:   Priority hint: high, low, auto (optional, default: auto)
+  - classes:         Custom CSS classes for the image tag (optional)
+  - wrapper_classes: Custom CSS classes for the ratio-box wrapper (optional)
+
+  Usage:
+  render 'basic-responsive-image', image: product.featured_image, sizes: '(min-width: 740px) 25vw, 50vw'
+{% endcomment %}
+
+{%- liquid
+  assign img_loading = loading | default: 'lazy'
+  assign img_fetchpriority = fetchpriority | default: 'auto'
+  assign img_sizes = sizes | default: '100vw'
+  assign img_widths = widths | default: '180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048'
+  assign img_classes = classes | default: ''
+  assign wrap_classes = wrapper_classes | default: ''
+
+  # Calculate aspect ratio padding
+  if custom_aspect_ratio != blank
+    assign ratio_parts = custom_aspect_ratio | split: ':'
+    assign width_num = ratio_parts[0] | plus: 0.0
+    assign height_num = ratio_parts[1] | plus: 0.0
+    if width_num > 0 and height_num > 0
+      assign aspect_padding = height_num | divided_by: width_num | times: 100
+    else
+      assign aspect_padding = 100
+    endif
+  elsif image != blank
+    assign aspect_padding = 1.0 | divided_by: image.aspect_ratio | times: 100
+  else
+    assign aspect_padding = 100
+  endif
+-%}
+
+<div 
+  class="image-ratio-box {{ wrap_classes }}" 
+  {% unless is_secondary %}style="padding-bottom: {{ aspect_padding }}%;"{% endunless %}
+>
+  {%- if image != blank -%}
+    {%- assign image_alt = image.alt | default: shop.name | escape -%}
+    {{ image | image_url: width: 1500 | image_tag:
+      widths: img_widths,
+      sizes: img_sizes,
+      loading: img_loading,
+      fetchpriority: img_fetchpriority,
+      class: img_classes,
+      alt: image_alt,
+      preload: false
+    }}
+  {%- else -%}
+    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+  {%- endif -%}
+</div>

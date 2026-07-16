@@ -1,0 +1,79 @@
+{% comment %}
+snippets/onboard-product.liquid
+
+Renders a placeholder product card in the theme editor when no product has been selected,
+linking to corresponding handles in the CSV file for navigation testing.
+{% endcomment %}
+
+{%- liquid
+  assign placeholder_index = index | default: 1
+  case placeholder_index
+    when 1
+      assign handle = 'alvar-oak-lounge-chair'
+      assign title = 'Alvar Oak Lounge Chair'
+      assign price = '$450.00'
+    when 2
+      assign handle = 'belgian-linen-sectional-sofa'
+      assign title = 'Belgian Linen Sectional Sofa'
+      assign price = '$2,400.00'
+    when 3
+      assign handle = 'soren-pleated-floor-lamp'
+      assign title = 'Soren Pleated Floor Lamp'
+      assign price = '$280.00'
+    when 4
+      assign handle = 'kyoto-fluted-ceramic-vase'
+      assign title = 'Kyoto Fluted Ceramic Vase'
+      assign price = '$65.00'
+    when 5
+      assign handle = 'nordplatform-solid-oak-bed-frame'
+      assign title = 'NordPlatform Solid Oak Bed Frame'
+      assign price = '$1,150.00'
+    when 6
+      assign handle = 'vigo-minimalist-writing-desk'
+      assign title = 'Vigo Minimalist Writing Desk'
+      assign price = '$540.00'
+    else
+      assign handle = 'alvar-oak-lounge-chair'
+      assign title = 'Alvar Oak Lounge Chair'
+      assign price = '$450.00'
+  endcase
+
+  assign svg_num = placeholder_index | modulo: 6
+  if svg_num == 0
+    assign svg_num = 6
+  endif
+  assign svg_name = 'product-' | append: svg_num
+
+  assign aspect = aspect_ratio | default: '4:5'
+  if aspect == '1:1'
+    assign aspect_padding = 100
+  elsif aspect == '4:3'
+    assign aspect_padding = 75
+  else
+    assign aspect_padding = 125
+  endif
+-%}
+
+<div class="product-card__wrapper">
+  <div class="product-card__image-container" style="padding-bottom: {{ aspect_padding }}%; position: relative; width: 100%; height: 0;">
+    <a href="/products/{{ handle }}" class="product-card__image-link" aria-label="{{ title | escape }}">
+      <div class="product-card__image-placeholder" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+        {{ svg_name | placeholder_svg_tag: 'placeholder-svg product-card__image--primary' }}
+      </div>
+    </a>
+  </div>
+
+  <div class="product-card__info">
+    {%- if settings.show_vendor -%}
+      <div class="product-card__vendor">{{ shop.name | default: 'Decorum Studio' }}</div>
+    {%- endif -%}
+
+    <h3 class="product-card__title">
+      <a href="/products/{{ handle }}">{{ title }}</a>
+    </h3>
+
+    <div class="product-card__price-wrapper">
+      <span class="product-card__price">{{ price }}</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,166 @@
+{{ 'section-seasonal-lookbook-carousel.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/seasonal-lookbook-carousel.liquid
+
+Story-driven seasonal carousel: each "slide" block carries a season label,
+title, and narrative caption (not just an image + CTA). Reuses Decorum's
+existing decor-carousel scroll-snap behavior (already accessible/verified —
+SEC-007 auto-hides arrows when everything fits) with entirely original
+markup/classnames for this section.
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="seasonal-lookbook-carousel"
+>
+  <div class="grid__wrapper">
+    <div class="span-12">
+      <div class="seasonal-lookbook__header">
+        <div>
+          {%- if section.settings.title != blank -%}
+            <h2 class="section__title" style="margin: 0;">{{ section.settings.title | escape }}</h2>
+          {%- endif -%}
+        </div>
+        {%- if section.blocks.size > 3 -%}
+          <div class="carousel__nav-buttons">
+            <button class="carousel__btn js-carousel-prev" aria-label="{{ 'sections.seasonal_lookbook.previous' | t }}">
+              {% render 'snip-icons', icon: 'chevron-left', size: '14px' %}
+            </button>
+            <button class="carousel__btn js-carousel-next" aria-label="{{ 'sections.seasonal_lookbook.next' | t }}">
+              {% render 'snip-icons', icon: 'chevron-right', size: '14px' %}
+            </button>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if section.blocks.size > 0 -%}
+        <decor-carousel>
+          <div class="seasonal-lookbook__track js-carousel-track">
+            {%- for block in section.blocks -%}
+              <article class="seasonal-lookbook__slide" {{ block.shopify_attributes }}>
+                <div class="seasonal-lookbook__image">
+                  {%- if block.settings.image != blank -%}
+                    {%- render 'basic-responsive-image', image: block.settings.image, sizes: '(min-width: 740px) 560px, 85vw', loading: 'lazy' -%}
+                  {%- else -%}
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </div>
+                {%- if block.settings.season_label != blank -%}
+                  <span class="seasonal-lookbook__season">{{ block.settings.season_label | escape }}</span>
+                {%- endif -%}
+                <h3 class="seasonal-lookbook__title">{{ block.settings.title | escape }}</h3>
+                {%- if block.settings.narrative != blank -%}
+                  <p class="seasonal-lookbook__narrative">{{ block.settings.narrative | escape }}</p>
+                {%- endif -%}
+                {%- if block.settings.link_text != blank and block.settings.link_url != blank -%}
+                  <a href="{{ block.settings.link_url }}" class="btn btn--secondary btn--sm">
+                    {{ block.settings.link_text | escape }}
+                  </a>
+                {%- endif -%}
+              </article>
+            {%- endfor -%}
+          </div>
+        </decor-carousel>
+      {%- else -%}
+        <p style="text-align: center; color: var(--text-color-light);">
+          {{ 'sections.seasonal_lookbook.onboarding_notice' | t }}
+        </p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Seasonal lookbook",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "The Autumn Edit"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Story slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "season_label",
+          "label": "Season Label",
+          "default": "Autumn 2026"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Warm Textures, Slower Mornings"
+        },
+        {
+          "type": "textarea",
+          "id": "narrative",
+          "label": "Narrative Caption",
+          "default": "As the light softens, we lean into boucle throws, amber glassware, and oak tones that hold onto warmth long after summer fades."
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Button Label",
+          "default": "Shop the Edit"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Seasonal lookbook",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide", "settings": { "title": "Layered Light for Long Evenings", "season_label": "Autumn 2026" } },
+        { "type": "slide", "settings": { "title": "Grounded, Earthbound Palettes", "season_label": "Autumn 2026" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

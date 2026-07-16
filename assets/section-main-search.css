@@ -1,0 +1,82 @@
+/*
+ * theme/assets/section-main-search.css
+ * Styling for the Main Search Results Page
+ */
+
+.search__header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.search__form-wrapper {
+  max-width: 500px;
+  margin: 3rem auto 0 auto;
+  position: relative;
+}
+
+.search__input {
+  padding-right: 5rem;
+}
+
+.search__submit-btn {
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--accent-color);
+}
+
+.search__results-count {
+  margin-bottom: 3rem;
+  font-size: var(--font-size-sm);
+  color: var(--text-color-light);
+}
+
+.search__results-grid {
+  column-gap: var(--grid-gap);
+  row-gap: var(--grid-gap);
+}
+
+.search__item-card {
+  border: 1px solid var(--border-color);
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: var(--button-border-radius);
+  background-color: var(--background-darken);
+}
+
+.search__item-type {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  color: var(--text-color-light);
+}
+
+.search__item-title {
+  font-size: var(--font-size-lg);
+  margin: 1.5rem 0 1rem 0;
+  font-family: var(--heading-family);
+}
+
+.search__item-excerpt {
+  font-size: var(--font-size-sm);
+  color: var(--text-color-light);
+}
+
+.search__item-link {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  font-weight: 600;
+  text-decoration: underline;
+  margin-top: 2rem;
+}
+
+.search__no-results {
+  text-align: center;
+  padding: 4rem 0;
+  margin-bottom: 2rem;
+}

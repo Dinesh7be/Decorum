@@ -1,0 +1,202 @@
+{{ 'section-slideshow.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/slideshow.liquid
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section 
+  class="global__section{{ space_class }} slideshow-section"
+  data-section-id="{{ section.id }}"
+  data-section-type="slideshow"
+>
+  <decor-carousel class="carousel__wrapper slideshow__container">
+    <div class="carousel__track js-carousel-track slideshow__track">
+      {%- for block in section.blocks -%}
+        <div 
+          class="carousel__slide js-carousel-slide slideshow__slide" 
+          style="--slideshow-height: {{ section.settings.height_desktop | default: '650px' }};"
+          {{ block.shopify_attributes }}
+        >
+          <!-- Desktop Image -->
+          <div class="slideshow__image-desktop">
+            {%- if block.settings.image != blank -%}
+              {%- render 'basic-responsive-image', image: block.settings.image, sizes: '100vw', classes: 'slideshow__img' -%}
+            {%- else -%}
+              {%- capture placeholder_index -%}{% cycle 1, 2 %}{%- endcapture -%}
+              {{ 'lifestyle-' | append: placeholder_index | placeholder_svg_tag: 'placeholder-svg slideshow__img' }}
+            {%- endif -%}
+          </div>
+
+          <!-- Color Overlay -->
+          <div class="slideshow__overlay" style="background: rgba(0,0,0,{{ block.settings.overlay_opacity | times: 0.01 }});"></div>
+
+          <!-- Slide Content -->
+          <div class="slideshow__content-container" style="--content-justify: {{ block.settings.content_align | default: 'center' }};">
+            <div class="slideshow__content-card" style="--content-text-align: {{ block.settings.content_text_align | default: 'center' }};">
+              {%- if block.settings.subheading != blank -%}
+                <p class="slideshow__subheading">
+                  {{ block.settings.subheading | escape }}
+                </p>
+              {%- endif -%}
+              {%- if block.settings.title != blank -%}
+                <h2 class="slideshow__title">
+                  {{ block.settings.title | escape }}
+                </h2>
+              {%- endif -%}
+              {%- if block.settings.link_text != blank and block.settings.link_url != blank -%}
+                <a href="{{ block.settings.link_url }}" class="btn slideshow__btn" style="background-color: #FFFFFF; color: var(--accent-color); border-color: #FFFFFF;">
+                  {{ block.settings.link_text | escape }}
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <!-- Navigation dots -->
+    {%- if section.blocks.size > 1 -%}
+      <div class="carousel__dots js-carousel-dots slideshow__dots">
+        {%- for block in section.blocks -%}
+          <button 
+            type="button" 
+            class="carousel__dot js-carousel-dot {% if forloop.first %}active{% endif %} slideshow__dot" 
+            aria-label="View slide {{ forloop.index }}"
+          ></button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </decor-carousel>
+</section>
+
+<style>
+  .slideshow__img,
+  .slideshow__img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  .carousel__dot.active {
+    background: #FFFFFF !important;
+    transform: scale(1.2);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Slideshow",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "text",
+      "id": "height_desktop",
+      "label": "Slideshow Height (Desktop)",
+      "default": "650px"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Slide Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Premium Minimal Living"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "New Arrivals"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Button Label",
+          "default": "Explore Collection"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Button Link"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "default": 30,
+          "unit": "%",
+          "label": "Overlay Opacity"
+        },
+        {
+          "type": "select",
+          "id": "content_align",
+          "label": "Horizontal Alignment",
+          "options": [
+            { "value": "flex-start", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "flex-end", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "content_text_align",
+          "label": "Text Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slideshow",
+      "blocks": [
+        { "type": "slide", "settings": { "title": "Artisanal Living Spaces" } },
+        { "type": "slide", "settings": { "title": "Understated Comfort" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

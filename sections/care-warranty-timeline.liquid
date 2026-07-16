@@ -1,0 +1,157 @@
+{{ 'section-care-warranty-timeline.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/care-warranty-timeline.liquid
+
+Visual warranty/care timeline built from merchant "milestone" blocks. When
+placed on the product template, prepends the product's own
+product.metafields.custom.care_instructions content (the same field
+snip-product-details.liquid already surfaces on the buy box) so shoppers see
+product-specific care guidance alongside the storewide warranty timeline.
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+
+  assign product_care = ''
+  if product != blank
+    assign product_care = product.metafields.custom.care_instructions
+  endif
+-%}
+
+<section
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="care-warranty-timeline"
+>
+  <div class="grid__wrapper">
+    <div class="span-8 push-2 sm-span-12">
+      {%- if section.settings.title != blank -%}
+        <h2 class="section__title" style="text-align: center; margin-bottom: 3rem;">
+          {{ section.settings.title | escape }}
+        </h2>
+      {%- endif -%}
+
+      <div class="care-timeline">
+        {%- if product_care != blank -%}
+          <div class="care-timeline__product-note">
+            <h3>{{ 'sections.care_timeline.product_specific_heading' | t: title: product.title }}</h3>
+            <div class="rte">{{ product_care }}</div>
+          </div>
+        {%- endif -%}
+
+        {%- if section.blocks.size > 0 -%}
+          <ol class="care-timeline__list" style="list-style: none; margin: 0;">
+            {%- for block in section.blocks -%}
+              <li class="care-timeline__milestone" {{ block.shopify_attributes }}>
+                <div class="care-timeline__card">
+                  <span class="care-timeline__year">{{ block.settings.period | escape }}</span>
+                  <h3 class="care-timeline__milestone-title">{{ block.settings.title | escape }}</h3>
+                  <div class="care-timeline__milestone-desc rte">{{ block.settings.description }}</div>
+                </div>
+              </li>
+            {%- endfor -%}
+          </ol>
+        {%- else -%}
+          <!-- Onboarding state for timeline -->
+          <ol class="care-timeline__list" style="list-style: none; margin: 0;">
+            <li class="care-timeline__milestone">
+              <div class="care-timeline__card">
+                <span class="care-timeline__year">Day 1</span>
+                <h3 class="care-timeline__milestone-title">30-Day Home Trial</h3>
+                <div class="care-timeline__milestone-desc rte"><p>Live with it. If it's not right, return it free within 30 days.</p></div>
+              </div>
+            </li>
+            <li class="care-timeline__milestone">
+              <div class="care-timeline__card">
+                <span class="care-timeline__year">Years 1-2</span>
+                <h3 class="care-timeline__milestone-title">Textile & Mechanical Coverage</h3>
+                <div class="care-timeline__milestone-desc rte"><p>Upholstery, cushions, and moving mechanical parts are covered for 2 years.</p></div>
+              </div>
+            </li>
+            <li class="care-timeline__milestone">
+              <div class="care-timeline__card">
+                <span class="care-timeline__year">Years 1-10</span>
+                <h3 class="care-timeline__milestone-title">Structural Frame Warranty</h3>
+                <div class="care-timeline__milestone-desc rte"><p>Solid wood frames and joinery are warrantied for a full decade.</p></div>
+              </div>
+            </li>
+          </ol>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Care & warranty timeline",
+  "enabled_on": {
+    "templates": ["index", "page", "product"]
+  },
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Built to Last, Backed for Years"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "milestone",
+      "name": "Timeline milestone",
+      "settings": [
+        {
+          "type": "text",
+          "id": "period",
+          "label": "Period Label",
+          "default": "Year 1"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Full Structural Warranty"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Every frame, joint, and mechanism is covered against manufacturing defects.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Care & warranty timeline",
+      "blocks": [
+        { "type": "milestone", "settings": { "period": "Day 1", "title": "30-Day Home Trial", "description": "<p>Live with it. If it's not right, return it free within 30 days.</p>" } },
+        { "type": "milestone", "settings": { "period": "Years 1-2", "title": "Textile & Mechanical Coverage", "description": "<p>Upholstery, cushions, and moving mechanical parts are covered for 2 years.</p>" } },
+        { "type": "milestone", "settings": { "period": "Years 1-10", "title": "Structural Frame Warranty", "description": "<p>Solid wood frames and joinery are warrantied for a full decade.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

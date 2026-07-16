@@ -1,0 +1,56 @@
+/*
+ * theme/assets/section-seasonal-lookbook-carousel.css
+ * Story-driven seasonal carousel — each slide carries a narrative caption,
+ * not just an image + CTA.
+ */
+
+.seasonal-lookbook__track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 2rem;
+  scrollbar-width: none;
+}
+
+.seasonal-lookbook__track::-webkit-scrollbar {
+  display: none;
+}
+
+.seasonal-lookbook__slide {
+  flex: 0 0 min(560px, 85vw);
+  scroll-snap-align: start;
+}
+
+.seasonal-lookbook__image {
+  border-radius: var(--button-border-radius);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.seasonal-lookbook__season {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--secondary-accent);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.seasonal-lookbook__title {
+  font-family: var(--heading-family);
+  font-size: var(--font-size-lg);
+  margin: 0 0 1rem;
+}
+
+.seasonal-lookbook__narrative {
+  color: var(--text-color-light);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.seasonal-lookbook__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+}

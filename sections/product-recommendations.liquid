@@ -1,0 +1,135 @@
+{% comment %}
+sections/product-recommendations.liquid
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section 
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="product-recommendations"
+>
+  <decor-recommendations 
+    class="product-recommendations" 
+    data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}"
+    style="display: block;"
+  >
+    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+      <div class="grid__wrapper">
+        <div class="span-12">
+          {%- if section.settings.title != blank -%}
+            <h2 class="section__title" style="text-align: center; margin-bottom: 3rem;">
+              {{ section.settings.title | escape }}
+            </h2>
+          {%- endif -%}
+          
+          <div class="grid__wrapper">
+            {%- for recommended_product in recommendations.products -%}
+              <div class="span-3 sm-span-6">
+                {%- render 'product-listing', product: recommended_product -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    {%- elsif request.design_mode -%}
+      <div class="grid__wrapper">
+        <div class="span-12">
+          {%- if section.settings.title != blank -%}
+            <h2 class="section__title" style="text-align: center; margin-bottom: 3rem;">
+              {{ section.settings.title | escape }}
+            </h2>
+          {%- endif -%}
+          
+          <div class="grid__wrapper">
+            {%- for i in (1..4) -%}
+              <div class="span-3 sm-span-6">
+                {%- render 'onboard-product', index: i -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </decor-recommendations>
+</section>
+
+<script>
+  if (!customElements.get('decor-recommendations')) {
+    customElements.define('decor-recommendations', class extends HTMLElement {
+      connectedCallback() {
+        const url = this.getAttribute('data-url');
+        if (!url) return;
+
+        fetch(url)
+          .then(response => response.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const recommendationsEl = doc.querySelector('decor-recommendations');
+            if (recommendationsEl && recommendationsEl.innerHTML.trim() !== '') {
+              this.innerHTML = recommendationsEl.innerHTML;
+            } else {
+              this.style.display = 'none';
+            }
+          })
+          .catch(err => {
+            console.error('Error loading recommendations:', err);
+            this.style.display = 'none';
+          });
+      }
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Product Recommendations",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "You May Also Like"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4,
+      "label": "Maximum products to show"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Recommendations"
+    }
+  ]
+}
+{% endschema %}

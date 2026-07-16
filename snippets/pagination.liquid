@@ -1,0 +1,117 @@
+{% comment %}
+snippets/pagination.liquid
+
+Renders pagination links.
+
+Accepts:
+- paginate:      {Object} Shopify Paginate object (required)
+
+Usage:
+{% render 'pagination', paginate: paginate %}
+{% endcomment %}
+
+{%- if paginate.parts.size > 0 -%}
+  <nav class="pagination__nav" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+    <ul class="pagination__list" role="list">
+      {%- if paginate.previous -%}
+        <li class="pagination__item">
+          <a 
+            href="{{ paginate.previous.url }}" 
+            class="pagination__link" 
+            aria-label="{{ 'general.pagination.previous' | t }}"
+          >
+            {% render 'snip-icons', icon: 'chevron-left', size: '12px' %}
+          </a>
+        </li>
+      {%- endif -%}
+
+      {%- for part in paginate.parts -%}
+        <li class="pagination__item">
+          {%- if part.is_link -%}
+            <a 
+              href="{{ part.url }}" 
+              class="pagination__link" 
+              aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+            >
+              {{ part.title }}
+            </a>
+          {%- else -%}
+            {%- if part.title == paginate.current_page -%}
+              <span 
+                class="pagination__link pagination__link--current" 
+                aria-current="page" 
+                aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+              >
+                {{ part.title }}
+              </span>
+            {%- else -%}
+              <span class="pagination__link pagination__link--deco">{{ part.title }}</span>
+            {%- endif -%}
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+
+      {%- if paginate.next -%}
+        <li class="pagination__item">
+          <a 
+            href="{{ paginate.next.url }}" 
+            class="pagination__link" 
+            aria-label="{{ 'general.pagination.next' | t }}"
+          >
+            {% render 'snip-icons', icon: 'chevron-right', size: '12px' %}
+          </a>
+        </li>
+      {%- endif -%}
+    </ul>
+  </nav>
+{%- endif -%}
+
+<style>
+  .pagination__nav {
+    display: flex;
+    justify-content: center;
+    margin: 4rem 0;
+    width: 100%;
+  }
+
+  .pagination__list {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0;
+  }
+
+  .pagination__item {
+    display: inline-block;
+  }
+
+  .pagination__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 4rem;
+    height: 4rem;
+    padding: 0 1rem;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-size: var(--font-size-sm);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+  }
+
+  .pagination__link:hover:not(.pagination__link--current) {
+    border-color: var(--secondary-accent);
+    color: var(--secondary-accent);
+  }
+
+  .pagination__link--current {
+    background-color: var(--accent-color);
+    color: var(--background);
+    border-color: var(--accent-color);
+  }
+
+  .pagination__link--deco {
+    border: none;
+    cursor: default;
+  }
+</style>

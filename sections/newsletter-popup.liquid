@@ -1,0 +1,191 @@
+{{ 'section-newsletter-popup.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/newsletter-popup.liquid
+{% endcomment %}
+
+{%- if section.settings.enable or request.design_mode -%}
+  {%- if request.design_mode -%}
+    <!-- Premium inline newsletter card for Editor Preview (Resolves No Preview Available) -->
+    <div class="newsletter-popup__preview-card" style="max-width: 500px; margin: 4rem auto; padding: 3rem; background-color: var(--background-darken); border: 1px solid var(--border-color); border-radius: var(--button-border-radius); text-align: center; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);">
+      {%- if section.settings.title != blank -%}
+        <h2 class="modal__title newsletter-popup__title" style="margin-top: 0; margin-bottom: 1rem; font-size: var(--font-size-lg); font-family: var(--heading-family);">
+          {{ section.settings.title | escape }}
+        </h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <p class="modal__text newsletter-popup__text" style="color: var(--text-color-light); margin-bottom: 2rem; font-size: var(--font-size-sm); line-height: 1.6;">
+          {{ section.settings.text | escape }}
+        </p>
+      {%- endif -%}
+      
+      {%- form 'customer', class: 'newsletter-form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="newsletter-form__field-wrapper" style="display: flex; flex-direction: column; gap: 1rem;">
+          <input 
+            type="email" 
+            name="contact[email]" 
+            placeholder="{{ 'general.newsletter.placeholder' | t }}"
+            class="newsletter-popup__input"
+            style="width: 100%; padding: 1.2rem; border: 1px solid var(--border-color); border-radius: var(--button-border-radius); background: var(--background); text-align: center;"
+            required
+          >
+          <button type="submit" class="btn btn--full">
+            {{ 'general.newsletter.submit' | t }}
+          </button>
+        </div>
+      {%- endform -%}
+    </div>
+  {%- else -%}
+    <!-- Live Popover Modal for Storefront -->
+    <decor-newsletter-popup 
+      class="newsletter-popup modal__root" 
+      id="newsletter-popup-popover" 
+      popover="auto"
+      data-delay="{{ section.settings.delay | default: 5 }}"
+      data-expiry="{{ section.settings.expiry_days | default: 7 }}"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="PopupTitle-{{ section.id }}"
+    >
+      <div class="modal__container newsletter-popup__container">
+        <div class="newsletter-popup__close-wrapper">
+          <button type="button" class="modal__close-btn js-modal-close newsletter-popup__close-btn" aria-label="{{ 'accessibility.close_modal' | t }}">
+            {% render 'snip-icons', icon: 'close', size: '14px' %}
+          </button>
+        </div>
+        <div class="newsletter-popup__content">
+          {%- if section.settings.title != blank -%}
+            <h2 id="PopupTitle-{{ section.id }}" class="modal__title newsletter-popup__title">
+              {{ section.settings.title | escape }}
+            </h2>
+          {%- endif -%}
+          {%- if section.settings.text != blank -%}
+            <p class="modal__text newsletter-popup__text">
+              {{ section.settings.text | escape }}
+            </p>
+          {%- endif -%}
+          
+          {%- form 'customer', class: 'newsletter-form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="newsletter-form__field-wrapper">
+              <input 
+                type="email" 
+                name="contact[email]" 
+                placeholder="{{ 'general.newsletter.placeholder' | t }}"
+                class="newsletter-popup__input"
+                aria-label="{{ 'general.newsletter.label' | t }}"
+                required
+              >
+              <button type="submit" class="btn btn--full newsletter-popup__submit-btn">
+                {{ 'general.newsletter.submit' | t }}
+              </button>
+            </div>
+          {%- endform -%}
+        </div>
+      </div>
+    </decor-newsletter-popup>
+
+    <script>
+      if (!customElements.get('decor-newsletter-popup')) {
+        customElements.define('decor-newsletter-popup', class extends HTMLElement {
+          connectedCallback() {
+            const delay = parseInt(this.getAttribute('data-delay') || 5) * 1000;
+            const closeBtn = this.querySelector('.js-modal-close');
+            
+            const setDismissed = () => {
+              localStorage.setItem('decor_newsletter_dismissed', 'true');
+            };
+            const close = () => {
+              setDismissed();
+              try { this.hidePopover(); } catch(err) { this.classList.remove('is-open'); }
+            };
+
+            if (localStorage.getItem('decor_newsletter_dismissed') === 'true') {
+              return;
+            }
+            setTimeout(() => {
+              try {
+                this.showPopover();
+                if (window.theme && window.theme.Helpers && typeof window.theme.Helpers.trapFocus === 'function') {
+                  window.theme.Helpers.trapFocus(this);
+                }
+              } catch(err) {
+                this.classList.add('is-open');
+              }
+            }, delay);
+
+            if (closeBtn) {
+              closeBtn.addEventListener('click', close);
+            }
+
+            this.addEventListener('keydown', (e) => {
+              if (e.key === 'Escape') close();
+            });
+
+            const form = this.querySelector('form');
+            if (form) {
+              form.addEventListener('submit', () => {
+                setDismissed();
+              });
+            }
+          }
+        });
+      }
+    </script>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Mailing Popup",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable",
+      "label": "Enable mailing popup",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Join the Studio"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Subscribe to receive updates, access to exclusive deals, and more."
+    },
+    {
+      "type": "range",
+      "id": "delay",
+      "min": 2,
+      "max": 30,
+      "step": 1,
+      "default": 5,
+      "unit": "s",
+      "label": "Delay before opening"
+    },
+    {
+      "type": "range",
+      "id": "expiry_days",
+      "min": 1,
+      "max": 30,
+      "step": 1,
+      "default": 7,
+      "unit": "d",
+      "label": "Cookie expiry duration (Days)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mailing Popup"
+    }
+  ]
+}
+{% endschema %}

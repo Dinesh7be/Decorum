@@ -1,0 +1,68 @@
+/*
+ * theme/assets/section-countdown-timer.css
+ * Styling for the Countdown Timer Section
+ */
+
+.countdown__content-wrapper {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.countdown__title {
+  margin-bottom: 1.5rem;
+}
+
+.countdown__subheading {
+  margin-bottom: 3rem;
+}
+
+decor-countdown.countdown__wrapper {
+  display: block;
+}
+
+.countdown__grid {
+  display: inline-flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.countdown__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.countdown__value {
+  font-size: var(--font-size-xxl);
+  font-weight: 700;
+  font-family: var(--heading-family);
+}
+
+.countdown__label {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.countdown__divider {
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+}
+
+.countdown__btn-container {
+  margin-top: 3rem;
+}
+
+@media (max-width: 480px) {
+  .countdown__grid {
+    gap: 1rem;
+  }
+  .countdown__item {
+    min-width: 50px;
+  }
+  .countdown__value {
+    font-size: var(--font-size-xl);
+  }
+}

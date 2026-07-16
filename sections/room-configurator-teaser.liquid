@@ -1,0 +1,116 @@
+{{ 'section-room-configurator-teaser.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/room-configurator-teaser.liquid
+
+Lead-gen waitlist capture for a future AR/3D room visualizer (not a working
+visualizer itself — full 3D/AR is out of scope here). Uses the same
+Shopify `customer` form + contact[tags] convention as the newsletter popup,
+tagged "room-configurator-waitlist" so signups are segmentable later.
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="room-configurator-teaser"
+>
+  <div class="grid__wrapper">
+    <div class="span-12">
+      <div class="configurator-teaser">
+        <div class="configurator-teaser__image">
+          {%- if section.settings.image != blank -%}
+            {{ section.settings.image | image_url: width: 1600 | image_tag: widths: '375, 750, 1100, 1600', sizes: '100vw', loading: 'lazy', class: 'configurator-teaser-img' }}
+          {%- else -%}
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+        <div class="configurator-teaser__overlay"></div>
+        <div class="configurator-teaser__content">
+          <span class="configurator-teaser__badge">{{ 'sections.room_configurator.badge' | t }}</span>
+          {%- if section.settings.title != blank -%}
+            <h2 class="configurator-teaser__title">{{ section.settings.title | escape }}</h2>
+          {%- endif -%}
+          {%- if section.settings.subheading != blank -%}
+            <p>{{ section.settings.subheading | escape }}</p>
+          {%- endif -%}
+
+          {%- form 'customer', class: 'configurator-teaser__form-wrap' -%}
+            {%- if form.posted_successfully? -%}
+              <p class="configurator-teaser__success">{{ 'sections.room_configurator.success' | t }}</p>
+            {%- else -%}
+              <input type="hidden" name="contact[tags]" value="room-configurator-waitlist">
+              <div class="configurator-teaser__form">
+                <input
+                  type="email"
+                  name="contact[email]"
+                  placeholder="{{ 'general.newsletter.placeholder' | t }}"
+                  aria-label="{{ 'general.newsletter.label' | t }}"
+                  required
+                >
+                <button type="submit" class="btn">
+                  {{ 'sections.room_configurator.join_waitlist' | t }}
+                </button>
+              </div>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Room configurator teaser",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Visualize It In Your Room"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Our AR/3D room visualizer is coming soon. Be first to try it."
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "none"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Room configurator teaser"
+    }
+  ]
+}
+{% endschema %}

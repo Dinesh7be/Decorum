@@ -1,0 +1,172 @@
+{{ 'section-shop-by-category.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/shop-by-category.liquid
+{% endcomment %}
+
+{%- liquid
+  assign heading = section.settings.title
+  assign shape = section.settings.shape
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section 
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="shop-by-category"
+  style="--category-card-radius: {% if shape == 'circle' %}50%{% else %}0%{% endif %};"
+>
+  {%- if heading != blank -%}
+    <div class="grid__wrapper">
+      <div class="span-12 category-section__header">
+        <h2>{{ heading | escape }}</h2>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="grid__wrapper">
+    {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign col_span = 12 | divided_by: section.blocks.size | default: 3
+          if col_span < 3
+            assign col_span = 3
+          endif
+          
+          assign collection = collections[block.settings.collection]
+          assign title = block.settings.title | default: collection.title
+          assign image = block.settings.image | default: collection.featured_image
+          assign url = block.settings.link | default: collection.url
+        -%}
+
+        <div class="span-{{ col_span }} sm-span-6 category-card__wrapper" {{ block.shopify_attributes }}>
+          <a href="{{ url | default: routes.all_products_collection_url }}" class="category-card__link">
+            <div class="category-card__image-container">
+              {%- if image != blank -%}
+                {%- render 'basic-responsive-image', 
+                  image: image, 
+                  sizes: '(min-width: 740px) 25vw, 50vw',
+                  loading: 'lazy',
+                  custom_aspect_ratio: '1:1'
+                -%}
+              {%- else -%}
+                {%- render 'onboard-collection', index: forloop.index, aspect_ratio: '1:1' -%}
+              {%- endif -%}
+            </div>
+            {%- if title != blank -%}
+              <h3 class="category-card__title">{{ title }}</h3>
+            {%- endif -%}
+          </a>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <!-- Onboarding placeholders (SEC-005) -->
+      {%- for i in (1..4) -%}
+        {%- liquid
+          case i
+            when 1
+              assign label = 'Sofas'
+            when 2
+              assign label = 'Chairs'
+            when 3
+              assign label = 'Lighting'
+            when 4
+              assign label = 'Decor'
+          endcase
+        -%}
+        <div class="span-3 sm-span-6 category-card__wrapper">
+          <div class="category-card__image-container">
+            {%- render 'onboard-collection', index: i, aspect_ratio: '1:1' -%}
+          </div>
+          <h3 class="category-card__title">{{ label }}</h3>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop by category",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Shop by category"
+    },
+    {
+      "type": "select",
+      "id": "shape",
+      "label": "Card Shape",
+      "options": [
+        { "value": "circle", "label": "Circular" },
+        { "value": "square", "label": "Square/Minimal" }
+      ],
+      "default": "circle"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category Column",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Override Category Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Override Category Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom Link URL (Optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop by category",
+      "blocks": [
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" }
+      ]
+    }
+  ]
+}
+{% endschema %}

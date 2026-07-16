@@ -1,0 +1,51 @@
+{% comment %}
+sections/main-register.liquid
+{% endcomment %}
+
+{{ 'component-customer.css' | asset_url | stylesheet_tag }}
+
+<section 
+  class="global__section" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="main-register"
+>
+  <div class="grid__wrapper narrow" style="margin-top: -2rem;">
+    <div class="span-12 customer-form-container">
+      {%- form 'create_customer' -%}
+        {{ form.errors | default_errors }}
+
+        <div class="customer-form__row">
+          <label for="FirstName">{{ 'customer.register.first_name' | t }}</label>
+          <input type="text" name="customer[first_name]" id="FirstName" autocomplete="given-name">
+        </div>
+
+        <div class="customer-form__row">
+          <label for="LastName">{{ 'customer.register.last_name' | t }}</label>
+          <input type="text" name="customer[last_name]" id="LastName" autocomplete="family-name">
+        </div>
+
+        <div class="customer-form__row">
+          <label for="Email">{{ 'customer.register.email' | t }}</label>
+          <input type="email" name="customer[email]" id="Email" autocomplete="email" required>
+        </div>
+
+        <div class="customer-form__row--password">
+          <label for="CreatePassword">{{ 'customer.register.password' | t }}</label>
+          <input type="password" name="customer[password]" id="CreatePassword" autocomplete="new-password" required>
+        </div>
+
+        <button type="submit" class="btn btn--full customer-form__submit-btn">{{ 'customer.register.submit' | t }}</button>
+
+        <p class="customer-form__footer-text">
+          {{ 'customer.register.already_have_account' | t }} <a href="{{ routes.account_login_url }}" class="customer-form__footer-link">{{ 'customer.register.sign_in' | t }}</a>
+        </p>
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer Register"
+}
+{% endschema %}

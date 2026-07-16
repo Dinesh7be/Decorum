@@ -1,0 +1,66 @@
+/*
+ * theme/assets/section-trade-program-signup.css
+ * B2B trade/designer account application form.
+ */
+
+.trade-signup__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.trade-signup__benefits {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+}
+
+.trade-signup__benefits li {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border-color);
+  font-size: var(--font-size-sm);
+  color: var(--text-color-light);
+}
+
+.trade-signup__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.trade-signup__field label {
+  display: block;
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-color-light);
+  margin-bottom: 0.5rem;
+}
+
+.trade-signup__field input,
+.trade-signup__field select,
+.trade-signup__field textarea {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--button-border-radius);
+  font-size: var(--font-size-sm);
+  background: var(--background);
+}
+
+.trade-signup__success {
+  padding: 2rem;
+  background: var(--background-darken);
+  border-radius: var(--button-border-radius);
+  text-align: center;
+}
+
+@media (max-width: 740px) {
+  .trade-signup__layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

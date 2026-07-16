@@ -1,0 +1,64 @@
+{% layout none %}
+{% comment %}
+templates/product.quick.liquid
+Alternate template used for rendering the Quick View Modal content.
+{% endcomment %}
+
+{%- liquid
+  assign first_image = product.featured_media.preview_image
+-%}
+
+<div 
+  class="grid__wrapper edge" 
+  id="product-section--quickview"
+  data-section-id="quickview" 
+  data-section-type="main-product"
+  style="column-gap: 3rem;"
+>
+  <!-- Left Column: Gallery -->
+  <div class="span-6 sm-span-12" style="display: flex; flex-direction: column; gap: 1rem;">
+    <div class="product__gallery-main">
+      {%- if first_image != blank -%}
+        {%- render 'basic-responsive-image', 
+          image: first_image, 
+          sizes: '(min-width: 740px) 25vw, 100vw',
+          loading: 'eager'
+        -%}
+      {%- else -%}
+        <div class="product-card__image-placeholder">
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <!-- Right Column: Buy Box -->
+  <div class="span-6 sm-span-12" style="display: flex; flex-direction: column; justify-content: center;">
+    <decor-cart-form>
+      {%- form 'product', product, id: 'product-form-quickview', class: 'js-product-form' -%}
+        
+        <div style="font-size: var(--font-size-xs); text-transform: uppercase; color: var(--text-color-light); margin-bottom: 0.5rem;">
+          {{ product.vendor }}
+        </div>
+        
+        <h2 id="quickview-modal-title" style="font-size: var(--font-size-lg); margin-bottom: 1rem; font-family: var(--heading-family);">
+          {{ product.title }}
+        </h2>
+        
+        {%- render 'snip-product-price', product: product, section_id: 'quickview' -%}
+        
+        {%- render 'snip-product-variants', product: product, section_id: 'quickview' -%}
+        
+        {%- render 'snip-product-buttons', product: product, section_id: 'quickview', form: form -%}
+
+        <a 
+          href="{{ product.url }}" 
+          class="product-quick__view-details"
+        >
+          {{ 'products.product.view_full_details' | t }}
+        </a>
+
+      {%- endform -%}
+    </decor-cart-form>
+  </div>
+</div>

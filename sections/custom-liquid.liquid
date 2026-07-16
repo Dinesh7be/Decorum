@@ -1,0 +1,37 @@
+{% comment %}
+sections/custom-liquid.liquid
+{% endcomment %}
+
+<section 
+  class="global__section" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="custom-liquid"
+>
+  <div class="grid__wrapper">
+    <div class="span-12">
+      {{ section.settings.custom_liquid }}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom liquid",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "liquid",
+      "id": "custom_liquid",
+      "label": "Custom Liquid Code",
+      "info": "Add raw HTML, Liquid, or script tags here."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom liquid"
+    }
+  ]
+}
+{% endschema %}

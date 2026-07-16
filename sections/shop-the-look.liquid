@@ -1,0 +1,221 @@
+{{ 'section-shop-the-look.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/shop-the-look.liquid
+{% endcomment %}
+
+{%- liquid
+  assign image = section.settings.image
+  assign heading = section.settings.title
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+-%}
+
+<section 
+  class="global__section{{ space_class }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="shop-the-look"
+>
+  {%- if heading != blank -%}
+    <div class="grid__wrapper">
+      <div class="span-12 lookbook__header">
+        <h2>{{ heading | escape }}</h2>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="grid__wrapper">
+    <div class="span-12">
+      <decor-lookbook class="lookbook__container">
+        <div class="lookbook__image-wrapper">
+          {%- if image != blank -%}
+            {%- render 'basic-responsive-image', 
+              image: image, 
+              sizes: '100vw',
+              loading: 'lazy'
+            -%}
+          {%- else -%}
+            <div class="lookbook__image-placeholder">
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          {%- endif -%}
+
+          <!-- Hotspot markers -->
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign prod = all_products[block.settings.product]
+                assign x = block.settings.x_pos
+                assign y = block.settings.y_pos
+                
+                assign prod_title = 'Example Product'
+                assign prod_price = 19900 | money
+                assign prod_url = '#'
+                assign has_image = false
+                
+                if prod != blank
+                  assign prod_title = prod.title
+                  assign prod_price = prod.price | money
+                  assign prod_url = prod.url
+                  if prod.featured_media != blank
+                    assign has_image = true
+                  endif
+                endif
+              -%}
+              <button 
+                class="lookbook__marker js-hotspot-marker" 
+                style="left: {{ x }}%; top: {{ y }}%;"
+                data-card-id="hotspot-card-{{ block.id }}"
+                aria-label="View {{ prod_title }}"
+              >
+                <span>+</span>
+              </button>
+
+              <!-- Hotspot Product Card -->
+              <div 
+                id="hotspot-card-{{ block.id }}" 
+                popover 
+                class="lookbook__card js-hotspot-card"
+                style="left: calc({{ x }}% + 15px); top: calc({{ y }}% - 50px);"
+              >
+                <div class="lookbook__card-content">
+                  <div class="lookbook__card-img">
+                    {%- if has_image -%}
+                      <img
+                        src="{{ prod.featured_media | image_url: width: 120, height: 120, crop: 'center' }}"
+                        alt="{{ prod_title | escape }}"
+                        width="60"
+                        height="60"
+                        loading="lazy"
+                      >
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </div>
+                  <div class="lookbook__card-info">
+                    <h4 class="lookbook__card-title">{{ prod_title }}</h4>
+                    <span class="lookbook__card-price">{{ prod_price }}</span>
+                    <a href="{{ prod_url }}" class="lookbook__card-btn">
+                      {{ 'sections.lookbook.view_product' | t }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <!-- Onboarding State -->
+            <button 
+              class="lookbook__marker js-hotspot-marker" 
+              style="left: 40%; top: 45%;"
+              data-card-id="hotspot-card-onboard-1"
+              aria-label="{{ 'products.product.example_product' | t }}"
+            >
+              <span>+</span>
+            </button>
+            <div 
+              id="hotspot-card-onboard-1" 
+              popover 
+              class="lookbook__card js-hotspot-card"
+              style="left: calc(40% + 15px); top: calc(45% - 50px);"
+            >
+              <div class="lookbook__card-content">
+                <div class="lookbook__card-img">
+                  {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+                <div class="lookbook__card-info">
+                  <h4 class="lookbook__card-title">{{ 'sections.onboarding.linen_lounge_chair' | t }}</h4>
+                  <span class="lookbook__card-price">$450.00</span>
+                  <a href="#" class="lookbook__card-btn">
+                    {{ 'sections.lookbook.view_product' | t }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      </decor-lookbook>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop the Look",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Room Layout Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Shop the Look"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "hotspot",
+      "name": "Product Hotspot",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Product"
+        },
+        {
+          "type": "range",
+          "id": "x_pos",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50,
+          "unit": "%",
+          "label": "Horizontal Position (X)"
+        },
+        {
+          "type": "range",
+          "id": "y_pos",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50,
+          "unit": "%",
+          "label": "Vertical Position (Y)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop the Look",
+      "blocks": [
+        { "type": "hotspot", "settings": { "x_pos": 35, "y_pos": 45 } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,117 @@
+/*
+ * theme/assets/section-slideshow.css
+ * Styling for the Slideshow Section
+ */
+
+.slideshow__container {
+  display: block;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.slideshow__track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.slideshow__slide {
+  flex: 0 0 100%;
+  width: 100%;
+  scroll-snap-align: start;
+  position: relative;
+  height: var(--slideshow-height, 650px);
+}
+
+.slideshow__image-desktop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.slideshow__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.slideshow__content-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: var(--content-justify, center);
+  padding: 3rem;
+}
+
+.slideshow__content-card {
+  max-width: 600px;
+  text-align: var(--content-text-align, center);
+  color: #FFFFFF;
+}
+
+.slideshow__subheading {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.slideshow__title {
+  font-family: var(--heading-family);
+  font-size: var(--font-size-xxl);
+  font-weight: 500;
+  margin-bottom: 2rem;
+  color: #FFFFFF;
+  line-height: 1.2;
+}
+
+.slideshow__dots {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  gap: 1rem;
+}
+
+.slideshow__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.slideshow__dot.active {
+  background: #FFFFFF !important;
+  transform: scale(1.2);
+}
+
+.slideshow__img,
+.slideshow__img img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}

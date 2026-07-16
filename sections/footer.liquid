@@ -1,0 +1,272 @@
+{{ 'section-footer.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/footer.liquid
+{% endcomment %}
+
+<footer 
+  class="footer__wrapper" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="footer"
+>
+  <div class="grid__wrapper footer__container">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        case section.blocks.size
+          when 1
+            assign span_class = 'span-12'
+          when 2
+            assign span_class = 'span-6'
+          when 3
+            assign span_class = 'span-4'
+          when 4
+            assign span_class = 'span-3'
+        endcase
+      -%}
+
+      <div class="footer__column {{ span_class }} sm-span-12" {{ block.shopify_attributes }}>
+        {%- case block.type -%}
+          {%- when 'about' -%}
+            {%- if block.settings.title != blank -%}
+              <h3 class="footer__title">{{ block.settings.title | escape }}</h3>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="footer__text">{{ block.settings.text }}</div>
+            {%- endif -%}
+
+          {%- when 'menu' -%}
+            {%- if block.settings.title != blank -%}
+              <h3 class="footer__title">{{ block.settings.title | escape }}</h3>
+            {%- endif -%}
+            {%- if block.settings.menu != blank -%}
+              <ul class="footer__menu-list" role="list">
+                {%- for link in linklists[block.settings.menu].links -%}
+                  <li>
+                    <a href="{{ link.url }}" class="footer__menu-link">
+                      {{ link.title }}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
+          {%- when 'newsletter' -%}
+            {%- if block.settings.title != blank -%}
+              <h3 class="footer__title">{{ block.settings.title | escape }}</h3>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <p class="footer__text">{{ block.settings.text | escape }}</p>
+            {%- endif -%}
+            
+            {%- form 'customer', class: 'footer__newsletter-form' -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <input 
+                type="email" 
+                name="contact[email]" 
+                class="footer__newsletter-input" 
+                placeholder="{{ 'general.newsletter.placeholder' | t }}"
+                aria-label="{{ 'general.newsletter.label' | t }}"
+                required
+              >
+              <button type="submit" class="btn footer__newsletter-btn">
+                {{ 'general.newsletter.submit' | t }}
+              </button>
+            {%- endform -%}
+
+            {%- if block.settings.show_socials -%}
+              <div class="footer__socials">
+                {%- if settings.social_facebook_link != blank -%}
+                  <a href="{{ settings.social_facebook_link }}" class="footer__social-link" aria-label="{{ 'general.social.facebook' | t }}">
+                    {% render 'snip-icons', icon: 'chevron-right', size: '16px' %}
+                  </a>
+                {%- endif -%}
+                {%- if settings.social_instagram_link != blank -%}
+                  <a href="{{ settings.social_instagram_link }}" class="footer__social-link" aria-label="{{ 'general.social.instagram' | t }}">
+                    {% render 'snip-icons', icon: 'star', size: '16px' %}
+                  </a>
+                {%- endif -%}
+                {%- if settings.social_pinterest_link != blank -%}
+                  <a href="{{ settings.social_pinterest_link }}" class="footer__social-link" aria-label="{{ 'general.social.pinterest' | t }}">
+                    {% render 'snip-icons', icon: 'zoom', size: '16px' %}
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="grid__wrapper">
+    <div class="span-12 footer__bottom">
+      <div class="footer__copyright">
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.
+      </div>
+
+      {%- if section.settings.enable_language_selector or section.settings.enable_country_selector -%}
+        <div class="footer__localization">
+          {%- form 'localization', id: 'FooterLocalizationForm', class: 'localization-form' -%}
+            {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
+              <div class="localization-form__select-wrapper">
+                <h2 class="visually-hidden" id="FooterLanguageLabel">{{ 'localization.language_label' | t }}</h2>
+                <select 
+                  name="locale_code" 
+                  aria-labelledby="FooterLanguageLabel"
+                  class="localization-form__select"
+                  onchange="this.form.submit();"
+                >
+                  {%- for language in localization.available_languages -%}
+                    <option 
+                      value="{{ language.iso_code }}" 
+                      lang="{{ language.iso_code }}" 
+                      {% if language.iso_code == localization.language.iso_code %}selected{% endif %}
+                    >
+                      {{ language.endonym_name | capitalize }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            {%- endif -%}
+
+            {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
+              <div class="localization-form__select-wrapper">
+                <h2 class="visually-hidden" id="FooterCountryLabel">{{ 'localization.country_label' | t }}</h2>
+                <select 
+                  name="country_code" 
+                  aria-labelledby="FooterCountryLabel"
+                  class="localization-form__select"
+                  onchange="this.form.submit();"
+                >
+                  {%- for country in localization.available_countries -%}
+                    <option 
+                      value="{{ country.iso_code }}" 
+                      {% if country.iso_code == localization.country.iso_code %}selected{% endif %}
+                    >
+                      {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                    </option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_payment_icons -%}
+        <div class="footer__payments">
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Localization Selectors"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "label": "Enable language selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "label": "Enable country/region selector",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "about",
+      "name": "About the Brand",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Decorum"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Elegantly curated home decor and lifestyle furniture. We believe in simplicity, natural materials, and timeless pieces.</p>"
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Menu Links",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Explore"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Select Menu"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Join Us"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Receive notes on clean living and early access to our seasonal collections."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_socials",
+          "label": "Show social links",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "about"
+      },
+      {
+        "type": "menu",
+        "settings": {
+          "title": "Quick links"
+        }
+      },
+      {
+        "type": "newsletter"
+      }
+    ]
+  }
+}
+{% endschema %}

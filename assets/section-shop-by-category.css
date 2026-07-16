@@ -1,0 +1,65 @@
+/*
+ * theme/assets/section-shop-by-category.css
+ * Styling for the Shop By Category Section
+ */
+
+.category-section__header {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.category-card__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform var(--transition-normal);
+}
+
+.category-card__image-container {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--category-card-radius, 0); /* Setting-driven shape */
+  background-color: var(--background-darken);
+  margin-bottom: 1.5rem;
+}
+
+.category-card__image-container img {
+  transition: transform var(--transition-normal);
+}
+
+.category-card__image-container:hover img {
+  transform: scale(1.05);
+}
+
+.category-card__title {
+  font-family: var(--heading-family);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-color);
+  margin: 0;
+}
+
+.category-card__link {
+  display: block;
+  width: 100%;
+}
+
+.category-card__image-container .collection-card__image-placeholder,
+.category-card__image-container .collection-card__wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--category-card-radius, 0);
+}
+
+.category-card__image-container .collection-card__image-placeholder svg {
+  width: 100%;
+  height: 100%;
+}

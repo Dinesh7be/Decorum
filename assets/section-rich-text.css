@@ -1,0 +1,40 @@
+/*
+ * theme/assets/section-rich-text.css
+ * Styling for the Rich Text Section
+ */
+
+.rich-text__grid {
+  display: block !important;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 6rem 2rem;
+}
+
+.rich-text__subheading {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--text-color-light);
+}
+
+.rich-text__heading {
+  font-family: var(--heading-family);
+  font-size: var(--font-size-xl);
+  font-weight: 500;
+  margin-bottom: 2rem;
+  color: var(--accent-color);
+  line-height: 1.3;
+}
+
+.rich-text__text {
+  font-size: var(--font-size);
+  color: var(--text-color-light);
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+.rich-text__btn-container {
+  margin-top: 1rem;
+}

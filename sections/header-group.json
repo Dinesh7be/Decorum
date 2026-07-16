@@ -1,0 +1,22 @@
+{
+  "name": "Header Group",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {
+        "text": "Complementary shipping on orders over $250. 10-Year Warranty included."
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo_position": "left"
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

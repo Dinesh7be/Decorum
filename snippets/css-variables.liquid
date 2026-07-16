@@ -1,0 +1,147 @@
+{% comment %}
+snippets/css-variables.liquid
+
+Bridges Shopify backend merchant settings (colors, typography, spacing) into CSS custom properties.
+Loaded in the <head> of layout/theme.liquid.
+{% endcomment %}
+
+{%- liquid
+  assign heading_font = settings.heading_font
+  assign body_font = settings.body_font
+-%}
+
+{% style %}
+  {%- if heading_font and heading_font.family != blank -%}
+    {{ heading_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if body_font and body_font.family != blank -%}
+    {{ body_font | font_face: font_display: 'swap' }}
+    {%- assign body_font_bold = body_font | font_modify: 'weight', 'bold' -%}
+    {%- assign body_font_italic = body_font | font_modify: 'style', 'italic' -%}
+    {%- if body_font_bold -%}
+      {{ body_font_bold | font_face: font_display: 'swap' }}
+      {%- assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic' -%}
+    {%- endif -%}
+    {%- if body_font_italic -%}
+      {{ body_font_italic | font_face: font_display: 'swap' }}
+    {%- endif -%}
+    {%- if body_font_bold_italic -%}
+      {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+    {%- endif -%}
+  {%- endif -%}
+
+  :root {
+    /* Fonts */
+    {%- if heading_font.family != blank -%}
+      --heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+      --heading-weight: {{ heading_font.weight | default: 600 }};
+      --heading-style: {{ heading_font.style }};
+    {%- else -%}
+      --heading-family: "Playfair Display", serif;
+      --heading-weight: 600;
+      --heading-style: normal;
+    {%- endif -%}
+    --heading-text-transform: {{ settings.heading_text_transform | default: 'none' }};
+
+    {%- if body_font.family != blank -%}
+      --body-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+      --body-weight: {{ body_font.weight | default: 400 }};
+      --body-style: {{ body_font.style }};
+    {%- else -%}
+      --body-family: "Assistant", sans-serif;
+      --body-weight: 400;
+      --body-style: normal;
+    {%- endif -%}
+
+    --font-size: {{ settings.font_size | default: 16 }}px;
+    --font-size-sm: calc({{ settings.font_size | default: 16 }}px - 2px);
+    --font-size-xs: calc({{ settings.font_size | default: 16 }}px - 4px);
+    --font-size-lg: calc({{ settings.font_size | default: 16 }}px + 4px);
+    --font-size-xl: calc({{ settings.font_size | default: 16 }}px + 10px);
+    --font-size-xxl: calc({{ settings.font_size | default: 16 }}px + 20px);
+    
+    --font-size-h1: {{ settings.heading_size_h1 | default: 40 }}px;
+    --font-size-h2: {{ settings.heading_size_h2 | default: 32 }}px;
+    --font-size-h3: {{ settings.heading_size_h3 | default: 24 }}px;
+    --heading-letter-spacing: {{ settings.heading_letter_spacing | default: 0 }}px;
+    --body-letter-spacing: {{ settings.body_letter_spacing | default: 0 }}px;
+
+    /* Core Palette Colors */
+    --background: {{ settings.background | default: '#FAF9F6' }};
+    {%- if settings.background != blank -%}
+      --background-darken: {{ settings.background | color_darken: 3 }};
+      --background-lighten: {{ settings.background | color_lighten: 2 }};
+    {%- else -%}
+      --background-darken: #F2F0EB;
+      --background-lighten: #FCFBF9;
+    {%- endif -%}
+    
+    --text-color: {{ settings.text_color | default: '#4A4540' }};
+    {%- if settings.text_color != blank -%}
+      --text-color-light: {{ settings.text_color | color_lighten: 20 }};
+    {%- else -%}
+      --text-color-light: #736C65;
+    {%- endif -%}
+
+    --accent-color: {{ settings.accent_color | default: '#2B2927' }};
+    {%- if settings.accent_color != blank -%}
+      --accent-color-light: {{ settings.accent_color | color_lighten: 15 }};
+    {%- else -%}
+      --accent-color-light: #4A4643;
+    {%- endif -%}
+    --secondary-accent: {{ settings.secondary_accent | default: '#8C7D70' }};
+    --border-color: {{ settings.border_color | default: '#E6E1DA' }};
+    --keyboard-focus-color: {{ settings.keyboard_focus_color | default: '#8C7D70' }};
+
+    /* Header & Navigation Colors */
+    --header-bg: {{ settings.header_bg | default: '#FAF9F6' }};
+    --header-text: {{ settings.header_text | default: '#2B2927' }};
+    --nav-link: {{ settings.nav_link | default: '#4A4540' }};
+    --nav-hover-color: {{ settings.nav_hover_color | default: '#8C7D70' }};
+
+    /* Buttons */
+    --button-bg: {{ settings.button_bg | default: '#2B2927' }};
+    --button-text: {{ settings.button_text | default: '#FAF9F6' }};
+    --button-hover-bg: {{ settings.button_hover_bg | default: '#8C7D70' }};
+    --button-hover-text: {{ settings.button_hover_text | default: '#FAF9F6' }};
+    --secondary-button-bg: {{ settings.secondary_button_bg | default: 'transparent' }};
+    --secondary-button-text: {{ settings.secondary_button_text | default: '#2B2927' }};
+    --button-border-radius: {{ settings.button_border_radius | default: '0px' }};
+    --button-font-size: {{ settings.button_font_size | default: 14 }}px;
+
+    /* Footer Colors */
+    --footer-bg: {{ settings.footer_bg | default: '#2B2927' }};
+    --footer-text: {{ settings.footer_text | default: '#E6E1DA' }};
+    --footer-link: {{ settings.footer_link | default: '#FAF9F6' }};
+    --footer-border: {{ settings.footer_border | default: '#4A4540' }};
+    --overlay-color: #000000;
+
+    /* Form Fields Settings */
+    --form-border-radius: {{ settings.form_border_radius | default: 0 }}px;
+    --form-bg-color: {{ settings.form_bg_color | default: '#FAF9F6' }};
+    --form-text-color: {{ settings.form_text_color | default: '#2B2927' }};
+
+    /* Global Layout and Spacing Variables */
+    --container-width: {{ settings.container_width | default: 1400 }}px;
+    --grid-gap: {{ settings.grid_gap | default: 32 }}px;
+    --grid-gap-mobile: calc({{ settings.grid_gap | default: 32 }}px / 2);
+    --section-padding: {{ settings.section_spacing_desktop | default: 80 }}px;
+    --section-padding-mobile: {{ settings.section_spacing_mobile | default: 48 }}px;
+    
+    /* Animation Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-slow: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  @media (max-width: 740px) {
+    :root {
+      --font-size: calc({{ settings.font_size | default: 16 }}px - ({{ settings.font_size | default: 16 }}px * 0.15));
+      --font-size-h1: calc({{ settings.heading_size_h1 | default: 40 }}px * 0.85);
+      --font-size-h2: calc({{ settings.heading_size_h2 | default: 32 }}px * 0.85);
+      --font-size-h3: calc({{ settings.heading_size_h3 | default: 24 }}px * 0.85);
+      --section-padding: {{ settings.section_spacing_mobile | default: 48 }}px;
+      --grid-gap: calc({{ settings.grid_gap | default: 32 }}px / 2);
+    }
+  }
+{% endstyle %}

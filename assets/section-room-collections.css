@@ -1,0 +1,66 @@
+/*
+ * theme/assets/section-room-collections.css
+ * Styling for the Room-Based Collections Section
+ */
+
+.room-collections__header {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.room-card__wrapper {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--background-darken);
+  display: block;
+}
+
+.room-card__image {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition-slow);
+}
+
+.room-card__image img,
+.room-card__image svg {
+  transition: transform var(--transition-normal);
+}
+
+.room-card__wrapper:hover .room-card__image img {
+  transform: scale(1.04);
+}
+
+.room-card__content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 3rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+  color: var(--background);
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.room-card__title {
+  color: var(--background);
+  font-family: var(--heading-family);
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  margin: 0;
+}
+
+.room-card__link-text {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--background);
+  padding-bottom: 2px;
+}

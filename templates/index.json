@@ -1,0 +1,226 @@
+{
+  "sections": {
+    "hero-banner": {
+      "type": "hero-banner",
+      "settings": {
+        "title": "Timeless Furniture for Modern Living",
+        "subheading": "Explore our curated collection of solid oak chairs, textured linen sofas, and architectural lighting.",
+        "height": "medium",
+        "alignment": "center",
+        "overlay_opacity": 30,
+        "full_width": true,
+        "link_text": "Shop New Arrivals",
+        "link_text_2": "Book Design Consultation"
+      }
+    },
+    "shop-by-category": {
+      "type": "shop-by-category",
+      "settings": {
+        "title": "Shop by Category",
+        "shape": "circle",
+        "section_space": "both"
+      },
+      "blocks": {
+        "sofas": {
+          "type": "category",
+          "settings": {
+            "title": "Sofas",
+            "collection": "sofas"
+          }
+        },
+        "chairs": {
+          "type": "category",
+          "settings": {
+            "title": "Chairs",
+            "collection": "chairs"
+          }
+        },
+        "lighting": {
+          "type": "category",
+          "settings": {
+            "title": "Lighting",
+            "collection": "lighting"
+          }
+        },
+        "decor": {
+          "type": "category",
+          "settings": {
+            "title": "Decor",
+            "collection": "decor"
+          }
+        }
+      },
+      "block_order": [
+        "sofas",
+        "chairs",
+        "lighting",
+        "decor"
+      ]
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Best Sellers",
+        "collection": "frontpage",
+        "grid": 4,
+        "limit": 8,
+        "carousel": true,
+        "show_view_all": true,
+        "mobile_1pr": false,
+        "section_space": "both"
+      }
+    },
+    "room-collections": {
+      "type": "room-collections",
+      "settings": {
+        "title": "Shop by Room",
+        "section_space": "both"
+      },
+      "blocks": {
+        "living": {
+          "type": "room",
+          "settings": {
+            "title": "Living Room",
+            "collection": "living-room"
+          }
+        },
+        "bedroom": {
+          "type": "room",
+          "settings": {
+            "title": "Bedroom",
+            "collection": "bedroom"
+          }
+        },
+        "office": {
+          "type": "room",
+          "settings": {
+            "title": "Home Office",
+            "collection": "office"
+          }
+        }
+      },
+      "block_order": [
+        "living",
+        "bedroom",
+        "office"
+      ]
+    },
+    "shop-the-look": {
+      "type": "shop-the-look",
+      "settings": {
+        "title": "Shop the Look",
+        "section_space": "both"
+      },
+      "blocks": {
+        "sofa_hotspot": {
+          "type": "hotspot",
+          "settings": {
+            "product": "linen-sofa",
+            "x_pos": 35,
+            "y_pos": 45
+          }
+        },
+        "lamp_hotspot": {
+          "type": "hotspot",
+          "settings": {
+            "product": "oak-lamp",
+            "x_pos": 65,
+            "y_pos": 25
+          }
+        }
+      },
+      "block_order": [
+        "sofa_hotspot",
+        "lamp_hotspot"
+      ]
+    },
+    "why-choose-us": {
+      "type": "why-choose-us",
+      "settings": {
+        "title": "The Decorum Standard",
+        "section_space": "both"
+      },
+      "blocks": {
+        "quality": {
+          "type": "usp",
+          "settings": {
+            "icon": "quality",
+            "title": "Premium Materials",
+            "text": "Every frame is built from solid kiln-dried oak wood and cushions wrapped in premium Belgian flax linen fabric."
+          }
+        },
+        "delivery": {
+          "type": "usp",
+          "settings": {
+            "icon": "delivery",
+            "title": "White-Glove Service",
+            "text": "Complimentary indoor placement, full assembly, and packaging clean-up for a stress-free experience."
+          }
+        },
+        "warranty": {
+          "type": "usp",
+          "settings": {
+            "icon": "warranty",
+            "title": "10-Year Warranty",
+            "text": "We stand firmly behind our engineering. We offer structural warranty coverage for a full decade."
+          }
+        }
+      },
+      "block_order": [
+        "quality",
+        "delivery",
+        "warranty"
+      ]
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {
+        "title": "Client Stories",
+        "section_space": "both"
+      },
+      "blocks": {
+        "review_1": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "The linen lounge chair is the perfect addition to our living room. It's clean, minimalist, and extremely comfortable.",
+            "author": "Sarah K.",
+            "info": "Verified Buyer &mdash; New York"
+          }
+        },
+        "review_2": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Outstanding solid oak dining table. Heavy, sturdy, and the wood grain texture looks beautiful in natural daylight.",
+            "author": "Michael B.",
+            "info": "Verified Buyer &mdash; Austin"
+          }
+        },
+        "review_3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Architectural floor lamp that provides a warm ambient glow. Absolutely love the brass accents and fabric cord details.",
+            "author": "Emily R.",
+            "info": "Verified Buyer &mdash; Chicago"
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ]
+    }
+  },
+  "order": [
+    "hero-banner",
+    "shop-by-category",
+    "featured-collection",
+    "room-collections",
+    "shop-the-look",
+    "why-choose-us",
+    "testimonials"
+  ]
+}

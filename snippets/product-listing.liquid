@@ -1,0 +1,140 @@
+{% comment %}
+  snippets/product-listing.liquid
+
+  A single reusable product card used in all collection grids,
+  search results, recommendations, etc.
+
+  Accepts:
+  - product:       Shopify Product object (required)
+  - loading:       Image loading strategy: lazy or eager (optional, default: lazy)
+  - fetchpriority: Image fetch priority: high, auto (optional, default: auto)
+
+  Usage:
+  render 'product-listing', product: product, loading: 'lazy', fetchpriority: 'auto'
+{% endcomment %}
+
+{%- liquid
+  assign img_loading = loading | default: 'lazy'
+  assign img_fetchpriority = fetchpriority | default: 'auto'
+  assign show_secondary = settings.show_secondary_image_on_hover
+  assign badge_style = settings.card_badge_style | default: 'square'
+
+  # Determine badges
+  assign is_sold_out = true
+  if product.available
+    assign is_sold_out = false
+  endif
+
+  assign is_on_sale = false
+  if product.compare_at_price > product.price
+    assign is_on_sale = true
+  endif
+-%}
+
+<div class="product-card__wrapper js-product-listing" data-product-id="{{ product.id }}">
+  <div class="product-card__image-container">
+    {%- if is_sold_out -%}
+      <span class="badge badge--sold-out badge--{{ badge_style }}">
+        {{ 'products.product.sold_out' | t }}
+      </span>
+    {%- elsif is_on_sale -%}
+      <span class="badge badge--sale badge--{{ badge_style }}">
+        {{ 'products.product.on_sale' | t }}
+      </span>
+    {%- endif -%}
+
+    <a href="{{ product.url }}" class="product-card__image-link" aria-label="{{ product.title | escape }}">
+      <div class="product-card__image-wrapper">
+        {%- if product.featured_media != blank -%}
+          {%- render 'basic-responsive-image', 
+            image: product.featured_media.preview_image, 
+            sizes: '(min-width: 980px) 25vw, (min-width: 740px) 33vw, 50vw',
+            loading: img_loading, 
+            fetchpriority: img_fetchpriority,
+            custom_aspect_ratio: '4:5',
+            wrapper_classes: 'product-card__image product-card__image--primary'
+          -%}
+          
+          {%- if show_secondary and product.media[1] != blank -%}
+            {%- render 'basic-responsive-image', 
+              image: product.media[1].preview_image, 
+              sizes: '(min-width: 980px) 25vw, (min-width: 740px) 33vw, 50vw',
+              loading: 'lazy',
+              custom_aspect_ratio: '4:5',
+              is_secondary: true,
+              wrapper_classes: 'product-card__image product-card__image--secondary'
+            -%}
+          {%- endif -%}
+        {%- else -%}
+          <div class="product-card__image-placeholder" style="position: relative; padding-bottom: 125%; width: 100%;">
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg product-card__image--primary' }}
+          </div>
+        {%- endif -%}
+      </div>
+    </a>
+
+    {%- if settings.enable_quick_add -%}
+      <div class="product-card__quick-add">
+        {%- if is_sold_out -%}
+          <button class="btn btn--secondary btn--full btn--sm" disabled>
+            {{ 'products.product.sold_out' | t }}
+          </button>
+        {%- else -%}
+          {%- if product.has_only_default_variant -%}
+            <decor-cart-form>
+              {%- form 'product', product -%}
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                <button type="submit" class="btn btn--full btn--sm">
+                  {{ 'products.product.add_to_cart' | t }}
+                </button>
+              {%- endform -%}
+            </decor-cart-form>
+          {%- else -%}
+            <button
+              class="btn btn--full btn--sm js-quick-view-trigger"
+              popovertarget="quickview-modal-popover"
+              data-product-url="{{ product.url }}?view=quick"
+              aria-haspopup="dialog"
+              aria-controls="quickview-modal-popover"
+            >
+              {{ 'products.product.choose_options' | t }}
+            </button>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="product-card__info">
+    {%- if settings.show_vendor -%}
+      <div class="product-card__vendor">{{ product.vendor }}</div>
+    {%- endif -%}
+
+    <h3 class="product-card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    <div class="product-card__price-wrapper">
+      {%- if is_on_sale -%}
+        <span class="product-card__price product-card__price--compare text-color-light">
+          {{ product.compare_at_price | money }}
+        </span>
+      {%- endif -%}
+      <span class="product-card__price product-card__price--sale">
+        {{ product.price | money }}
+      </span>
+      {%- liquid
+        assign current_variant = product.selected_or_first_available_variant
+      -%}
+      {%- if current_variant.unit_price_measurement -%}
+        <div class="product-card__unit-price">
+          {{ current_variant.unit_price | money }}/
+          {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+            {{ current_variant.unit_price_measurement.reference_value }}
+          {%- endif -%}
+          {{ current_variant.unit_price_measurement.reference_unit }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

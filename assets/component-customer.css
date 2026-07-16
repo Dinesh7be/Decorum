@@ -1,0 +1,303 @@
+/*
+ * theme/assets/component-customer.css
+ * Styling for customer account, order, and addresses pages
+ */
+
+.customer__header-wrapper {
+  margin-bottom: 4rem;
+}
+
+.customer__header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 2rem;
+}
+
+.customer__header-back-link {
+  font-size: var(--font-size-sm);
+  text-decoration: underline;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.customer__header-logout-link {
+  font-size: var(--font-size-sm);
+  text-decoration: underline;
+}
+
+.customer__column-title {
+  font-size: var(--font-size-lg);
+  font-family: var(--heading-family);
+  margin-bottom: 2rem;
+}
+
+.customer__left-column,
+.customer__right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.customer-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+  text-align: left;
+}
+
+.customer-table__head-row {
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-color-light);
+  text-transform: uppercase;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.customer-table__th {
+  padding: 1rem 0;
+}
+
+.customer-table__th--total {
+  text-align: right;
+}
+
+.customer-table__body-row {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.customer-table__td {
+  padding: 1.5rem 0;
+}
+
+.customer-table__td--total {
+  text-align: right;
+  font-weight: 600;
+}
+
+.customer-table__td--order-date {
+  color: var(--text-color-light);
+}
+
+.customer-table__order-link {
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.customer__no-orders {
+  color: var(--text-color-light);
+}
+
+.customer-card {
+  background-color: var(--background-darken);
+  padding: 3rem;
+  border-radius: var(--button-border-radius);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+}
+
+.customer-card--address {
+  position: relative;
+}
+
+.customer-card__name {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.customer-card__view-addresses {
+  text-decoration: underline;
+  margin-top: 2rem;
+  display: inline-block;
+}
+
+.customer-card__default-badge {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  background-color: var(--accent-color);
+  color: var(--background);
+  padding: 0.3rem 0.8rem;
+}
+
+/* Order specific */
+.order-date-text {
+  color: var(--text-color-light);
+  font-size: var(--font-size-sm);
+  margin-top: 0.5rem;
+}
+
+.order-item-title {
+  font-weight: 600;
+  font-family: var(--heading-family);
+  font-size: var(--font-size);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.order-item-options {
+  font-size: var(--font-size-xs);
+  color: var(--text-color-light);
+  margin-bottom: 0.5rem;
+}
+
+.order-item-option-line {
+  margin: 0.2rem 0;
+}
+
+.order-item-subscription {
+  font-size: var(--font-size-xs);
+  color: var(--secondary-accent);
+  margin-bottom: 0.5rem;
+}
+
+.order-item-unit-price {
+  font-size: var(--font-size-xs);
+  color: var(--text-color-light);
+  margin-bottom: 0.5rem;
+}
+
+.order-item-sku {
+  color: var(--text-color-light);
+}
+
+.order-item-td-padding {
+  padding: 2rem 0;
+}
+
+/* Addresses page */
+.address-form-wrapper {
+  background-color: var(--background-darken);
+  padding: 3rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.address-form-row {
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.address-form-col {
+  flex-grow: 1;
+}
+
+.address-form-field {
+  margin-bottom: 1.5rem;
+}
+
+.address-form-field--submit {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Modifier sub-classes (M1) */
+.customer__header-row--order {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.customer-table--margin {
+  margin-bottom: 4rem;
+}
+
+.customer-table__th--quantity,
+.customer-table__td--quantity {
+  text-align: center;
+}
+
+/* Activate account page (M1) */
+.activate-account-wrapper {
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 4rem 0;
+}
+
+.activate-account__title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.activate-account__text {
+  text-align: center;
+  color: var(--text-color-light);
+  font-size: var(--font-size-sm);
+  margin-bottom: 3rem;
+}
+
+.activate-account__row {
+  margin-bottom: 2rem;
+}
+
+.activate-account__row--confirm {
+  margin-bottom: 2.5rem;
+}
+
+.activate-account__actions {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.activate-account__btn {
+  flex-grow: 1;
+}
+
+/* Login and Register Pages (M1) */
+.customer-form-container {
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.customer-form__title {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.customer-form__row {
+  margin-bottom: 2rem;
+}
+
+.customer-form__row--password {
+  margin-bottom: 2.5rem;
+}
+
+.customer-form__password-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.customer-form__forgot-link {
+  font-size: var(--font-size-xs);
+  text-decoration: underline;
+}
+
+.customer-form__submit-btn {
+  height: 5rem;
+}
+
+.customer-form__footer-text {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: var(--font-size-sm);
+  color: var(--text-color-light);
+}
+
+.customer-form__footer-link {
+  text-decoration: underline;
+  color: var(--accent-color);
+}
+
+.customer-form__subtext {
+  margin-bottom: 3rem;
+  margin-top: 0;
+  text-align: center;
+  color: var(--text-color-light);
+  font-size: var(--font-size-sm);
+}

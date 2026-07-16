@@ -1,0 +1,44 @@
+{
+  "name": "Footer Group",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "show_payment_icons": true
+      },
+      "blocks": {
+        "about": {
+          "type": "about",
+          "settings": {
+            "title": "Decorum Studio",
+            "text": "<p>Elegantly curated home decor and lifestyle furniture. We believe in simplicity, natural materials, and timeless pieces that bring warmth and comfort to your space.</p>"
+          }
+        },
+        "menu": {
+          "type": "menu",
+          "settings": {
+            "title": "Explore",
+            "menu": "main-menu"
+          }
+        },
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "title": "Design Notes",
+            "text": "Receive updates on clean living, space inspiration, and early access to our seasonal collections.",
+            "show_socials": true
+          }
+        }
+      },
+      "block_order": [
+        "about",
+        "menu",
+        "newsletter"
+      ]
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

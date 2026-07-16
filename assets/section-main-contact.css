@@ -1,0 +1,85 @@
+/*
+ * theme/assets/section-main-contact.css
+ * Styling for the Main Contact Page
+ */
+
+.contact-section {
+  padding: 6rem 0;
+}
+
+.contact__container {
+  max-width: 650px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.contact__header {
+  text-align: center;
+}
+
+.contact__title {
+  margin-bottom: 1.5rem;
+  font-family: var(--heading-family);
+}
+
+.contact__intro {
+  color: var(--text-color-light);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  margin-bottom: 3rem;
+}
+
+.contact__form-wrapper {
+  background-color: var(--background-darken);
+  padding: 4rem;
+  border-radius: var(--button-border-radius);
+}
+
+.contact__form-success {
+  padding: 2rem;
+  background-color: rgba(0, 128, 0, 0.1);
+  color: green;
+  margin-bottom: 2rem;
+  border-radius: var(--button-border-radius);
+  text-align: center;
+  font-size: var(--font-size-sm);
+}
+
+.contact__form-errors {
+  padding: 2rem;
+  background-color: rgba(255, 0, 0, 0.1);
+  color: red;
+  margin-bottom: 2rem;
+  border-radius: var(--button-border-radius);
+  font-size: var(--font-size-sm);
+}
+
+.contact__form-row {
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.contact__form-col {
+  flex: 1 1 200px;
+}
+
+.contact__form-field {
+  margin-bottom: 2rem;
+}
+
+.contact__form-field--message {
+  margin-bottom: 3rem;
+}
+
+.contact__textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.contact__submit-btn {
+  height: 5rem;
+}

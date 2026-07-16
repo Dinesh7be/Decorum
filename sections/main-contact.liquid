@@ -1,0 +1,104 @@
+{% comment %}
+sections/main-contact.liquid
+{% endcomment %}
+
+{{ 'section-main-contact.css' | asset_url | stylesheet_tag }}
+
+<section 
+  class="global__section contact-section" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="main-contact"
+>
+  <div class="grid__wrapper narrow contact__container">
+    <div class="contact__header">
+      <h1 class="contact__title">{{ page.title }}</h1>
+      {%- if page.content != blank -%}
+        <div class="rte contact__intro">
+          {{ page.content }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="contact__form-wrapper">
+      {%- form 'contact', id: 'ContactForm' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="contact__form-success">
+            {{ 'customer.contact.success' | t }}
+          </div>
+        {%- elsif form.errors -%}
+          <div class="contact__form-errors">
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+
+        <div class="contact__form-row">
+          <div class="contact__form-col">
+            <label for="ContactForm-name">{{ 'customer.contact.name' | t }}</label>
+            <input 
+              type="text" 
+              name="contact[name]" 
+              id="ContactForm-name" 
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" 
+              placeholder="{{ 'customer.contact.name' | t }}"
+            >
+          </div>
+          <div class="contact__form-col">
+            <label for="ContactForm-email">{{ 'customer.contact.email' | t }} <span aria-hidden="true">*</span></label>
+            <input 
+              type="email" 
+              name="contact[email]" 
+              id="ContactForm-email" 
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" 
+              placeholder="your.email@example.com"
+              required
+            >
+          </div>
+        </div>
+
+        {%- if section.settings.show_phone -%}
+          <div class="contact__form-field">
+            <label for="ContactForm-phone">{{ 'customer.contact.phone' | t }}</label>
+            <input 
+              type="tel" 
+              name="contact[phone]" 
+              id="ContactForm-phone" 
+              value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}" 
+              placeholder="{{ 'customer.contact.phone' | t }}"
+            >
+          </div>
+        {%- endif -%}
+
+        <div class="contact__form-field--message">
+          <label for="ContactForm-body">{{ 'customer.contact.message' | t }} <span aria-hidden="true">*</span></label>
+          <textarea 
+            rows="6" 
+            name="contact[body]" 
+            id="ContactForm-body" 
+            placeholder="How can we help you?"
+            required
+            class="contact__textarea"
+          >{% if form.body %}{{ form.body }}{% endif %}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn--full contact__submit-btn">{{ 'customer.contact.send' | t }}</button>
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact Form",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Show phone number field",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

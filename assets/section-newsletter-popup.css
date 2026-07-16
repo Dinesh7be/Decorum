@@ -1,0 +1,75 @@
+/*
+ * theme/assets/section-newsletter-popup.css
+ * Styling for the Newsletter Popup Modal
+ */
+
+.newsletter-popup.modal__root {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  z-index: 9999;
+}
+
+.newsletter-popup.modal__root::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+.newsletter-popup.modal__root.is-open {
+  display: block !important;
+}
+
+.newsletter-popup__container {
+  max-width: 480px;
+  background: var(--background);
+  border-radius: var(--button-border-radius);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--box-shadow-heavy);
+}
+
+.newsletter-popup__close-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1.5rem 1.5rem 0 0;
+}
+
+.newsletter-popup__close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.newsletter-popup__content {
+  padding: 1.5rem 3rem 4rem 3rem;
+  text-align: center;
+}
+
+.newsletter-popup__title {
+  margin: 0 0 1.5rem 0;
+  font-family: var(--heading-family);
+  font-weight: 500;
+}
+
+.newsletter-popup__text {
+  color: var(--text-color-light);
+  margin: 0 0 2.5rem 0;
+  line-height: 1.6;
+}
+
+.newsletter-popup__input {
+  width: 100%;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--button-border-radius);
+}
+
+.newsletter-popup__submit-btn {
+  width: 100%;
+}

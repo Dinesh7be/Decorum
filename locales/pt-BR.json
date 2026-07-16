@@ -1,0 +1,419 @@
+{
+  "accessibility": {
+    "account": "Ver detalhes da conta do cliente",
+    "close_drawer": "Fechar painel",
+    "close_modal": "Fechar janela",
+    "decrease_quantity": "Diminuir quantidade",
+    "image_comparison_slider": "Controle deslizante de comparação de imagens",
+    "increase_quantity": "Aumentar quantidade",
+    "next_slide": "Próximo slide",
+    "open_cart": "Abrir carrinho de compras",
+    "open_menu": "Abrir menu",
+    "open_search": "Abrir busca",
+    "previous_slide": "Slide anterior",
+    "skip_to_text": "Pular para o conteúdo"
+  },
+  "cart": {
+    "checkout": "Finalizar compra",
+    "continue_shopping": "Continuar comprando",
+    "empty": "Seu carrinho está vazio",
+    "general": {
+      "checkout": "Finalizar compra",
+      "continue_shopping": "Continuar comprando",
+      "empty": "Seu carrinho está vazio",
+      "explore_best_sellers": "Explore os nossos mais vendidos abaixo para adicionar itens ao seu carrinho.",
+      "loading": "Atualizando o carrinho...",
+      "order_special_instructions": "Instruções especiais do pedido",
+      "remove": "Remover item",
+      "subtotal": "Subtotal",
+      "taxes_and_shipping_policy": "Impostos e frete calculados no checkout.",
+      "taxes_and_shipping_policy_html": "Impostos e <a href=\"{{ link }}\">frete</a> calculados no checkout.",
+      "taxes_included_and_shipping_policy_html": "Impostos inclusos. <a href=\"{{ link }}\">Frete</a> calculado no checkout.",
+      "taxes_included_but_shipping_at_checkout": "Impostos inclusos. Frete calculado no checkout.",
+      "title": "Seu carrinho",
+      "update": "Atualizar carrinho",
+      "view_cart": "Ver carrinho"
+    },
+    "label": {
+      "product": "Produto",
+      "quantity": "Quantidade",
+      "total": "Total"
+    },
+    "title": "Carrinho"
+  },
+  "collections": {
+    "general": {
+      "all_collections": "Todas as coleções",
+      "no_products": "Nenhum produto encontrado",
+      "no_products_subtext": "Tente remover os filtros ativos para ver os itens disponíveis no catálogo."
+    },
+    "sorting": {
+      "sort_by": "Ordenar por"
+    }
+  },
+  "customer": {
+    "account": {
+      "date": "Data",
+      "details": "Detalhes da conta",
+      "fulfillment_status": "Status do envio",
+      "logout": "Sair",
+      "no_orders": "Você ainda não fez nenhum pedido.",
+      "order_number": "Pedido",
+      "orders": "Histórico de pedidos",
+      "payment_status": "Pagamento",
+      "title": "Minha conta",
+      "total": "Total",
+      "view_addresses": "Ver endereços ({{ count }})"
+    },
+    "activate_account": {
+      "decline": "Recusar convite",
+      "password": "Senha",
+      "password_confirm": "Confirmar senha",
+      "submit": "Ativar conta",
+      "subtext": "Crie sua senha para ativar sua conta.",
+      "title": "Ativar conta"
+    },
+    "addresses": {
+      "add_new": "Adicionar novo endereço",
+      "address1": "Endereço 1",
+      "address2": "Endereço 2",
+      "back_to_account": "Voltar para a conta",
+      "cancel": "Cancelar",
+      "city": "Cidade",
+      "company": "Empresa",
+      "default": "Padrão",
+      "first_name": "Nome",
+      "last_name": "Sobrenome",
+      "phone": "Número de telefone",
+      "save": "Salvar endereço",
+      "title": "Endereços",
+      "zip": "CEP"
+    },
+    "contact": {
+      "email": "Endereço de e-mail",
+      "message": "Mensagem",
+      "name": "Nome",
+      "phone": "Número de telefone",
+      "send": "Enviar mensagem",
+      "success": "Obrigado por entrar em contato! Responderemos em breve."
+    },
+    "login": {
+      "create_account": "Criar uma conta",
+      "email": "Endereço de e-mail",
+      "forgot_password": "Esqueceu sua senha?",
+      "new_customer": "Não tem uma conta?",
+      "password": "Senha",
+      "sign_in": "Entrar",
+      "title": "Entrar"
+    },
+    "order": {
+      "back_to_account": "Voltar para a conta",
+      "date": "Feito em {{ date }}",
+      "product": "Produto",
+      "quantity": "Quantidade",
+      "sku": "SKU",
+      "title": "Pedido {{ name }}",
+      "total": "Total"
+    },
+    "register": {
+      "already_have_account": "Já tem uma conta?",
+      "email": "Endereço de e-mail",
+      "first_name": "Nome",
+      "last_name": "Sobrenome",
+      "password": "Senha",
+      "sign_in": "Entrar",
+      "submit": "Criar conta",
+      "title": "Criar conta"
+    },
+    "reset_password": {
+      "password": "Nova senha",
+      "password_confirm": "Confirmar senha",
+      "submit": "Redefinir senha",
+      "subtext": "Digite uma nova senha para sua conta.",
+      "title": "Redefinir senha"
+    }
+  },
+  "general": {
+    "404": {
+      "button": "Voltar ao catálogo",
+      "subtext": "A página que você procura não existe, foi movida ou está temporariamente indisponível.",
+      "title": "Página não encontrada"
+    },
+    "accessibility": {
+      "primary_navigation": "Navegação principal"
+    },
+    "breadcrumbs": {
+      "home": "Início",
+      "label": "Navegação estrutural"
+    },
+    "menu": {
+      "title": "Menu"
+    },
+    "meta": {
+      "page": "Página {{ page }}",
+      "tags": "Marcado com \"{{ tags }}\""
+    },
+    "newsletter": {
+      "label": "Endereço de e-mail",
+      "placeholder": "Digite seu endereço de e-mail",
+      "submit": "Inscrever-se",
+      "success": "Obrigado por se inscrever!"
+    },
+    "pagination": {
+      "label": "Paginação",
+      "next": "Próxima página",
+      "page": "Página {{ number }}",
+      "previous": "Página anterior"
+    },
+    "password": {
+      "label": "Senha da loja",
+      "placeholder": "Digite a senha",
+      "submit": "Entrar na loja",
+      "subtext": "Nossa nova coleção está chegando em breve. Digite a senha da loja para acessar."
+    },
+    "search": {
+      "collections": "Coleções",
+      "no_results": "Nenhum resultado encontrado para \"{{ terms }}\". Tente outra palavra-chave.",
+      "no_results_suggest": "Nenhum resultado encontrado para a sua busca.",
+      "pages": "Páginas",
+      "placeholder": "Buscar em nossas coleções...",
+      "products": "Produtos",
+      "read_more": "Leia mais",
+      "results_count": "{{ count }} resultados para \"{{ terms }}\"",
+      "search": "Buscar",
+      "submit": "Enviar busca",
+      "view_all": "Ver todos os resultados da busca"
+    },
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "pinterest": "Pinterest"
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "apple_wallet": "Adicionar à Apple Wallet",
+      "initial_value": "Valor original: {{ value }}",
+      "qr_image_alt": "Código QR para resgatar este vale-presente",
+      "shop_link": "Começar a comprar",
+      "subtext": "Aqui estão os detalhes do saldo do seu vale-presente",
+      "title": "Seu vale-presente de {{ value }} para {{ shop }}"
+    }
+  },
+  "localization": {
+    "country_label": "País/região",
+    "language_label": "Idioma"
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Adicionar ao carrinho",
+      "add_to_cart_error": "Não foi possível adicionar o item ao carrinho. Tente novamente.",
+      "check_availability": "Verificar disponibilidade em outras lojas",
+      "choose_options": "Escolher opções",
+      "delivery_frequency": "Frequência de entrega",
+      "depth": "Profundidade",
+      "dimensions_heading": "Especificações e dimensões",
+      "error_loading_quickview": "Erro ao carregar a visualização rápida. Tente novamente.",
+      "example_product": "Produto de exemplo",
+      "height": "Altura",
+      "increments_of": "Incrementos de [count]",
+      "loading_quickview": "Carregando opções do produto...",
+      "maximum_of": "Máximo de [count]",
+      "minimum_of": "Mínimo de [count]",
+      "on_sale": "Promoção",
+      "one_time_purchase": "Compra única",
+      "out_of_stock": "Fora de estoque",
+      "pickup_available_at": "Retirada disponível em {{ location_name }}",
+      "pickup_unavailable_at": "Retirada atualmente indisponível em {{ location_name }}",
+      "quantity": "Quantidade",
+      "ready_for_pickup": "Pronto para retirada ({{ pickup_time }})",
+      "seat_height": "Altura do assento",
+      "share": "Compartilhar:",
+      "size_guide": "Guia de tamanhos",
+      "sold_out": "Esgotado",
+      "subscription_options": "Opções de assinatura",
+      "view_full_details": "Ver todos os detalhes",
+      "volume_pricing": "Preços por volume",
+      "width": "Largura"
+    }
+  },
+  "recipient": {
+    "form": {
+      "checkbox": "Quero enviar isto como presente",
+      "email": "E-mail do destinatário",
+      "email_placeholder": "Endereço de e-mail",
+      "message": "Mensagem de presente (opcional)",
+      "message_placeholder": "Escreva uma mensagem...",
+      "name": "Nome do destinatário (opcional)",
+      "name_placeholder": "Nome",
+      "send_on": "Data de envio (opcional)"
+    }
+  },
+  "sections": {
+    "ask_expert": {
+      "embed_title": "Agende uma consultoria de design",
+      "preferred_date": "Data preferida",
+      "project_details": "Conte-nos sobre seu projeto",
+      "submit": "Solicitar consultoria",
+      "success": "Obrigado! Enviaremos um e-mail em breve para confirmar sua consultoria."
+    },
+    "before_after": {
+      "after": "Depois",
+      "before": "Antes"
+    },
+    "bundle_builder": {
+      "add_bundle": "Adicionar pacote ao carrinho",
+      "onboarding_notice": "Adicione produtos no editor da seção para montar um pacote.",
+      "total_label": "Total do pacote:",
+      "you_save": "Você economiza {{ amount }}"
+    },
+    "care_timeline": {
+      "product_specific_heading": "Cuidando do seu {{ title }}"
+    },
+    "collection": {
+      "max": "Máx",
+      "min": "Mín",
+      "to": "a"
+    },
+    "comparison": {
+      "clear": "Limpar",
+      "col_image": "Imagem",
+      "col_material": "Material",
+      "col_price": "Preço",
+      "col_product": "Produto",
+      "compare_label": "Comparar",
+      "compare_now": "Comparar agora",
+      "modal_title": "Comparar produtos",
+      "onboarding_notice": "Selecione uma coleção no editor da seção para ativar as comparações.",
+      "selected_count": "{{ count }} de {{ max }} selecionados",
+      "view_product": "Ver produto"
+    },
+    "countdown": {
+      "days": "Dias",
+      "expired": "A oferta expirou",
+      "hours": "Horas",
+      "minutes": "Minutos",
+      "seconds": "Segundos"
+    },
+    "craftsmanship_story": {
+      "step_number": "Etapa {{ number }}"
+    },
+    "delivery_tiers": {
+      "choose_tier": "Escolha um nível de entrega",
+      "onboarding_notice": "Adicione níveis de serviço no editor da seção para preencher esta comparação."
+    },
+    "faq": {
+      "a1": "<p>Nossas estruturas são feitas de carvalho e nogueira maciços com certificação FSC. Todo o enchimento das almofadas é de espuma de alta resiliência revestida em linho natural ou bouclé texturizado.</p>",
+      "a2": "<p>O envio padrão leva de 5 a 10 dias úteis. Para móveis maiores, oferecemos entrega domiciliar com serviço completo, que inclui posicionamento no ambiente, montagem e remoção da embalagem.</p>",
+      "a3": "<p>Sim, oferecemos 10 anos de garantia na estrutura de todos os móveis e 2 anos de garantia em revestimentos têxteis e peças mecânicas.</p>",
+      "q1": "Quais materiais vocês usam nos móveis?",
+      "q2": "Quanto tempo levam o envio e a entrega?",
+      "q3": "Vocês oferecem garantia estrutural?"
+    },
+    "featured_collection": {
+      "example_product_title": "Exemplo de móvel",
+      "vendor": "Decorum Design",
+      "view_all": "Ver coleção completa"
+    },
+    "list_collections": {
+      "title": "Todas as coleções"
+    },
+    "lookbook": {
+      "view_product": "Ver produto"
+    },
+    "material_explorer": {
+      "all_materials": "Todos",
+      "filter_group_label": "Filtrar por tipo de material",
+      "no_matches": "Nenhum material corresponde a este filtro.",
+      "onboarding_notice": "Adicione amostras de material no editor da seção para preencher esta grade."
+    },
+    "onboarding": {
+      "blog_text_1": "Descubra os princípios de uma vida simples, texturas naturais e luz natural. Como escolher peças que dão vida à sua sala de estar.",
+      "blog_text_2": "Por que estruturas de carvalho maciço secado em forno duram décadas. Conheça nosso artesanato, os detalhes de encaixe e os padrões de acabamento orgânico.",
+      "blog_text_3": "De luminárias de piso plissadas com design arquitetônico a pendentes modernos. Aprenda a posicionar luzes de destaque para criar sombras quentes e aconchegantes nos cantos.",
+      "blog_title_1": "Projetando um espaço de convivência tranquilo",
+      "blog_title_2": "A arte dos móveis de fabricação lenta",
+      "blog_title_3": "Como decorar com iluminação ambiente",
+      "linen_lounge_chair": "Poltrona de linho"
+    },
+    "room_collections": {
+      "explore": "Explorar ambiente"
+    },
+    "room_configurator": {
+      "badge": "Em breve",
+      "join_waitlist": "Entrar na lista de espera",
+      "success": "Você está na lista! Enviaremos um e-mail assim que estiver pronto."
+    },
+    "room_fit": {
+      "depth_label": "Profundidade do ambiente (cm)",
+      "match_count": "{{ count }} peças cabem no seu espaço",
+      "no_matches": "Nada nesta coleção cabe ainda nessas dimensões — tente um ambiente maior.",
+      "onboarding_notice": "Selecione uma coleção no editor da seção para ativar a calculadora.",
+      "submit": "Encontrar móveis",
+      "unit_cm": "Centímetros",
+      "unit_in": "Polegadas",
+      "unit_label": "Unidade",
+      "width_label": "Largura do ambiente (cm)"
+    },
+    "room_gallery": {
+      "onboarding_notice": "Adicione fotos de clientes no editor da seção para preencher esta galeria."
+    },
+    "room_hotspots": {
+      "view_item": "Ver {{ title }}",
+      "view_product": "Ver produto"
+    },
+    "seasonal_lookbook": {
+      "next": "Próximo slide",
+      "onboarding_notice": "Adicione slides narrativos no editor da seção para preencher este carrossel.",
+      "previous": "Slide anterior"
+    },
+    "shop_by_category": {
+      "example_category_title": "Categoria de exemplo"
+    },
+    "style_quiz": {
+      "back": "Voltar",
+      "onboarding_notice": "Adicione pelo menos uma pergunta e um resultado no editor da seção para ativar o quiz.",
+      "question_progress": "Pergunta {{ current }} de {{ total }}",
+      "restart": "Refazer o quiz",
+      "shop_style": "Ver o estilo {{ style }}"
+    },
+    "sustainability": {
+      "learn_more": "Saiba mais",
+      "onboarding_notice": "Adicione selos de certificação no editor da seção. Inclua apenas alegações que sua equipe possa comprovar."
+    },
+    "testimonials": {
+      "author_1": "Sarah K.",
+      "author_2": "David M.",
+      "author_3": "Elena R.",
+      "meta_1": "Compra verificada &mdash; Austin",
+      "meta_2": "Compra verificada &mdash; Seattle",
+      "meta_3": "Compra verificada &mdash; Chicago",
+      "text_1": "O sofá em bouclé é a peça central perfeita para minha sala de estar. Alta qualidade, extremamente confortável, e a equipe de entrega foi incrível.",
+      "text_2": "Design minimalista deslumbrante. A mesa de jantar em carvalho maciço parece extremamente premium e resistente. Vale cada centavo.",
+      "text_3": "Linda luminária de mesa de design arquitetônico. O tom quente da luz cria uma atmosfera muito aconchegante. Com certeza vou comprar aqui novamente."
+    },
+    "trade_program": {
+      "business_type": "Tipo de negócio",
+      "company_name": "Nome da empresa",
+      "resale_certificate": "Certificado de revenda / CNPJ",
+      "submit": "Enviar candidatura",
+      "success": "Obrigado por se candidatar! Nossa equipe comercial entrará em contato em até 2 dias úteis.",
+      "type_architect": "Arquiteto(a)",
+      "type_designer": "Designer de interiores",
+      "type_hospitality": "Hotelaria / Contrato",
+      "type_other": "Outro",
+      "type_retailer": "Varejista"
+    },
+    "video": {
+      "video_player": "Reprodutor de vídeo"
+    },
+    "why_choose_us": {
+      "text_1": "Fabricado em madeira maciça sustentável e tecidos de linho pesados, feitos para durar gerações.",
+      "text_2": "Entrega, posicionamento no ambiente, montagem e remoção da embalagem gratuitos em todos os pedidos de grande porte.",
+      "text_3": "Confiamos totalmente em nossos produtos. Cada peça inclui cobertura estrutural por uma década inteira.",
+      "title_1": "Qualidade superior",
+      "title_2": "Entrega com serviço completo",
+      "title_3": "Garantia de 10 anos"
+    }
+  }
+}

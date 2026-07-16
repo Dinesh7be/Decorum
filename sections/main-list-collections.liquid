@@ -1,0 +1,53 @@
+{% comment %}
+sections/main-list-collections.liquid
+{% endcomment %}
+
+<section 
+  class="global__section" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="main-list-collections"
+>
+  {%- if section.settings.show_title -%}
+    <div class="grid__wrapper list-collections__header">
+      <div class="span-12">
+        <h1>{{ 'sections.list_collections.title' | t }}</h1>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="grid__wrapper">
+    {%- paginate collections by 12 -%}
+      {%- for collection in collections -%}
+        <div class="span-4 sm-span-6 list-collections__card">
+          <a href="{{ collection.url }}" class="list-collections__link">
+            <div class="image-ratio-box list-collections__image-box">
+              {%- if collection.featured_image != blank -%}
+                {%- render 'basic-responsive-image', image: collection.featured_image, sizes: '(min-width: 740px) 33vw, 100vw' -%}
+              {%- else -%}
+                {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <h3 class="list-collections__title">
+              {{ collection.title }}
+            </h3>
+          </a>
+        </div>
+      {%- endfor -%}
+      {%- render 'pagination', paginate: paginate -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "List Collections",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show Page Title",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

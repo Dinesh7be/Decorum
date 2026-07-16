@@ -1,0 +1,227 @@
+/*
+ * theme/assets/section-main-cart.css
+ * Styling for the Main Cart Page Template
+ */
+
+.cart__header-wrapper {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 4rem;
+}
+
+.cart-table__head-row {
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+  text-transform: uppercase;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-color-light);
+}
+
+.cart-table__th {
+  padding: 1.5rem 0;
+}
+
+.cart-table__th--quantity {
+  text-align: center;
+}
+
+.cart-table__th--total {
+  text-align: right;
+}
+
+.cart-table__body-row {
+  border-bottom: 1px solid var(--border-color);
+  font-size: var(--font-size-sm);
+}
+
+.cart-table__td-product {
+  padding: 2.5rem 0;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.cart-table__product-image {
+  background-color: var(--background-darken);
+  border: 1px solid var(--border-color);
+  width: 80px;
+}
+
+.cart-table__product-title {
+  font-family: var(--heading-family);
+  font-size: var(--font-size);
+  font-weight: 500;
+  color: var(--accent-color);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.cart-item__options {
+  font-size: var(--font-size-xs);
+  color: var(--text-color-light);
+  margin-bottom: 0.5rem;
+}
+
+.cart-item__option-line {
+  margin: 0.2rem 0;
+}
+
+.cart-item__subscription {
+  font-size: var(--font-size-xs);
+  color: var(--secondary-accent);
+  margin-bottom: 0.5rem;
+}
+
+.cart-item__unit-price {
+  font-size: var(--font-size-xs);
+  color: var(--text-color-light);
+  margin-bottom: 0.5rem;
+}
+
+.cart-item__remove-link {
+  color: var(--secondary-accent);
+  font-size: var(--font-size-xs);
+  text-decoration: underline;
+  margin-top: 0.5rem;
+  display: inline-block;
+}
+
+.cart-table__td-quantity {
+  padding: 2.5rem 0;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.cart-table__qty-selector {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  height: 4rem;
+}
+
+.cart-table__qty-btn {
+  width: 3.5rem;
+  height: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.cart-table__qty-input {
+  width: 4rem;
+  text-align: center;
+  border: none;
+  height: 100%;
+}
+
+.cart-table__td-total {
+  padding: 2.5rem 0;
+  text-align: right;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.cart__footer-wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4rem;
+  margin-top: 3rem;
+  align-items: flex-start;
+}
+
+.cart__notes {
+  flex: 1 1 350px;
+  max-width: 500px;
+  text-align: left;
+}
+
+.cart__notes-label {
+  display: block;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  margin-bottom: 1rem;
+}
+
+.cart__notes-textarea {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  background-color: var(--background);
+  resize: vertical;
+  font-size: var(--font-size-sm);
+}
+
+.cart__summary {
+  flex: 0 1 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1.5rem;
+  text-align: right;
+}
+
+.cart__discounts {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: var(--secondary-accent);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+}
+
+.cart__discount-item {
+  margin: 0.5rem 0;
+}
+
+.cart__subtotal-row {
+  display: flex;
+  gap: 4rem;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+.cart__notice {
+  font-size: var(--font-size-xs);
+  color: var(--text-color-light);
+  max-width: 400px;
+  line-height: 1.4;
+}
+
+.cart__buttons {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.cart__additional-buttons {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.cart__empty-container {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.cart__empty-subtext {
+  margin: 2rem 0;
+  color: var(--text-color-light);
+}
+
+.cart__continue-btn {
+  margin-bottom: 4rem;
+}
+
+.cart__empty-grid {
+  column-gap: var(--grid-gap);
+  row-gap: var(--grid-gap);
+}

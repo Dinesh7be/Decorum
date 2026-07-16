@@ -1,0 +1,135 @@
+/*
+ * theme/assets/section-product-comparison-builder.css
+ * Collection grid with "Compare" checkboxes + a floating compare bar/table.
+ */
+
+.compare-builder__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.compare-builder__card {
+  position: relative;
+}
+
+.compare-builder__checkbox-wrap {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 3;
+  background: var(--background);
+  border-radius: var(--button-border-radius);
+  padding: 0.4rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--font-size-xs);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.compare-builder__bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  background: var(--accent-color);
+  color: var(--background);
+  padding: 1.2rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  transform: translateY(100%);
+  transition: transform var(--transition-normal);
+}
+
+.compare-builder__bar[data-visible="true"] {
+  transform: translateY(0);
+}
+
+.compare-builder__bar-count {
+  font-size: var(--font-size-sm);
+}
+
+.compare-builder__table-wrap {
+  overflow-x: auto;
+  max-width: 90vw;
+}
+
+.compare-builder__table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 480px;
+}
+
+.compare-builder__table th,
+.compare-builder__table td {
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem;
+  text-align: left;
+  font-size: var(--font-size-sm);
+  vertical-align: top;
+}
+
+.compare-builder__table th {
+  color: var(--text-color-light);
+  font-weight: 600;
+  width: 140px;
+}
+
+.compare-builder__thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--button-border-radius);
+  overflow: hidden;
+  background: var(--background-darken);
+}
+
+.compare-builder__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 980px) {
+  .compare-builder__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 740px) {
+  .compare-builder__grid { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+  .compare-builder__bar { padding: 1rem; flex-wrap: wrap; }
+}
+
+/* Extracted inline styles */
+.compare-builder__section-title {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.compare-builder__section-subheading {
+  text-align: center;
+  color: var(--text-color-light);
+  margin-bottom: 3rem;
+}
+
+.compare-builder__modal-container {
+  max-width: 900px;
+}
+
+.compare-builder__modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.compare-builder__modal-title {
+  margin: 0;
+}
+
+.compare-builder__onboarding-notice {
+  text-align: center;
+  color: var(--text-color-light);
+}

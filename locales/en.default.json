@@ -1,0 +1,419 @@
+{
+  "accessibility": {
+    "account": "View customer account details",
+    "close_drawer": "Close drawer",
+    "close_modal": "Close modal",
+    "decrease_quantity": "Decrease quantity",
+    "image_comparison_slider": "Image comparison slider",
+    "increase_quantity": "Increase quantity",
+    "next_slide": "Next slide",
+    "open_cart": "Open shopping cart drawer",
+    "open_menu": "Open menu drawer",
+    "open_search": "Open search drawer",
+    "previous_slide": "Previous slide",
+    "skip_to_text": "Skip to content"
+  },
+  "cart": {
+    "checkout": "Checkout",
+    "continue_shopping": "Continue shopping",
+    "empty": "Your cart is empty",
+    "general": {
+      "checkout": "Proceed to Checkout",
+      "continue_shopping": "Continue Shopping",
+      "empty": "Your cart is empty",
+      "explore_best_sellers": "Explore our best sellers below to add items to your cart.",
+      "loading": "Updating cart details...",
+      "order_special_instructions": "Order Special Instructions",
+      "remove": "Remove item",
+      "subtotal": "Subtotal",
+      "taxes_and_shipping_policy": "Taxes and shipping computed at checkout.",
+      "taxes_and_shipping_policy_html": "Taxes and <a href=\"{{ link }}\">shipping</a> calculated at checkout.",
+      "taxes_included_and_shipping_policy_html": "Taxes included. <a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
+      "taxes_included_but_shipping_at_checkout": "Taxes included. Shipping calculated at checkout.",
+      "title": "Your Cart",
+      "update": "Update Cart",
+      "view_cart": "View Basket"
+    },
+    "label": {
+      "product": "Product",
+      "quantity": "Quantity",
+      "total": "Total"
+    },
+    "title": "Cart"
+  },
+  "collections": {
+    "general": {
+      "all_collections": "All Collections",
+      "no_products": "No products found",
+      "no_products_subtext": "Try clearing active filters to see available catalog items."
+    },
+    "sorting": {
+      "sort_by": "Sort By"
+    }
+  },
+  "customer": {
+    "account": {
+      "date": "Date",
+      "details": "Account Details",
+      "fulfillment_status": "Fulfillment",
+      "logout": "Log out",
+      "no_orders": "You haven't placed any orders yet.",
+      "order_number": "Order",
+      "orders": "Order History",
+      "payment_status": "Payment",
+      "title": "My Account",
+      "total": "Total",
+      "view_addresses": "View Addresses ({{ count }})"
+    },
+    "activate_account": {
+      "decline": "Decline Invitation",
+      "password": "Password",
+      "password_confirm": "Confirm Password",
+      "submit": "Activate Account",
+      "subtext": "Create your password to activate your account.",
+      "title": "Activate Account"
+    },
+    "addresses": {
+      "add_new": "Add New Address",
+      "address1": "Address 1",
+      "address2": "Address 2",
+      "back_to_account": "Back to Account",
+      "cancel": "Cancel",
+      "city": "City",
+      "company": "Company",
+      "default": "Default",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "phone": "Phone Number",
+      "save": "Save Address",
+      "title": "Addresses",
+      "zip": "Zip / Postal Code"
+    },
+    "contact": {
+      "email": "Email Address",
+      "message": "Message",
+      "name": "Name",
+      "phone": "Phone Number",
+      "send": "Send Message",
+      "success": "Thanks for reaching out! We'll get back to you shortly."
+    },
+    "login": {
+      "create_account": "Create one",
+      "email": "Email Address",
+      "forgot_password": "Forgot your password?",
+      "new_customer": "Don't have an account?",
+      "password": "Password",
+      "sign_in": "Sign In",
+      "title": "Login"
+    },
+    "order": {
+      "back_to_account": "Back to Account",
+      "date": "Placed on {{ date }}",
+      "product": "Product",
+      "quantity": "Quantity",
+      "sku": "SKU",
+      "title": "Order {{ name }}",
+      "total": "Total"
+    },
+    "register": {
+      "already_have_account": "Already have an account?",
+      "email": "Email Address",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "password": "Password",
+      "sign_in": "Sign in",
+      "submit": "Create Account",
+      "title": "Create Account"
+    },
+    "reset_password": {
+      "password": "New Password",
+      "password_confirm": "Confirm Password",
+      "submit": "Reset Password",
+      "subtext": "Enter a new password for your account.",
+      "title": "Reset Password"
+    }
+  },
+  "general": {
+    "404": {
+      "button": "Back to catalog",
+      "subtext": "The page you are looking for does not exist, has been moved, or is temporarily unavailable.",
+      "title": "Page Not Found"
+    },
+    "accessibility": {
+      "primary_navigation": "Primary Navigation"
+    },
+    "breadcrumbs": {
+      "home": "Home",
+      "label": "Breadcrumbs"
+    },
+    "menu": {
+      "title": "Menu"
+    },
+    "meta": {
+      "page": "Page {{ page }}",
+      "tags": "Tagged \"{{ tags }}\""
+    },
+    "newsletter": {
+      "label": "Email Address",
+      "placeholder": "Enter your email address",
+      "submit": "Subscribe",
+      "success": "Thank you for subscribing!"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "next": "Next page",
+      "page": "Page {{ number }}",
+      "previous": "Previous page"
+    },
+    "password": {
+      "label": "Store Password",
+      "placeholder": "Enter password",
+      "submit": "Enter Store",
+      "subtext": "Our new collection is coming soon. Enter store password to access."
+    },
+    "search": {
+      "collections": "Collections",
+      "no_results": "No results found for \"{{ terms }}\". Try a different keyword.",
+      "no_results_suggest": "No results found for your search query.",
+      "pages": "Pages",
+      "placeholder": "Search our collections...",
+      "products": "Products",
+      "read_more": "Read more",
+      "results_count": "{{ count }} results for \"{{ terms }}\"",
+      "search": "Search",
+      "submit": "Submit search",
+      "view_all": "View all search results"
+    },
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "pinterest": "Pinterest"
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "apple_wallet": "Add to Apple Wallet",
+      "initial_value": "Original Value: {{ value }}",
+      "qr_image_alt": "QR code to redeem this gift card",
+      "shop_link": "Start Shopping",
+      "subtext": "Here is your gift card balance details",
+      "title": "Your {{ value }} gift card for {{ shop }}"
+    }
+  },
+  "localization": {
+    "country_label": "Country/Region",
+    "language_label": "Language"
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "add_to_cart_error": "Unable to add item to cart. Please try again.",
+      "check_availability": "Check availability at other stores",
+      "choose_options": "Choose options",
+      "delivery_frequency": "Delivery frequency",
+      "depth": "Depth",
+      "dimensions_heading": "Specifications & Dimensions",
+      "error_loading_quickview": "Error loading Quick View. Please try again.",
+      "example_product": "Example product",
+      "height": "Height",
+      "increments_of": "Increments of [count]",
+      "loading_quickview": "Loading product options...",
+      "maximum_of": "Maximum of [count]",
+      "minimum_of": "Minimum of [count]",
+      "on_sale": "Sale",
+      "one_time_purchase": "One-time purchase",
+      "out_of_stock": "Out of stock",
+      "pickup_available_at": "Pickup available at {{ location_name }}",
+      "pickup_unavailable_at": "Pickup currently unavailable at {{ location_name }}",
+      "quantity": "Quantity",
+      "ready_for_pickup": "Ready for pickup ({{ pickup_time }})",
+      "seat_height": "Seat Height",
+      "share": "Share:",
+      "size_guide": "Size Guide",
+      "sold_out": "Sold Out",
+      "subscription_options": "Subscription options",
+      "view_full_details": "View full details",
+      "volume_pricing": "Volume pricing",
+      "width": "Width"
+    }
+  },
+  "recipient": {
+    "form": {
+      "checkbox": "I want to send this as a gift",
+      "email": "Recipient email",
+      "email_placeholder": "Email address",
+      "message": "Gift message (optional)",
+      "message_placeholder": "Write a message...",
+      "name": "Recipient name (optional)",
+      "name_placeholder": "Name",
+      "send_on": "Send on date (optional)"
+    }
+  },
+  "sections": {
+    "ask_expert": {
+      "embed_title": "Book a design consultation",
+      "preferred_date": "Preferred Date",
+      "project_details": "Tell us about your project",
+      "submit": "Request Consultation",
+      "success": "Thanks! We'll email you shortly to confirm your consultation."
+    },
+    "before_after": {
+      "after": "After",
+      "before": "Before"
+    },
+    "bundle_builder": {
+      "add_bundle": "Add Bundle to Cart",
+      "onboarding_notice": "Add products in the section editor to build a bundle.",
+      "total_label": "Bundle Total:",
+      "you_save": "You save {{ amount }}"
+    },
+    "care_timeline": {
+      "product_specific_heading": "Caring for your {{ title }}"
+    },
+    "collection": {
+      "max": "Max",
+      "min": "Min",
+      "to": "to"
+    },
+    "comparison": {
+      "clear": "Clear",
+      "col_image": "Image",
+      "col_material": "Material",
+      "col_price": "Price",
+      "col_product": "Product",
+      "compare_label": "Compare",
+      "compare_now": "Compare Now",
+      "modal_title": "Compare Products",
+      "onboarding_notice": "Select a collection in the section editor to enable comparisons.",
+      "selected_count": "{{ count }} of {{ max }} selected",
+      "view_product": "View product"
+    },
+    "countdown": {
+      "days": "Days",
+      "expired": "Offer has expired",
+      "hours": "Hours",
+      "minutes": "Mins",
+      "seconds": "Secs"
+    },
+    "craftsmanship_story": {
+      "step_number": "Step {{ number }}"
+    },
+    "delivery_tiers": {
+      "choose_tier": "Choose a delivery tier",
+      "onboarding_notice": "Add service tiers in the section editor to populate this comparison."
+    },
+    "faq": {
+      "a1": "<p>Our frames are crafted from premium FSC-certified solid oak and walnut wood. All cushion padding is made of high-resilience foam wrapped in natural linen or textured boucle covers.</p>",
+      "a2": "<p>Standard shipping takes 5-10 business days. For larger furniture, we offer complimentary white-glove home delivery which includes room placement, assembly, and cleanup.</p>",
+      "a3": "<p>Yes, we provide a 10-year warranty on all furniture structural frames and a 2-year warranty on textile coverings and mechanical parts.</p>",
+      "q1": "What materials do you use in your furniture?",
+      "q2": "How long does shipping and delivery take?",
+      "q3": "Do you offer structural warranty coverages?"
+    },
+    "featured_collection": {
+      "example_product_title": "Example Furniture Piece",
+      "vendor": "Decorum Design",
+      "view_all": "View entire collection"
+    },
+    "list_collections": {
+      "title": "All Collections"
+    },
+    "lookbook": {
+      "view_product": "View Product"
+    },
+    "material_explorer": {
+      "all_materials": "All",
+      "filter_group_label": "Filter by material type",
+      "no_matches": "No materials match this filter.",
+      "onboarding_notice": "Add material swatches in the section editor to populate this grid."
+    },
+    "onboarding": {
+      "blog_text_1": "Discover the principles of clean living, raw textures, and natural lighting. How to select pieces that breathe life into your living room setup.",
+      "blog_text_2": "Why solid kiln-dried oak wood frames last for decades. Inside our craftsmanship, joinery details, and organic finishing standard guidelines.",
+      "blog_text_3": "From architectural pleated floor lamps to modern ceiling pendants. Learn how to place accent lights to create warm, cozy shadows in corners.",
+      "blog_title_1": "Designing a Calm Living Space",
+      "blog_title_2": "The Art of Slow Crafted Furniture",
+      "blog_title_3": "How to style with Ambient Lighting",
+      "linen_lounge_chair": "Linen Lounge Chair"
+    },
+    "room_collections": {
+      "explore": "Explore Room"
+    },
+    "room_configurator": {
+      "badge": "Coming Soon",
+      "join_waitlist": "Join the Waitlist",
+      "success": "You're on the list! We'll email you the moment it's ready."
+    },
+    "room_fit": {
+      "depth_label": "Room Depth (in)",
+      "match_count": "{{ count }} pieces fit your space",
+      "no_matches": "Nothing in this collection fits those dimensions yet — try a larger room size.",
+      "onboarding_notice": "Select a collection in the section editor to enable the calculator.",
+      "submit": "Find Furniture",
+      "unit_cm": "Centimeters",
+      "unit_in": "Inches",
+      "unit_label": "Unit",
+      "width_label": "Room Width (in)"
+    },
+    "room_gallery": {
+      "onboarding_notice": "Add customer photos in the section editor to populate this gallery."
+    },
+    "room_hotspots": {
+      "view_item": "View {{ title }}",
+      "view_product": "View Product"
+    },
+    "seasonal_lookbook": {
+      "next": "Next slide",
+      "onboarding_notice": "Add story slides in the section editor to populate this carousel.",
+      "previous": "Previous slide"
+    },
+    "shop_by_category": {
+      "example_category_title": "Example Category"
+    },
+    "style_quiz": {
+      "back": "Back",
+      "onboarding_notice": "Add at least one question and one result in the section editor to activate the quiz.",
+      "question_progress": "Question {{ current }} of {{ total }}",
+      "restart": "Retake Quiz",
+      "shop_style": "Shop {{ style }}"
+    },
+    "sustainability": {
+      "learn_more": "Learn more",
+      "onboarding_notice": "Add certification badges in the section editor. Only include claims your team can verify."
+    },
+    "testimonials": {
+      "author_1": "Sarah K.",
+      "author_2": "David M.",
+      "author_3": "Elena R.",
+      "meta_1": "Verified Buyer &mdash; Austin",
+      "meta_2": "Verified Buyer &mdash; Seattle",
+      "meta_3": "Verified Buyer &mdash; Chicago",
+      "text_1": "The boucle sofa is the perfect centerpiece for my living room. High quality, extremely comfortable, and the delivery team was amazing.",
+      "text_2": "Stunning minimalist design. The solid oak dining table feels extremely premium and sturdy. It is worth every single dollar.",
+      "text_3": "Beautiful architectural desk lamp. The warm tone of the light creates such a cozy atmosphere. I will definitely shop here again."
+    },
+    "trade_program": {
+      "business_type": "Business Type",
+      "company_name": "Company Name",
+      "resale_certificate": "Resale Certificate / Tax ID",
+      "submit": "Submit Application",
+      "success": "Thanks for applying! Our trade team will reach out within 2 business days.",
+      "type_architect": "Architect",
+      "type_designer": "Interior Designer",
+      "type_hospitality": "Hospitality / Contract",
+      "type_other": "Other",
+      "type_retailer": "Retailer"
+    },
+    "video": {
+      "video_player": "Video player"
+    },
+    "why_choose_us": {
+      "text_1": "Crafted from sustainable solid wood and heavy-weight linen textiles built to endure generations.",
+      "text_2": "Complementary delivery, inside placement, assembly, and packaging removal on all major orders.",
+      "text_3": "We stand firmly behind our products. Every piece includes structural coverage for a full decade.",
+      "title_1": "Premium Quality",
+      "title_2": "White-Glove Delivery",
+      "title_3": "10-Year Warranty"
+    }
+  }
+}

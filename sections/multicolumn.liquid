@@ -1,0 +1,198 @@
+{{ 'section-multicolumn.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/multicolumn.liquid
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+
+  # Calculate column class
+  assign col_width = 'span-4'
+  if section.blocks.size == 2
+    assign col_width = 'span-6'
+  elsif section.blocks.size == 4
+    assign col_width = 'span-3'
+  endif
+-%}
+
+<section 
+  class="global__section{{ space_class }} multicolumn-section"
+  data-section-id="{{ section.id }}"
+  data-section-type="multicolumn"
+  style="background-color: {{ section.settings.bg_color | default: 'transparent' }};"
+>
+  <div class="grid__wrapper multicolumn__grid">
+    {%- if section.settings.title != blank or section.settings.subheading != blank -%}
+      <div class="span-12 multicolumn__header-col">
+        {%- if section.settings.subheading != blank -%}
+          <p class="section__subheading">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.title != blank -%}
+          <h2 class="section__title">{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- for block in section.blocks -%}
+      <div 
+        class="{{ col_width }} sm-span-12 multicolumn__item" 
+        style="--multicolumn-align: {{ section.settings.align | default: 'center' }};"
+        {{ block.shopify_attributes }}
+      >
+        {%- if block.settings.image != blank -%}
+          <div class="multicolumn__image-wrapper" style="--multicolumn-img-width: {{ section.settings.image_width | default: '60' }}px;">
+            {%- render 'basic-responsive-image', image: block.settings.image, sizes: '300px' -%}
+          </div>
+        {%- elsif block.settings.icon != 'none' -%}
+          <div class="multicolumn__icon-wrapper">
+            {%- render 'snip-icons', icon: block.settings.icon, size: '40px' -%}
+          </div>
+        {%- endif -%}
+
+        {%- if block.settings.title != blank -%}
+          <h3 class="multicolumn__item-title multicolumn__title">
+            {{ block.settings.title | escape }}
+          </h3>
+        {%- endif -%}
+
+        {%- if block.settings.text != blank -%}
+          <div class="rte multicolumn__text">
+            {{ block.settings.text }}
+          </div>
+        {%- endif -%}
+
+        {%- if block.settings.link_text != blank and block.settings.link_url != blank -%}
+          <div class="multicolumn__btn-container">
+            {%- if block.settings.button_style == 'primary' -%}
+              <a href="{{ block.settings.link_url }}" class="btn">
+                {{ block.settings.link_text | escape }}
+              </a>
+            {%- else -%}
+              <a href="{{ block.settings.link_url }}" class="multicolumn__link">
+                {{ block.settings.link_text | escape }}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Multicolumn",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Our Services"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "text",
+      "id": "image_width",
+      "label": "Image width (px)",
+      "default": "60"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "both"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Column",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Or Icon",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "star", "label": "Star" },
+            { "value": "warranty", "label": "Warranty / Shield" },
+            { "value": "chevron-right", "label": "Arrow" },
+            { "value": "ruler", "label": "Ruler" }
+          ],
+          "default": "warranty"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Feature Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share details about your brand, highlight product features, or showcase promotions.</p>"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Multicolumn / text blocks",
+      "blocks": [
+        { "type": "column", "settings": { "title": "Free Delivery", "icon": "star" } },
+        { "type": "column", "settings": { "title": "10-Year Warranty", "icon": "warranty" } },
+        { "type": "column", "settings": { "title": "Complimentary Samples", "icon": "star" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

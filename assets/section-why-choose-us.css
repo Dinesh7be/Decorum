@@ -1,0 +1,45 @@
+/*
+ * theme/assets/section-why-choose-us.css
+ * Styling for the Why Choose Us / USP row Section
+ */
+
+.usp__header {
+  margin-bottom: 5rem;
+  text-align: center;
+}
+
+.usp__card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.usp__icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-darken);
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  color: var(--accent-color);
+  margin-bottom: 0.5rem;
+}
+
+.usp__title {
+  font-family: var(--heading-family);
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  margin: 0;
+}
+
+.usp__text {
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: var(--text-color-light);
+  margin: 0;
+  max-width: 320px;
+}

@@ -1,0 +1,211 @@
+{{ 'section-background-video.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %}
+sections/background-video.liquid
+
+Full-width video used as a section background, with an automatic static-image
+fallback on mobile. Autoplaying background video is unreliable and data-heavy
+on cellular connections, so the <video> is never requested on small viewports:
+decor-background-video only clones the <template> into the DOM (and Shopify
+only serves the underlying video asset) once a min-width media query matches.
+{% endcomment %}
+
+{%- liquid
+  assign space_class = ''
+  if section.settings.section_space == 'top'
+    assign space_class = ' mt0'
+  elsif section.settings.section_space == 'bottom'
+    assign space_class = ' mb0'
+  elsif section.settings.section_space == 'none'
+    assign space_class = ' my0'
+  endif
+
+  assign height = section.settings.height
+  assign mobile_breakpoint = 740
+
+  # Loading strategy for the fallback/poster image (SEC-006)
+  assign loading = 'lazy'
+  assign fetch_priority = 'auto'
+  if section.index == 1
+    assign loading = 'eager'
+    assign fetch_priority = 'high'
+  endif
+
+  assign poster_url = ''
+  if section.settings.mobile_image != blank
+    assign poster_url = section.settings.mobile_image | image_url: width: 1600
+  endif
+-%}
+
+<section
+  id="bg-video--{{ section.id }}"
+  class="global__section{{ space_class }} bg-video bg-video--{{ height }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="background-video"
+>
+  <decor-background-video class="bg-video__media" data-breakpoint="{{ mobile_breakpoint }}">
+    <!-- Static fallback: always in the DOM, is the only thing mobile ever downloads -->
+    {%- if section.settings.mobile_image != blank -%}
+      {{ section.settings.mobile_image | image_url: width: 1600 | image_tag:
+        widths: '375, 550, 750, 1100, 1500, 1600',
+        sizes: '100vw',
+        loading: loading,
+        fetchpriority: fetch_priority,
+        class: 'bg-video__fallback-img'
+      }}
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg bg-video__fallback-img' }}
+    {%- endif -%}
+
+    <!-- Desktop video: only cloned into the live DOM above the breakpoint -->
+    {%- if section.settings.video != blank -%}
+      <template class="bg-video__template">
+        {{ section.settings.video | video_tag:
+          autoplay: true,
+          loop: true,
+          muted: true,
+          controls: false,
+          playsinline: true,
+          preload: 'none',
+          poster: poster_url
+        }}
+      </template>
+    {%- endif -%}
+  </decor-background-video>
+
+  <div class="bg-video__overlay"></div>
+
+  <div class="bg-video__container grid__wrapper">
+    <div class="span-12">
+      <div class="bg-video__content">
+        {%- if section.settings.subheading != blank -%}
+          <p style="font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; margin-bottom: 1.5rem;">
+            {{ section.settings.subheading | escape }}
+          </p>
+        {%- endif -%}
+        {%- if section.settings.title != blank -%}
+          <h2>{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.link_text != blank and section.settings.link_url != blank -%}
+          <div class="bg-video__buttons">
+            <a href="{{ section.settings.link_url }}" class="btn btn--secondary">
+              {{ section.settings.link_text | escape }}
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #bg-video--{{ section.id }} {
+    --bg-video-text-color: {{ section.settings.text_color | default: '#FFFFFF' }};
+    --bg-video-content-max-width: {{ section.settings.content_max_width | default: 600 }}px;
+  }
+  #bg-video--{{ section.id }} .bg-video__overlay {
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Background video",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Background Video (Desktop/Tablet)",
+      "info": "Plays muted and looped above the mobile breakpoint (740px). Keep clips short (under 20s) for fast looping."
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Static Fallback Image",
+      "info": "Shown on mobile instead of the video, and as the poster while the video loads on larger screens."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Behind the Scenes"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Crafted for Everyday Living"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Heading & Button Text Color",
+      "default": "#FFFFFF",
+      "info": "Switch to a dark color if using a light overlay/image."
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 400,
+      "max": 900,
+      "step": 50,
+      "default": 600,
+      "unit": "px",
+      "label": "Content Max Width"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "default": 30,
+      "unit": "%",
+      "label": "Overlay Dark Density"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Section Height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "full_screen", "label": "Full Screen" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Button Label"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Button Link"
+    },
+    {
+      "type": "select",
+      "id": "section_space",
+      "label": "Section Spacing",
+      "options": [
+        { "value": "top", "label": "No top padding" },
+        { "value": "bottom", "label": "No bottom padding" },
+        { "value": "both", "label": "Standard padding" },
+        { "value": "none", "label": "No padding" }
+      ],
+      "default": "none"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Background video"
+    }
+  ]
+}
+{% endschema %}

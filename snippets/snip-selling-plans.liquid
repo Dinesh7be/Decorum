@@ -1,0 +1,79 @@
+{% comment %}
+snippets/snip-selling-plans.liquid
+
+Renders selling plan groups/selector for a product.
+
+Accepts:
+- product:        {Object} Shopify Product object (required)
+- section_id:     {String} Section/instance ID (required)
+
+Usage:
+{% render 'snip-selling-plans', product: product, section_id: section.id %}
+{% endcomment %}
+
+{%- if product.selling_plan_groups.size > 0 -%}
+  <decor-selling-plans class="product-form__selling-plans" data-section="{{ section_id }}">
+    <fieldset class="selling-plans__fieldset" style="border: none; padding: 0; margin: 0 0 2rem 0;">
+      <legend class="visually-hidden">{{ 'products.product.subscription_options' | t }}</legend>
+      
+      {%- unless product.requires_selling_plan -%}
+        <div class="selling-plan__group-wrapper" style="margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: var(--button-border-radius); padding: 1.5rem; display: flex; align-items: flex-start; gap: 1rem; cursor: pointer; transition: border-color var(--transition-normal);">
+          <input 
+            type="radio" 
+            id="selling-plan-one-time-{{ section_id }}" 
+            name="selling_plan_group" 
+            value="" 
+            checked
+            class="selling-plan__group-input"
+            style="margin-top: 3px;"
+          >
+          <label for="selling-plan-one-time-{{ section_id }}" class="selling-plan__group-label" style="cursor: pointer; display: flex; flex-direction: column; width: 100%;">
+            <span class="selling-plan__group-name" style="font-weight: 500; font-size: var(--font-size-sm); color: var(--accent-color);">
+              {{ 'products.product.one_time_purchase' | t }}
+            </span>
+          </label>
+        </div>
+      {%- endunless -%}
+
+      {%- for group in product.selling_plan_groups -%}
+        <div class="selling-plan__group-wrapper" style="margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: var(--button-border-radius); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; cursor: pointer; transition: border-color var(--transition-normal);">
+          <div style="display: flex; align-items: flex-start; gap: 1rem; width: 100%;">
+            <input 
+              type="radio" 
+              id="selling-plan-group-{{ group.id }}-{{ section_id }}" 
+              name="selling_plan_group" 
+              value="{{ group.id }}"
+              {% if product.requires_selling_plan and forloop.first %}checked{% endif %}
+              class="selling-plan__group-input"
+              style="margin-top: 3px;"
+            >
+            <label for="selling-plan-group-{{ group.id }}-{{ section_id }}" class="selling-plan__group-label" style="cursor: pointer; display: flex; flex-direction: column; width: 100%;">
+              <span class="selling-plan__group-name" style="font-weight: 500; font-size: var(--font-size-sm); color: var(--accent-color);">
+                {{ group.name }}
+              </span>
+            </label>
+          </div>
+          
+          <div class="selling-plan__options-container" style="{% unless product.requires_selling_plan and forloop.first %}display: none;{% endunless %} padding-left: 2.5rem; width: 100%;">
+            <label for="selling-plan-select-{{ group.id }}-{{ section_id }}" class="visually-hidden">
+              {{ 'products.product.delivery_frequency' | t }}
+            </label>
+            <select 
+              id="selling-plan-select-{{ group.id }}-{{ section_id }}" 
+              class="selling-plan__select"
+              data-group-id="{{ group.id }}"
+              style="width: 100%; padding: 1rem; border: 1px solid var(--border-color); border-radius: var(--button-border-radius); font-size: var(--font-size-sm); background-color: var(--background);"
+            >
+              {%- for plan in group.selling_plans -%}
+                <option value="{{ plan.id }}">{{ plan.name }}</option>
+              {%- endfor -%}
+            </select>
+          </div>
+        </div>
+      {%- endfor -%}
+    </fieldset>
+
+    <!-- Hidden input that submits the active selling plan ID to Shopify -->
+    <input type="hidden" name="selling_plan" value="" class="js-selling-plan-input">
+  </decor-selling-plans>
+{%- endif -%}
