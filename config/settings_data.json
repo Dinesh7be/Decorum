@@ -1,7 +1,17 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
-    "logo_width": 120,
-    "logo_width_mobile": 80,
+    "logo": "shopify://shop_images/image.png",
+    "logo_width": 115,
+    "logo_width_mobile": 65,
     "accent_color": "#2B2927",
     "secondary_accent": "#8C7D70",
     "background": "#FAF9F6",
@@ -90,7 +100,20 @@
     "quickview_type": "modal",
     "form_bg_color": "#FAF9F6",
     "form_text_color": "#2B2927",
-    "form_border_radius": 0
+    "form_border_radius": 0,
+    "sections": {
+      "newsletter-popup": {
+        "type": "newsletter-popup",
+        "settings": {
+          "enable": false,
+          "title": "Join the Studio",
+          "text": "Subscribe to receive updates, access to exclusive deals, and more.",
+          "delay": 5,
+          "expiry_days": 7
+        }
+      }
+    },
+    "content_for_index": []
   },
   "presets": {
     "Default": {
