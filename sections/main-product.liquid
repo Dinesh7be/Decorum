@@ -242,30 +242,48 @@ sections/main-product.liquid
               -%}
 
             {%- when 'specs' -%}
-              {%- assign specs_content = block.settings.content | default: product.metafields.custom.specifications -%}
+              {%- liquid
+                assign specs_content = block.settings.content | default: product.metafields.custom.specifications
+                assign specs_title = block.settings.title
+                if specs_title == blank
+                  assign specs_title = 'products.product.specifications' | t
+                endif
+              -%}
               {%- if specs_content != blank -%}
                 {%- render 'snip-product-details', 
-                  title: block.settings.title | default: 'Specifications', 
+                  title: specs_title, 
                   content: specs_content,
                   open_default: block.settings.open_default
                 -%}
               {%- endif -%}
 
             {%- when 'materials' -%}
-              {%- assign materials_content = block.settings.content | default: product.metafields.custom.materials -%}
+              {%- liquid
+                assign materials_content = block.settings.content | default: product.metafields.custom.materials
+                assign materials_title = block.settings.title
+                if materials_title == blank
+                  assign materials_title = 'products.product.materials' | t
+                endif
+              -%}
               {%- if materials_content != blank -%}
                 {%- render 'snip-product-details', 
-                  title: block.settings.title | default: 'Materials', 
+                  title: materials_title, 
                   content: materials_content,
                   open_default: block.settings.open_default
                 -%}
               {%- endif -%}
 
             {%- when 'care_instructions' -%}
-              {%- assign care_content = block.settings.content | default: product.metafields.custom.care_instructions -%}
+              {%- liquid
+                assign care_content = block.settings.content | default: product.metafields.custom.care_instructions
+                assign care_title = block.settings.title
+                if care_title == blank
+                  assign care_title = 'products.product.care_instructions' | t
+                endif
+              -%}
               {%- if care_content != blank -%}
                 {%- render 'snip-product-details', 
-                  title: block.settings.title | default: 'Care Instructions', 
+                  title: care_title, 
                   content: care_content,
                   open_default: block.settings.open_default
                 -%}

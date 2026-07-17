@@ -60,7 +60,7 @@
 
 .video__content-card {
   max-width: 600px;
-  color: #FFFFFF;
+  color: var(--button-text, #FAF9F6);
 }
 
 .video__subheading {
@@ -76,14 +76,14 @@
   font-size: var(--font-size-xxl);
   font-weight: 500;
   margin-bottom: 2.5rem;
-  color: #FFFFFF;
+  color: var(--button-text, #FAF9F6);
   line-height: 1.2;
 }
 
 .video__btn {
-  background-color: #FFFFFF;
+  background-color: var(--button-text, #FAF9F6);
   color: var(--accent-color);
-  border-color: #FFFFFF;
+  border-color: var(--button-text, #FAF9F6);
 }
 
 .video__cover-img,

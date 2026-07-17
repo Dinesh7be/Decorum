@@ -35,7 +35,7 @@
   max-width: 520px;
   margin: 0 auto;
   text-align: center;
-  color: #fff;
+  color: var(--button-text, #FAF9F6);
   padding: 3rem;
 }
 

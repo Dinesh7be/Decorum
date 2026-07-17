@@ -15,7 +15,11 @@
 }
 
 .inner-page-banner--no-image {
-  background: linear-gradient(135deg, #2b2927 0%, #151413 100%);
+  background: linear-gradient(
+    135deg,
+    var(--accent-color) 0%,
+    color-mix(in srgb, var(--accent-color) 55%, #000) 100%
+  );
 }
 
 .inner-page-banner__image {
@@ -61,7 +65,7 @@
   font-family: var(--heading-family);
   font-size: calc(var(--font-size) * 2.2);
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--button-text, #FAF9F6);
   margin: 0;
   line-height: 1.2;
 }
@@ -78,17 +82,17 @@
 .inner-page-banner__breadcrumbs .breadcrumbs a,
 .inner-page-banner__breadcrumbs .breadcrumbs li,
 .inner-page-banner__breadcrumbs .breadcrumbs span {
-  color: rgba(255, 255, 255, 0.8) !important;
+  color: color-mix(in srgb, var(--button-text, #FAF9F6) 80%, transparent) !important;
   font-size: calc(var(--font-size-xs) - 1px) !important;
 }
 
 .inner-page-banner__breadcrumbs .breadcrumbs a:hover {
-  color: #FFFFFF !important;
+  color: var(--button-text, #FAF9F6) !important;
   text-decoration: underline;
 }
 
 .inner-page-banner__breadcrumbs .breadcrumbs li:not(:last-child):after {
-  color: rgba(255, 255, 255, 0.4) !important;
+  color: color-mix(in srgb, var(--button-text, #FAF9F6) 40%, transparent) !important;
 }
 
 @media (max-width: 740px) {

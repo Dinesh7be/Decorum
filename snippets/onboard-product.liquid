@@ -65,7 +65,7 @@ linking to corresponding handles in the CSV file for navigation testing.
 
   <div class="product-card__info">
     {%- if settings.show_vendor -%}
-      <div class="product-card__vendor">{{ shop.name | default: 'Decorum Studio' }}</div>
+      <div class="product-card__vendor">{{ shop.name }}</div>
     {%- endif -%}
 
     <h3 class="product-card__title">

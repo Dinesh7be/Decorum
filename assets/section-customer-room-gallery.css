@@ -31,7 +31,7 @@
   bottom: 0;
   padding: 1.2rem;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
-  color: #fff;
+  color: var(--button-text, #FAF9F6);
   opacity: 0;
   transition: opacity var(--transition-fast);
 }
