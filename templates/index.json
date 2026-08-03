@@ -158,6 +158,7 @@
         "lamp_hotspot"
       ],
       "settings": {
+        "image": "shopify://shop_images/pexels-artbovich-6186823.jpg",
         "title": "Shop the Look",
         "section_space": "both"
       }
