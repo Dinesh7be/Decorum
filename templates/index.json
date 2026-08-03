@@ -1,52 +1,69 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero-banner": {
       "type": "hero-banner",
       "settings": {
+        "image": "shopify://shop_images/photo-1600585154340-be6161a56a0c.jpg",
         "title": "Timeless Furniture for Modern Living",
         "subheading": "Explore our curated collection of solid oak chairs, textured linen sofas, and architectural lighting.",
         "height": "medium",
         "alignment": "center",
         "overlay_opacity": 30,
+        "text_color": "#ffffff",
+        "content_max_width": 600,
         "full_width": true,
         "link_text": "Shop New Arrivals",
-        "link_text_2": "Book Design Consultation"
+        "link": "",
+        "link_text_2": "Book Design Consultation",
+        "link_2": ""
       }
     },
     "shop-by-category": {
       "type": "shop-by-category",
-      "settings": {
-        "title": "Shop by Category",
-        "shape": "circle",
-        "section_space": "both"
-      },
       "blocks": {
         "sofas": {
           "type": "category",
           "settings": {
+            "collection": "sofas",
             "title": "Sofas",
-            "collection": "sofas"
+            "image": "shopify://shop_images/photo-1578500494198-246f612d3b3d_67476bef-d27b-4ee6-9e98-6855db7b7bf3.jpg",
+            "link": ""
           }
         },
         "chairs": {
           "type": "category",
           "settings": {
+            "collection": "chairs",
             "title": "Chairs",
-            "collection": "chairs"
+            "image": "shopify://shop_images/photo-1592078615290-033ee584e267.jpg",
+            "link": ""
           }
         },
         "lighting": {
           "type": "category",
           "settings": {
+            "collection": "lighting",
             "title": "Lighting",
-            "collection": "lighting"
+            "image": "shopify://shop_images/photo-1507473885765-e6ed057f782c_221bda28-0f66-40d5-a3b5-317f8c8c846e.jpg",
+            "link": ""
           }
         },
         "decor": {
           "type": "category",
           "settings": {
+            "collection": "decor",
             "title": "Decor",
-            "collection": "decor"
+            "image": "shopify://shop_images/photo-1565814636199-ae8133055c1c.jpg",
+            "link": ""
           }
         }
       },
@@ -55,7 +72,12 @@
         "chairs",
         "lighting",
         "decor"
-      ]
+      ],
+      "settings": {
+        "title": "Shop by Category",
+        "shape": "circle",
+        "section_space": "both"
+      }
     },
     "featured-collection": {
       "type": "featured-collection",
@@ -72,30 +94,32 @@
     },
     "room-collections": {
       "type": "room-collections",
-      "settings": {
-        "title": "Shop by Room",
-        "section_space": "both"
-      },
       "blocks": {
         "living": {
           "type": "room",
           "settings": {
+            "collection": "living-room",
             "title": "Living Room",
-            "collection": "living-room"
+            "image": "shopify://shop_images/photo-1604014237800-1c9102c219da_61caec7c-4b58-4b43-88e5-a213d89808c3.jpg",
+            "link": ""
           }
         },
         "bedroom": {
           "type": "room",
           "settings": {
+            "collection": "bedroom",
             "title": "Bedroom",
-            "collection": "bedroom"
+            "image": "shopify://shop_images/photo-1505693416388-ac5ce068fe85.jpg",
+            "link": ""
           }
         },
         "office": {
           "type": "room",
           "settings": {
+            "collection": "office",
             "title": "Home Office",
-            "collection": "office"
+            "image": "shopify://shop_images/photo-1524758631624-e2822e304c36_f6580bfd-01d3-4fb7-9072-27db8fa90578.jpg",
+            "link": ""
           }
         }
       },
@@ -103,14 +127,14 @@
         "living",
         "bedroom",
         "office"
-      ]
+      ],
+      "settings": {
+        "title": "Shop by Room",
+        "section_space": "both"
+      }
     },
     "shop-the-look": {
       "type": "shop-the-look",
-      "settings": {
-        "title": "Shop the Look",
-        "section_space": "both"
-      },
       "blocks": {
         "sofa_hotspot": {
           "type": "hotspot",
@@ -132,14 +156,14 @@
       "block_order": [
         "sofa_hotspot",
         "lamp_hotspot"
-      ]
+      ],
+      "settings": {
+        "title": "Shop the Look",
+        "section_space": "both"
+      }
     },
     "why-choose-us": {
       "type": "why-choose-us",
-      "settings": {
-        "title": "The Decorum Standard",
-        "section_space": "both"
-      },
       "blocks": {
         "quality": {
           "type": "usp",
@@ -170,14 +194,14 @@
         "quality",
         "delivery",
         "warranty"
-      ]
+      ],
+      "settings": {
+        "title": "The Decorum Standard",
+        "section_space": "both"
+      }
     },
     "testimonials": {
       "type": "testimonials",
-      "settings": {
-        "title": "Client Stories",
-        "section_space": "both"
-      },
       "blocks": {
         "review_1": {
           "type": "testimonial",
@@ -211,7 +235,11 @@
         "review_1",
         "review_2",
         "review_3"
-      ]
+      ],
+      "settings": {
+        "title": "Client Stories",
+        "section_space": "both"
+      }
     }
   },
   "order": [
