@@ -1,20 +1,36 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
+    "banner": {
+      "type": "hero-banner",
+      "settings": {
+        "image": "shopify://shop_images/pexels-artbovich-6186823.jpg",
+        "title": "",
+        "subheading": "",
+        "height": "full_screen",
+        "alignment": "center",
+        "overlay_opacity": 30,
+        "text_color": "#ffffff",
+        "content_max_width": 600,
+        "full_width": true,
+        "link_text": "Shop New Arrivals",
+        "link": "",
+        "link_text_2": "Book Design Consultation",
+        "link_2": ""
+      }
+    },
     "main": {
       "type": "main-cart",
       "settings": {
         "show_title": false
-      }
-    },
-    "banner": {
-      "type": "hero-banner",
-      "settings": {
-        "title": "",
-        "subheading": "",
-        "height": "small",
-        "alignment": "center",
-        "overlay_opacity": 30,
-        "full_width": true
       }
     }
   },
