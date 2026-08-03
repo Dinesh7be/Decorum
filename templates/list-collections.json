@@ -1,20 +1,36 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "main": {
-      "type": "main-list-collections",
-      "settings": {
-        "show_title": false
-      }
-    },
     "banner": {
       "type": "hero-banner",
       "settings": {
+        "image": "shopify://shop_images/clickerhappy-living-room-2732939.jpg",
         "title": "",
         "subheading": "",
         "height": "small",
         "alignment": "center",
         "overlay_opacity": 30,
-        "full_width": true
+        "text_color": "#ffffff",
+        "content_max_width": 600,
+        "full_width": true,
+        "link_text": "Shop New Arrivals",
+        "link": "",
+        "link_text_2": "Book Design Consultation",
+        "link_2": ""
+      }
+    },
+    "main": {
+      "type": "main-list-collections",
+      "settings": {
+        "show_title": false
       }
     }
   },
