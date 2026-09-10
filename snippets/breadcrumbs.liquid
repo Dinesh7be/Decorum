@@ -27,7 +27,7 @@ Renders navigation breadcrumbs trail for collections, products, blogs, and stati
           <li>
             <a href="{{ product.url }}" aria-current="page">{{ product.title }}</a>
           </li>
-        {%- when 'collection' and collection.handle -%}
+        {%- when 'collection' -%}
           {%- if current_tags -%}
             {%- capture url -%}/collections/{{ collection.handle }}{%- endcapture -%}
             <li>{{ collection.title | link_to: url }}</li>
@@ -66,3 +66,13 @@ Renders navigation breadcrumbs trail for collections, products, blogs, and stati
     </ol>
   </nav>
 {%- endunless -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- when 'collection' and collection.handle -%}"
+  to: "{%- when 'collection' -%}"
+  position: 1457..1482
+{% endcomment %}
